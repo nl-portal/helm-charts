@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nl-portal-backend.fullname" . }}
+  labels:
+    {{- include "nl-portal-backend.labels" . | nindent 4 }}
+data:
+  SPRING_PROFILES_DEFAULT: {{ .Values.settings.spring.profiles.default | quote }}
+  SPRING_DATASOURCE_URL: {{ .Values.settings.database.url | quote }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.settings.database.username | quote }}
+  SPRING_DATASOURCE_DRIVERCLASSNAME: {{ .Values.settings.database.driver | quote }}
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: {{ .Values.settings.spring.security.oauth2.issuerUri | quote }}
+  DATABASE_HOSTNAME: {{ .Values.settings.database.hostname | quote }}
+  DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
+  DATABASE_NAME: {{ .Values.settings.database.name | quote }}
+  NLPORTAL_ZGW_TAAK_TAAKOBJECT_TYPEURL: {{ .Values.settings.nlPortal.zgw.taak.taakobject.typeUrl | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_URL: {{ .Values.settings.nlPortal.zgw.catalogiapi.url | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_RSIN: {{ .Values.settings.nlPortal.zgw.catalogiapi.rsin | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_DOCUMENTTYPEURL: {{ .Values.settings.nlPortal.zgw.catalogiapi.documentTypeUrl | quote }}
+  NLPORTAL_ZGW_DOCUMENTAPI_URL: {{ .Values.settings.nlPortal.zgw.documentenapi.url | quote }}
+  NLPORTAL_ZGW_ZAKENAPI_URL: {{ .Values.settings.nlPortal.zgw.zakenapi.url | quote }}
+  NLPORTAL_ZGW_OBJECTENAPI_URL: {{ .Values.settings.nlPortal.zgw.objectenapi.url | quote }}
+  NLPORTAL_ZGW_KLANTENAPI_URL: {{ .Values.settings.nlPortal.zgw.klantenapi.url | quote }}
+  NLPORTAL_ZGW_KLANTENAPI_RSIN: {{ .Values.settings.nlPortal.zgw.klantenapi.rsin | quote }}

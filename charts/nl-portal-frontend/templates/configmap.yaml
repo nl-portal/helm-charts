@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nl-portal-frontend.fullname" . }}
+  labels:
+    {{- include "nl-portal-frontend.labels" . | nindent 4 }}
+data:
+  KEYCLOAK_URL: {{ .Values.settings.keycloak.url | quote }}
+  KEYCLOAK_REALM: {{ .Values.settings.keycloak.realm | quote }}
+  KEYCLOAK_CLIENT_ID: {{ .Values.settings.keycloak.clientId | quote }}
+  KEYCLOAK_REDIRECT_URI: {{ .Values.settings.keycloak.redirectUri | quote }}
+  GRAPHQL_URI: {{ .Values.settings.graphqlUri | quote }}
+  REST_URI: {{ .Values.settings.restUri | quote }}

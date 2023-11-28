@@ -62,6 +62,7 @@ ingress:
   #      - chart-example.local
 
 livenessProbe:
+  enabled: true
   initialDelaySeconds: 40
   periodSeconds: 10
   timeoutSeconds: 1
@@ -69,6 +70,7 @@ livenessProbe:
   successThreshold: 1
 
 readinessProbe:
+  enabled: true
   initialDelaySeconds: 20
   periodSeconds: 10
   timeoutSeconds: 1

@@ -105,6 +105,10 @@ affinity: {}
 
 existingSecret: null
 
+csi:
+  enabled: false
+  secretProviderClass: ""
+
 # Application Settings
 settings:
   spring:

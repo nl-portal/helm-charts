@@ -30,15 +30,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "nl-portal-backend.serviceAccountName" . }}
-      {{- if .Values.csi.enabled }}
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "{{ .Values.csi.secretProviderClass }}"
-      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -47,17 +38,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.csi.enabled }}
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/var/run/secrets/secrets-store"
-              readOnly: true
-          {{- end }}
           envFrom:
             - secretRef:
                 name: {{ .Values.existingSecret | default (include "nl-portal-backend.fullname" .) }}
             - configMapRef:
                 name: {{ include "nl-portal-backend.fullname" . }}
+          env:
+            {{- if .Values.extraEnvVars }}
+            {{- include "nl-portal-backend.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 80
@@ -76,6 +65,14 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.extraVolumeMounts }}
+            {{- include "nl-portal-backend.tplvalues.render" ( dict "value" .Values.extraVolumeMounts "context" $ ) | nindent 12 }}
+            {{- end }}
+      volumes:
+        {{- if .Values.extraVolumes }}
+        {{- include "nl-portal-backend.tplvalues.render" ( dict "value" .Values.extraVolumes "context" $ ) | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

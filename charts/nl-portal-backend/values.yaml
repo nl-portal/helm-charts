@@ -160,17 +160,25 @@ settings:
         secret: 
         rsin: ""
         documentTypeUrl: 
-      documentenapi:
-        url: 
-        clientId: 
-        secret: 
+      documentenapis:
+        default-document-api:
+        configurations:
+          openzaak:
+            url: 
+            clientId: 
+            secret: 
+            rsin:
+            documentTypeUrl:
       zakenapi:
         url: 
         clientId: 
         secret: 
-      objectenapi:
+      objectsapi:
         url: 
-        token: 
+        token:
+      haalcentraal:
+        url:
+        apiKey:
       klantenapi:
         url: 
         clientId: 

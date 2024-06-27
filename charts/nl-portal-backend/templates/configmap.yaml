@@ -5,20 +5,28 @@ metadata:
   labels:
     {{- include "nl-portal-backend.labels" . | nindent 4 }}
 data:
-  SPRING_PROFILES_DEFAULT: {{ .Values.settings.spring.profiles.default | quote }}
-  SPRING_DATASOURCE_URL: {{ .Values.settings.database.url | quote }}
-  SPRING_DATASOURCE_USERNAME: {{ .Values.settings.database.username | quote }}
-  SPRING_DATASOURCE_DRIVERCLASSNAME: {{ .Values.settings.database.driver | quote }}
-  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: {{ .Values.settings.spring.security.oauth2.issuerUri | quote }}
-  DATABASE_HOSTNAME: {{ .Values.settings.database.hostname | quote }}
-  DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
-  DATABASE_NAME: {{ .Values.settings.database.name | quote }}
-  NLPORTAL_ZGW_TAAK_TAAKOBJECT_TYPEURL: {{ .Values.settings.nlPortal.zgw.taak.taakobject.typeUrl | quote }}
-  NLPORTAL_ZGW_CATALOGIAPI_URL: {{ .Values.settings.nlPortal.zgw.catalogiapi.url | quote }}
-  NLPORTAL_ZGW_CATALOGIAPI_RSIN: {{ .Values.settings.nlPortal.zgw.catalogiapi.rsin | quote }}
+  KEYCLOAK_AUDIENCE: {{ .Values.settings.keycloak.audience | quote }}
+  KEYCLOAK_RESOURCE: {{ .Values.settings.keycloak.resource | quote }}
+  NLPORTAL_HAALCENTRAAL_URL: {{ .Values.settings.nlPortal.haalcentraal.url | quote }}
+  NLPORTAL_OBJECTSAPI_URL: {{ .Values.settings.nlPortal.objectsapi.url | quote }}
+  NLPORTAL_OPENKLANT_CLIENTID: {{ .Values.settings.nlPortal.openklant.clientId | quote }}
+  NLPORTAL_OPENKLANT_RSIN: {{ .Values.settings.nlPortal.openklant.rsin | quote }}
+  NLPORTAL_OPENKLANT_URL: {{ .Values.settings.nlPortal.openklant.url | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_CLIENTID: {{ .Values.settings.nlPortal.zgw.catalogiapi.clientId | quote }}
   NLPORTAL_ZGW_CATALOGIAPI_DOCUMENTTYPEURL: {{ .Values.settings.nlPortal.zgw.catalogiapi.documentTypeUrl | quote }}
-  NLPORTAL_ZGW_DOCUMENTAPI_URL: {{ .Values.settings.nlPortal.zgw.documentenapi.url | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_RSIN: {{ .Values.settings.nlPortal.zgw.catalogiapi.rsin | quote }}
+  NLPORTAL_ZGW_CATALOGIAPI_URL: {{ .Values.settings.nlPortal.zgw.catalogiapi.url | quote }}
+  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_CLIENTID: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.clientId | quote }}
+  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.documentTypeUrl | quote }}
+  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_RSIN: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.rsin | quote }}
+  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_URL: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.url | quote }}
+  NLPORTAL_ZGW_DOCUMENTENAPIS_DEFAULTDOCUMENTAPI: {{ .Values.settings.nlPortal.zgw.documentenapis.defaultDocumentApi | quote }}
+  NLPORTAL_ZGW_TAAK_TAAKOBJECT_TYPEURL: {{ .Values.settings.nlPortal.zgw.taak.taakobject.typeUrl | quote }}
   NLPORTAL_ZGW_ZAKENAPI_URL: {{ .Values.settings.nlPortal.zgw.zakenapi.url | quote }}
-  NLPORTAL_ZGW_OBJECTENAPI_URL: {{ .Values.settings.nlPortal.zgw.objectenapi.url | quote }}
-  NLPORTAL_ZGW_KLANTENAPI_URL: {{ .Values.settings.nlPortal.zgw.klantenapi.url | quote }}
-  NLPORTAL_ZGW_KLANTENAPI_RSIN: {{ .Values.settings.nlPortal.zgw.klantenapi.rsin | quote }}
+  NLPORTAL_ZGW_ZAKENAPI_CLIENTID: {{ .Values.settings.nlPortal.zgw.zakenapi.clientId | quote }}
+  SPRING_PROFILES_ACTIVE: {{ .Values.settings.spring.profiles.active | quote }}
+  SPRING_DATASOURCE_DRIVERCLASSNAME: {{ .Values.settings.spring.datasource.driverClassName | quote }}
+  SPRING_DATASOURCE_NAME: {{ .Values.settings.spring.datasource.name | quote }}
+  SPRING_DATASOURCE_URL: {{ .Values.settings.spring.datasource.url | quote }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.settings.spring.datasource.username | quote }}
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: {{ .Values.settings.spring.security.oauth2.issuerUri | quote }}

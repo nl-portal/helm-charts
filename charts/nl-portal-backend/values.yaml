@@ -131,56 +131,53 @@ extraVolumeMounts: []
 settings:
   spring:
     profiles:
-      default: dev
-
+      active:
+    datasource:
+      driverClassName: org.postgresql.Driver
+      url:
+      name:
+      username:
+      password:
     security:
       oauth2:
-        issuerUri: http://localhost:8082/auth/realms/master
-
-  database:
-    # -- Database name
-    name:
-    # -- Driver Class name of the database
-    driver:
-    # -- Database hostname
-    url:
-    # -- Username for the database
-    username:
-    # -- Password for the database
-    password: ""
-
+        issuerUri:
+  keycloak:
+    resource:
+    audience:
+    credentials:
+      secret:
   nlPortal:
     zgw:
       taak:
         taakobject:
           typeUrl: ""
       catalogiapi:
-        url: 
-        clientId: 
-        secret: 
+        url:
+        clientId:
+        secret:
         rsin: ""
-        documentTypeUrl: 
+        documentTypeUrl:
       documentenapis:
-        default-document-api:
+        defaultDocumentApi:
         configurations:
           openzaak:
-            url: 
-            clientId: 
-            secret: 
+            url:
+            clientId:
+            secret:
             rsin:
             documentTypeUrl:
       zakenapi:
-        url: 
-        clientId: 
-        secret: 
-      objectsapi:
-        url: 
-        token:
-      haalcentraal:
         url:
-        apiKey:
-      klantenapi:
-        url: 
-        clientId: 
-        secret: 
-        rsin: ""
+        clientId:
+        secret:
+    objectsapi:
+      url:
+      token:
+    haalcentraal:
+      url:
+      apiKey:
+    openklant:
+      url:
+      clientId:
+      secret:
+      rsin: ""

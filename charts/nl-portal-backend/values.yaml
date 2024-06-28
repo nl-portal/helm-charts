@@ -150,12 +150,12 @@ settings:
     zgw:
       taak:
         taakobject:
-          typeUrl: ""
+          typeUrl:
       catalogiapi:
         url:
         clientId:
         secret:
-        rsin: ""
+        rsin:
         documentTypeUrl:
       documentenapis:
         defaultDocumentApi:
@@ -180,4 +180,4 @@ settings:
       url:
       clientId:
       secret:
-      rsin: ""
+      rsin:

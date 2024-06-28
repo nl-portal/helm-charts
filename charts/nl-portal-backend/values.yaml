@@ -158,14 +158,15 @@ settings:
         rsin:
         documentTypeUrl:
       documentenapis:
-        defaultDocumentApi:
+        defaultDocumentApi: # example
         configurations:
-          openzaak:
-            url:
-            clientId:
-            secret:
-            rsin:
-            documentTypeUrl:
+#          EXAMPLE CONFIG
+#          example:
+#            url:
+#            clientId:
+#            secret:
+#            rsin:
+#            documentTypeUrl:
       zakenapi:
         url:
         clientId:

@@ -16,10 +16,6 @@ data:
   NLPORTAL_ZGW_CATALOGIAPI_DOCUMENTTYPEURL: {{ .Values.settings.nlPortal.zgw.catalogiapi.documentTypeUrl | quote }}
   NLPORTAL_ZGW_CATALOGIAPI_RSIN: {{ .Values.settings.nlPortal.zgw.catalogiapi.rsin | quote }}
   NLPORTAL_ZGW_CATALOGIAPI_URL: {{ .Values.settings.nlPortal.zgw.catalogiapi.url | quote }}
-  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_CLIENTID: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.clientId | quote }}
-  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.documentTypeUrl | quote }}
-  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_RSIN: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.rsin | quote }}
-  NLPORTAL_ZGW_DOCUMENTENAPIS_CONFIGURATIONS_OPENZAAK_URL: {{ .Values.settings.nlPortal.zgw.documentenapis.configurations.openzaak.url | quote }}
   NLPORTAL_ZGW_DOCUMENTENAPIS_DEFAULTDOCUMENTAPI: {{ .Values.settings.nlPortal.zgw.documentenapis.defaultDocumentApi | quote }}
   NLPORTAL_ZGW_TAAK_TAAKOBJECT_TYPEURL: {{ .Values.settings.nlPortal.zgw.taak.taakobject.typeUrl | quote }}
   NLPORTAL_ZGW_ZAKENAPI_URL: {{ .Values.settings.nlPortal.zgw.zakenapi.url | quote }}

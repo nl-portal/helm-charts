@@ -3,4 +3,4 @@ appVersion: 0.1.0
 description: Nl Portal frontend Helm chart to be used in Kubernetes clusters.
 name: nl-portal-frontend
 type: application
-version: 0.1.2
+version: 0.1.3

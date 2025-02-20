@@ -1,4 +1,4 @@
-name: Build and Publish GZAC Backend Helm Chart
+name: Build and Publish NL-portal Backend Helm Chart
 
 on:
   push:

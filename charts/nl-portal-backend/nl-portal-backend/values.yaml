@@ -127,6 +127,7 @@ extraVolumeMounts: []
 #  - name: verify-certs
 #    mountPath: /etc/ssl/certs/extra-certs/
 
+
 # Application Settings
 settings:
   spring:

@@ -1,14 +1,15 @@
-name: Build and Publish Helm Chart
+name: Build and Publish GZAC Frontend Helm Chart
 
 on:
   push:
+    paths:
+      - 'charts/nl-portal-frontend/**'
     branches:
       - main
 
 jobs:
-  build:
+  build_nl-portal_frontend:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -30,6 +31,8 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.5.0
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts/nl-portal-frontend
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

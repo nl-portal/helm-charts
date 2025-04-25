@@ -256,6 +256,16 @@ entries:
   nl-portal-frontend:
   - apiVersion: v2
     appVersion: 1.3.0
+    created: "2025-04-25T14:41:42.694060846Z"
+    description: Nl Portal frontend Helm chart to be used in Kubernetes clusters.
+    digest: c34c7f1c6775c146b7206e6f5666910de9fdebd12cc11a774ec18201887c70f9
+    name: nl-portal-frontend
+    type: application
+    urls:
+    - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-frontend-1.0.1/nl-portal-frontend-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.3.0
     created: "2025-02-20T09:59:29.907689905Z"
     description: Nl Portal frontend Helm chart to be used in Kubernetes clusters.
     digest: 53fb40be3a9659502e395f2ff7b565d23303d89cacca4239f0fe55ee2fcb3918
@@ -294,4 +304,4 @@ entries:
     urls:
     - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-frontend-0.1.1/nl-portal-frontend-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-20T09:59:29.908562834Z"
+generated: "2025-04-25T14:41:42.694101863Z"

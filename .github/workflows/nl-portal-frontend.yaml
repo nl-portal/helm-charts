@@ -1,6 +1,7 @@
 name: Build and Publish NL-portal Frontend Helm Chart
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'charts/nl-portal-frontend/**'

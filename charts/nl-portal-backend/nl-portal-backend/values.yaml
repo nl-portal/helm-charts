@@ -103,16 +103,19 @@ tolerations: []
 
 affinity: {}
 
+# Name of an existing Secret holding secret configuration variables.
+# See `nl-portal-backend/templates/secret.yaml` as to what keys to set.
 existingSecret: null
 
 # -- Array with extra environment variables to add
-extraEnvVars: []
 # e.g:
 # extraEnvVars:
 #   - name: FOO
 #     value: "bar"
 
 # -- Optionally specify extra list of additional volumes
+extraEnvVars: []
+
 extraVolumes: []
 # e.g:
 # extraVolumes:
@@ -121,11 +124,12 @@ extraVolumes: []
 #       name: verify-certs
 
 # -- Optionally specify extra list of additional volumeMounts
-extraVolumeMounts: []
 # e.g:
 # extraVolumeMounts:
 #  - name: verify-certs
 #    mountPath: /etc/ssl/certs/extra-certs/
+extraVolumeMounts: []
+
 
 
 # Application Settings
@@ -157,7 +161,10 @@ settings:
     password: ""
 
   app:
+    # TODO: what log levels are there?
     logLevel: "INFO"
+    # TODO: Is this default OK?
+    # CORS configuration
     security:
       cors:
         path: ""

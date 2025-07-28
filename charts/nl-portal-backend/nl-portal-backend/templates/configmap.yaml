@@ -12,7 +12,7 @@ metadata:
     {{- include "nl-portal-backend.labels" . | nindent 4 }}
 data:
   LOGLEVEL: {{ .Values.settings.app.logLevel | quote }}
-  DATABASE_URL: {{ .Values.settings.database.url | quote }}
+  DATABASE_URL: {{ required "You must set settings.database.url" .Values.settings.database.url | quote }}
   DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
   JWKS_URI: {{ printf "%s%s/realms/%s/protocol/openid-connect/certs" .Values.settings.keycloak.url $jwks_uri_prefix .Values.settings.keycloak.realm | quote }}
   KEYCLOAK_CLIENT_ID: {{ .Values.settings.keycloak.clientID | quote }}

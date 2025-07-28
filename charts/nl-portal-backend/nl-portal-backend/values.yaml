@@ -130,56 +130,203 @@ extraVolumeMounts: []
 
 # Application Settings
 settings:
-  spring:
-    profiles:
-      active:
-    datasource:
-      driverClassName: org.postgresql.Driver
-      url:
-      name:
-      username:
-      password:
-    security:
-      oauth2:
-        issuerUri:
   keycloak:
-    resource:
-    audience:
-    credentials:
-      secret:
-  nlPortal:
-    zgw:
-      taak:
-        taakobject:
-          typeUrl:
-      catalogiapi:
-        url:
-        clientId:
-        secret:
-        rsin:
-        documentTypeUrl:
-      documentenapis:
-        defaultDocumentApi: # example
+    # Required: Base URL to Keycloak (so without route parameters, e.g. /auth)
+    url:
+
+    # Required: Version of the Keycloak server the backend connects to
+    # N.B. this is not necessarily the same as they Keycloak's Helmchart version
+    version:
+
+    # Keycloak client ID for the backend
+    clientID: "gzac-portal-m2m"
+
+    # Keycloak realm of users of NL Portal
+    realm: "nlportal"
+
+    # TODO explain
+    audience: "gzac-portal-token-exchange"
+
+    # If using existingSecret, use the key KEYCLOAK_TOKEN_EXCHANGE_SECRET
+    token_exchange_secret: ""
+  database:
+    url: ""
+    username: "nlportal"
+    # If using existingSecret, use the key DATABASE_PASSWORD
+    password: ""
+  app:
+    # TODO what log levels are there?
+    logLevel: "INFO"
+    security:
+      cors:
+        path: ""
+        config:
+          allowedHeaders: ""
+          allowedOrigins: ""
+          allowedMethods: ""
+      endpoints:
+        unsecured: ""
+    features:
+      configurationPanel:
+        enabled: true
+        uri:
+  services:
+    authentication:
+      machtingsdienst:
+        resourceUrl: ""
+
+    besluitenapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        secret: ""
+
+    catalogiapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        secret: ""
+
+    documentenapis:
+      enabled: false
+      properties:
+        defaultDocumentApi: ""
         configurations:
-#          EXAMPLE CONFIG
-#          example:
-#            url:
-#            clientId:
-#            secret:
-#            rsin:
-#            documentTypeUrl:
-      zakenapi:
-        url:
-        clientId:
-        secret:
-    objectsapi:
-      url:
-      token:
-    haalcentraal:
-      url:
-      apiKey:
+          openzaak:
+            url: ""
+            clientId: ""
+            secret: ""
+            rsin: ""
+            documentTypeUrl: ""
+          dummydoc:
+            url: ""
+            clientId: ""
+            secret: ""
+
+    virusscan:
+      clamav:
+        enabled: false
+        properties:
+          hostname: ""
+
+    zakenapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        secret: ""
+        zaakdocumentenConfig:
+          vertrouwelijkheidsaanduidingWhitelist: ""
+          statusWhitelist: ""
+
+    objectenapi:
+      enabled: false
+      properties:
+        url: ""
+        token: ""
+
     openklant:
-      url:
-      clientId:
-      secret:
-      rsin:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        secret: ""
+
+    openklant2:
+      enabled: false
+      properties:
+        klantinteractiesApiUrl: ""
+        token: ""
+
+    haalcentraal2:
+      enabled: false
+      properties:
+        brpApiUrl: ""
+        bewoningApiUrl: ""
+
+    haalcentraal_brp:
+      enabled: false
+      properties:
+        url: ""
+        apiKey: ""
+        ssl:
+          enabled: false
+          key:
+            key: ""
+            certChain: ""
+            keyPassword: ""
+          trustedCertificate: ""
+
+    haalcentraal_hr:
+      enabled: false
+      properties:
+        url: ""
+        apiKey: ""
+        ssl:
+          enabled: false
+          key:
+            key: ""
+            certChain: ""
+            keyPassword: ""
+          trustedCertificate: ""
+
+    taak:
+      enabled: false
+      properties:
+        typeUrl: ""
+        typeUrlV2: ""
+
+    berichten:
+      enabled: false
+      properties:
+        berichtObjectTypeUrl: ""
+
+    product:
+      enabled: false
+      properties:
+        productTypeUrl: ""
+        productInstantieTypeUrl: ""
+        productDetailsTypeUrl: ""
+        productVerbruiksObjectTypeUrl: ""
+
+    dmn:
+      enabled: false
+      properties:
+        url: ""
+
+    prefill:
+      enabled: false
+      properties:
+        typeUrl: ""
+
+    payment:
+      direct:
+        enabled: false
+        properties:
+          url: ""
+          shaOutParameters: ""
+          configurations:
+            belastingzaken:
+              pspId: ""
+              language: ""
+              returnUrl: ""
+              apiKey: ""
+              apiSecret: ""
+              webhookApiKey: ""
+              webhookApiSecret: ""
+
+      ogone:
+        enabled: false
+        properties:
+          url: ""
+          shaOutParameters: ""
+          configurations:
+            belastingzaken:
+              pspId: ""
+              title: ""
+              shaInKey: ""
+              shaOutKey: ""
+              failureUrl: ""
+              successUrl: ""

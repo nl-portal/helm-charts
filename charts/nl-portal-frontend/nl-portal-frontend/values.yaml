@@ -107,11 +107,62 @@ existingSecret: null
 
 # Application Settings
 settings:
-
-  keycloak:
+  oidc:
+    # Required: URL to OIDC provider, e.g. Keycloak.
+    # Note: For Keycloak versions <17, you must append /auth to this URL.
     url:
-    realm:
-    clientId:
+    # OIDC Realm that contains users for NL Portal
+    realm: "nlportal"
+    # OIDC Client ID for the frontend
+    clientID: "gzac-portal"
+    # URL to redirect to after a successful login.
+    # For Keycloak, this is /keycloak/callback
+    redirectUrl: "/keycloak/callback"
+    # URL to redirect to after a successful logout
+    postLogoutRedirectUrl: "/"
 
-  graphqlUri:
-  restUri:
+  app:
+    # Application's backend URL
+    backendUrl: "/"
+
+    features:
+      general:
+        # TODO: add explanation
+        showInhabitantAmount: true
+        # TODO: add explanation
+        casesPartialSearch: true
+        # TODO: add explanation, confirm `null` is an OK default
+        themeClass: null
+        # TODO: add explanation. What unit is this in?
+        messageCountPollingInterval: 10000
+
+      account:
+        # TODO: add explanation, confirm that `true` is an OK default
+        showNotificationSubsection: true
+      overview:
+        # TODO: add explanation, confirm that `true` is an OK default
+        showIntro: true
+        # TODO: add explanation, confirm that `true` is an OK default
+        showMaintenanceAlert: true
+        # TODO: add explanation, confirm that `true` is an OK default
+        showCurrentCasesPreview: true
+        # TODO: add explanation, confirm that `1` is an OK default
+        currentCasesPreviewLength: 1
+        
+    services:
+      # TODO: add explanation
+      openKlantVersion: null
+      # TODO: add explanation
+      addressResearchUrl: null
+      # TODO: add explanation
+      reportChangeOfAddressUrl: null
+      # TODO: add explanation
+      changeInUseOfSurnameUrl: null
+      # TODO: add explanation
+      changeRegisteredGenderUrl: null
+      # TODO: add explanation
+      addressResearchMoreInfoUrl: null
+      # TODO: add explanation
+      requestForChangeBrpInfoUrl: null
+      # TODO: add explanation
+      requestConfidentialityOfDataUrl: null

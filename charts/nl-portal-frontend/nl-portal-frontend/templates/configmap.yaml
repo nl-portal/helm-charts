@@ -11,8 +11,8 @@ data:
   OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUri | quote }}
 
-  GRAPHQL_URI: {{ .Values.settings.app.backendUrl "/graphql" | quote }}
-  REST_URI: {{ .Values.settings.app.backendUrl "/api" | quote }}
+  GRAPHQL_URI: {{ print .Values.settings.app.backendUrl "/graphql" | quote }}
+  REST_URI: {{ print .Values.settings.app.backendUrl "/api" | quote }}
 
   SHOW_INHABITANT_AMOUNT: {{ .Values.settings.app.features.general.showInhabitantAmount | quote }}
   CASES_PARTIAL_SEARCH: {{ .Values.settings.app.features.general.casesPartialSearch | quote }}

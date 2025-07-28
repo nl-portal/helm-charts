@@ -61,7 +61,7 @@ ingress:
 livenessProbe:
   httpGet:
     path: /
-    port: 8080
+    port: 80
   initialDelaySeconds: 40
   periodSeconds: 10
   timeoutSeconds: 1
@@ -71,7 +71,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /
-    port: 8080
+    port: 80
   initialDelaySeconds: 20
   periodSeconds: 10
   timeoutSeconds: 1

@@ -161,6 +161,8 @@ settings:
         enabled: true
         uri: ""
         # If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN
+        token:
+
 
   services:
     authentication:

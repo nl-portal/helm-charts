@@ -239,7 +239,7 @@ settings:
           statusWhitelist: ""
 
     objectenapi:
-      enabled: true
+      enabled: false
       properties:
         url: ""
         # If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN

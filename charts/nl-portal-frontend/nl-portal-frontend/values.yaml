@@ -122,8 +122,8 @@ settings:
     postLogoutRedirectUrl: "/"
 
   app:
-    # Application's backend URL
-    backendUrl: "/"
+    # Application's backend URL. Empty string means the same URL as the frontend.
+    backendUrl: ""
 
     features:
       general:

@@ -7,9 +7,19 @@ metadata:
 data:
   OIDC_URL: {{ required "You must set settings.oidc.url" .Values.settings.oidc.url | quote }}
   OIDC_REALM: {{ .Values.settings.oidc.realm | quote }}
-  OIDC_CLIENT_ID: {{ .Values.settings.oidc.clientID | quote }} 
+  OIDC_CLIENT_ID: {{ .Values.settings.oidc.clientID | quote }}
+  
+  {{- if .Values.settings.oidc.redirectUrl }}
   OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
+  {{- else }} # if not explicitly specified, assume OIDC is Keycloak by default
+  OIDC_REDIRECT_URI: {{ printf "%s/keycloak/callback" .Values.settings.ingress.host | quote }}
+  {{- end }}
+
+  {{- if .Values.settings.oidc.postLogoutRedirectUri }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUri | quote }}
+  {{- else }}
+  OIDC_REDIRECT_URI: {{ .Values.settings.ingress.host | quote }}
+  {{- end }}  
 
   GRAPHQL_URI: {{ print .Values.settings.app.backendUrl "/graphql" | quote }}
   REST_URI: {{ print .Values.settings.app.backendUrl "/api" | quote }}

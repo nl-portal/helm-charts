@@ -13,7 +13,7 @@ data:
   OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
   # if not explicitly specified, assume OIDC is Keycloak by default
   {{- else if .Values.ingress.host }}
-  OIDC_REDIRECT_URI: {{ printf "%s/keycloak/callback" .Values.ingress.host | quote }}
+  OIDC_REDIRECT_URI: {{ printf "https://%s/keycloak/callback" .Values.ingress.host | quote }}
   {{- else }}
   OIDC_REDIRECT_URI: {{ "/" | quote }}
   {{- end }}
@@ -22,7 +22,7 @@ data:
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUri | quote }}
   # if not explicitly specified, assume OIDC is Keycloak by default
   {{- else if .Values.ingress.host }}
-  OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.ingress.host | quote }}
+  OIDC_POST_LOGOUT_REDIRECT_URI: {{ printf "https://%s" .Values.ingress.host | quote }}
   {{- else }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ "/" | quote }} 
   {{- end }}  

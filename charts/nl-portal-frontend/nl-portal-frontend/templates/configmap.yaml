@@ -11,14 +11,20 @@ data:
   
   {{- if .Values.settings.oidc.redirectUrl }}
   OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
-  {{- else }} # if not explicitly specified, assume OIDC is Keycloak by default
+  # if not explicitly specified, assume OIDC is Keycloak by default
+  {{- else if .Values.settings.ingress.host }}
   OIDC_REDIRECT_URI: {{ printf "%s/keycloak/callback" .Values.settings.ingress.host | quote }}
+  {{- else }}
+  OIDC_REDIRECT_URI: {{ "/" | quote }}
   {{- end }}
 
   {{- if .Values.settings.oidc.postLogoutRedirectUri }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUri | quote }}
-  {{- else }}
+  # if not explicitly specified, assume OIDC is Keycloak by default
+  {{- else if .Values.settings.ingress.host }}
   OIDC_REDIRECT_URI: {{ .Values.settings.ingress.host | quote }}
+  {{- else }}
+  OIDC_REDIRECT_URI: {{ "/" | quote }} 
   {{- end }}  
 
   GRAPHQL_URI: {{ print .Values.settings.app.backendUrl "/graphql" | quote }}

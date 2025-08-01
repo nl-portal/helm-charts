@@ -20,14 +20,14 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| existingSecret | string | `nil` |  |
+| existingSecret | string | `nil` | Name of an existing Secret holding secret configuration variables. See `nl-portal-backend/templates/secret.yaml` as to what keys to set. |
 | extraEnvVars | list | `[]` | Optionally specify extra list of additional volumes |
 | extraVolumeMounts | list | `[]` | Optionally specify extra list of additional volumeMounts e.g: extraVolumeMounts:  - name: verify-certs    mountPath: /etc/ssl/certs/extra-certs/ |
 | extraVolumes | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"nginx"` |  |
-| image.tag | string | `""` |  |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
@@ -60,113 +60,42 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
-| settings.app.features.configurationPanel.enabled | bool | `true` |  |
-| settings.app.features.configurationPanel.token | string | `nil` |  |
-| settings.app.features.configurationPanel.uri | string | `""` |  |
-| settings.app.logLevel | string | `"INFO"` |  |
-| settings.app.security.cors.config.allowedHeaders | string | `""` |  |
-| settings.app.security.cors.config.allowedMethods | string | `""` |  |
-| settings.app.security.cors.config.allowedOrigins | string | `""` |  |
-| settings.app.security.cors.path | string | `""` |  |
-| settings.app.security.endpoints.unsecured | string | `""` |  |
-| settings.database.password | string | `""` |  |
-| settings.database.url | string | `nil` |  |
-| settings.database.username | string | `"nlportal"` |  |
-| settings.keycloak.audience | string | `"gzac-portal-token-exchange"` |  |
-| settings.keycloak.clientID | string | `"gzac-portal-m2m"` |  |
-| settings.keycloak.realm | string | `"nlportal"` |  |
-| settings.keycloak.token_exchange_secret | string | `nil` |  |
-| settings.keycloak.url | string | `nil` |  |
-| settings.keycloak.version | string | `nil` |  |
-| settings.services.authentication.machtingsdienst.resourceUrl | string | `""` |  |
-| settings.services.berichten.enabled | bool | `false` |  |
-| settings.services.berichten.properties.berichtObjectTypeUrl | string | `""` |  |
-| settings.services.besluitenapi.enabled | bool | `false` |  |
-| settings.services.besluitenapi.properties.clientId | string | `""` |  |
-| settings.services.besluitenapi.properties.secret | string | `""` |  |
-| settings.services.besluitenapi.properties.url | string | `""` |  |
-| settings.services.catalogiapi.enabled | bool | `false` |  |
-| settings.services.catalogiapi.properties.clientId | string | `""` |  |
-| settings.services.catalogiapi.properties.secret | string | `""` |  |
-| settings.services.catalogiapi.properties.url | string | `""` |  |
-| settings.services.dmn.enabled | bool | `false` |  |
-| settings.services.dmn.properties.url | string | `""` |  |
-| settings.services.documentenapis.enabled | bool | `false` |  |
-| settings.services.documentenapis.properties.configurations.dummydoc.clientId | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.dummydoc.secret | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.dummydoc.url | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.openzaak.clientId | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.openzaak.documentTypeUrl | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.openzaak.rsin | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.openzaak.secret | string | `""` |  |
-| settings.services.documentenapis.properties.configurations.openzaak.url | string | `""` |  |
-| settings.services.documentenapis.properties.defaultDocumentApi | string | `""` |  |
-| settings.services.haalcentraal2.enabled | bool | `false` |  |
-| settings.services.haalcentraal2.properties.bewoningApiUrl | string | `""` |  |
-| settings.services.haalcentraal2.properties.brpApiUrl | string | `""` |  |
-| settings.services.haalcentraal_brp.enabled | bool | `false` |  |
-| settings.services.haalcentraal_brp.properties.apiKey | string | `""` |  |
-| settings.services.haalcentraal_brp.properties.ssl.enabled | bool | `false` |  |
-| settings.services.haalcentraal_brp.properties.ssl.key.certChain | string | `""` |  |
-| settings.services.haalcentraal_brp.properties.ssl.key.key | string | `""` |  |
-| settings.services.haalcentraal_brp.properties.ssl.key.keyPassword | string | `""` |  |
-| settings.services.haalcentraal_brp.properties.ssl.trustedCertificate | string | `""` |  |
-| settings.services.haalcentraal_brp.properties.url | string | `""` |  |
-| settings.services.haalcentraal_hr.enabled | bool | `false` |  |
-| settings.services.haalcentraal_hr.properties.apiKey | string | `""` |  |
-| settings.services.haalcentraal_hr.properties.ssl.enabled | bool | `false` |  |
-| settings.services.haalcentraal_hr.properties.ssl.key.certChain | string | `""` |  |
-| settings.services.haalcentraal_hr.properties.ssl.key.key | string | `""` |  |
-| settings.services.haalcentraal_hr.properties.ssl.key.keyPassword | string | `""` |  |
-| settings.services.haalcentraal_hr.properties.ssl.trustedCertificate | string | `""` |  |
-| settings.services.haalcentraal_hr.properties.url | string | `""` |  |
-| settings.services.objectenapi.enabled | bool | `false` |  |
-| settings.services.objectenapi.properties.token | string | `""` |  |
-| settings.services.objectenapi.properties.url | string | `""` |  |
-| settings.services.openklant.enabled | bool | `false` |  |
-| settings.services.openklant.properties.clientId | string | `""` |  |
-| settings.services.openklant.properties.secret | string | `""` |  |
-| settings.services.openklant.properties.url | string | `""` |  |
-| settings.services.openklant2.enabled | bool | `false` |  |
-| settings.services.openklant2.properties.klantinteractiesApiUrl | string | `""` |  |
-| settings.services.openklant2.properties.token | string | `""` |  |
-| settings.services.payment.direct.enabled | bool | `false` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.apiKey | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.apiSecret | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.language | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.pspId | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.returnUrl | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiKey | string | `""` |  |
-| settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiSecret | string | `""` |  |
-| settings.services.payment.direct.properties.shaOutParameters | string | `""` |  |
-| settings.services.payment.direct.properties.url | string | `""` |  |
-| settings.services.payment.ogone.enabled | bool | `false` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.failureUrl | string | `""` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.pspId | string | `""` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.shaInKey | string | `""` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.shaOutKey | string | `""` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.successUrl | string | `""` |  |
-| settings.services.payment.ogone.properties.configurations.belastingzaken.title | string | `""` |  |
-| settings.services.payment.ogone.properties.shaOutParameters | string | `""` |  |
-| settings.services.payment.ogone.properties.url | string | `""` |  |
-| settings.services.prefill.enabled | bool | `false` |  |
-| settings.services.prefill.properties.typeUrl | string | `""` |  |
-| settings.services.product.enabled | bool | `false` |  |
-| settings.services.product.properties.productDetailsTypeUrl | string | `""` |  |
-| settings.services.product.properties.productInstantieTypeUrl | string | `""` |  |
-| settings.services.product.properties.productTypeUrl | string | `""` |  |
-| settings.services.product.properties.productVerbruiksObjectTypeUrl | string | `""` |  |
-| settings.services.taak.enabled | bool | `false` |  |
-| settings.services.taak.properties.typeUrl | string | `""` |  |
-| settings.services.taak.properties.typeUrlV2 | string | `""` |  |
-| settings.services.virusscan.clamav.enabled | bool | `false` |  |
-| settings.services.virusscan.clamav.properties.hostname | string | `""` |  |
-| settings.services.zakenapi.enabled | bool | `false` |  |
-| settings.services.zakenapi.properties.clientId | string | `""` |  |
-| settings.services.zakenapi.properties.secret | string | `""` |  |
-| settings.services.zakenapi.properties.url | string | `""` |  |
-| settings.services.zakenapi.properties.zaakdocumentenConfig.statusWhitelist | string | `""` |  |
-| settings.services.zakenapi.properties.zaakdocumentenConfig.vertrouwelijkheidsaanduidingWhitelist | string | `""` |  |
+| settings | object | `{"app":{"features":{"configurationPanel":{"enabled":true,"token":null,"uri":""}},"logLevel":"INFO","security":{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}},"database":{"password":"","url":null,"username":"nlportal"},"keycloak":{"audience":"gzac-portal-token-exchange","clientID":null,"realm":null,"token_exchange_secret":null,"url":null,"version":null},"services":{"authentication":{"machtingsdienst":{"resourceUrl":""}},"berichten":{"enabled":false,"properties":{"berichtObjectTypeUrl":""}},"besluitenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"catalogiapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"dmn":{"enabled":false,"properties":{"url":""}},"documentenapis":{"enabled":false,"properties":{"configurations":{"dummydoc":{"clientId":"","secret":"","url":""},"openzaak":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","url":""}},"defaultDocumentApi":""}},"haalcentraal2":{"enabled":false,"properties":{"bewoningApiUrl":"","brpApiUrl":""}},"haalcentraal_brp":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"haalcentraal_hr":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"objectenapi":{"enabled":false,"properties":{"token":"","url":""}},"openklant":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"openklant2":{"enabled":false,"properties":{"klantinteractiesApiUrl":"","token":""}},"payment":{"direct":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"apiKey":"","apiSecret":"","language":"","pspId":"","returnUrl":"","webhookApiKey":"","webhookApiSecret":""}},"shaOutParameters":"","url":""}},"ogone":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"failureUrl":"","pspId":"","shaInKey":"","shaOutKey":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}},"prefill":{"enabled":false,"properties":{"typeUrl":""}},"product":{"enabled":false,"properties":{"productDetailsTypeUrl":"","productInstantieTypeUrl":"","productTypeUrl":"","productVerbruiksObjectTypeUrl":""}},"taak":{"enabled":false,"properties":{"typeUrl":"","typeUrlV2":""}},"virusscan":{"clamav":{"enabled":false,"properties":{"hostname":""}}},"zakenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":"","zaakdocumentenConfig":{"statusWhitelist":"","vertrouwelijkheidsaanduidingWhitelist":""}}}}}` | Application Settings |
+| settings.app.features.configurationPanel.token | string | `nil` | If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN |
+| settings.app.logLevel | string | `"INFO"` | TODO: what log levels are there? |
+| settings.app.security | object | `{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}` | CORS configuration |
+| settings.database.password | string | `""` | If using existingSecret, set via key: DATABASE_PASSWORD |
+| settings.database.url | string | `nil` | Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal |
+| settings.keycloak.audience | string | `"gzac-portal-token-exchange"` | Required: TODO: explain |
+| settings.keycloak.clientID | string | `nil` | Required: Client ID for NL Portal backend |
+| settings.keycloak.realm | string | `nil` | Required: Keycloak Realm that holds the NL Portal users |
+| settings.keycloak.token_exchange_secret | string | `nil` | If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET |
+| settings.keycloak.url | string | `nil` | Required: URL of Keycloak, without any route parameters (e.g. without /auth) |
+| settings.keycloak.version | string | `nil` | N.B. this is not necessarily the same as the Keycloak Helm chart version. |
+| settings.services.besluitenapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_BESLUITENAPI_PROPERTIES_SECRET |
+| settings.services.catalogiapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_SECRET |
+| settings.services.documentenapis.properties.configurations.dummydoc.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_SECRET |
+| settings.services.documentenapis.properties.configurations.openzaak.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_SECRET |
+| settings.services.haalcentraal_brp.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_APIKEY |
+| settings.services.haalcentraal_brp.properties.ssl.key.key | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEY |
+| settings.services.haalcentraal_brp.properties.ssl.key.keyPassword | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEYPASSWORD |
+| settings.services.haalcentraal_brp.properties.ssl.trustedCertificate | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_TRUSTEDCERTIFICATE |
+| settings.services.haalcentraal_hr.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_APIKEY |
+| settings.services.haalcentraal_hr.properties.ssl.key.key | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEY |
+| settings.services.haalcentraal_hr.properties.ssl.key.keyPassword | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEYPASSWORD |
+| settings.services.haalcentraal_hr.properties.ssl.trustedCertificate | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_TRUSTEDCERTIFICATE |
+| settings.services.objectenapi.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN |
+| settings.services.openklant.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT_PROPERTIES_SECRET |
+| settings.services.openklant2.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN |
+| settings.services.payment.direct.properties.configurations.belastingzaken.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY |
+| settings.services.payment.direct.properties.configurations.belastingzaken.apiSecret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APISECRET |
+| settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPIKEY |
+| settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiSecret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPISECRET |
+| settings.services.payment.direct.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS |
+| settings.services.payment.ogone.properties.configurations.belastingzaken.shaInKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAINKEY |
+| settings.services.payment.ogone.properties.configurations.belastingzaken.shaOutKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY |
+| settings.services.payment.ogone.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS |
+| settings.services.zakenapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------

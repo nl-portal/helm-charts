@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 2.0.0
+appVersion: 2.x.y
 description: Nl Portal backend Helm chart to be used in Kubernetes clusters.
 name: nl-portal-backend
 type: application

@@ -145,7 +145,7 @@ settings:
     realm:
 
     # -- Required: TODO: explain
-    audience: "gzac-portal-token-exchange"
+    audience: 
 
     # -- If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET
     token_exchange_secret:

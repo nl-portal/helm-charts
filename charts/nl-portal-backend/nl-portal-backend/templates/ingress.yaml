@@ -53,5 +53,4 @@ spec:
               name: {{ include "nl-portal-backend.fullname" . }}
               port:
                 name: http
-    {{- end }}
 {{- end }}

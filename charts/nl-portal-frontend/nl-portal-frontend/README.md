@@ -49,32 +49,33 @@ Nl Portal frontend Helm chart to be used in Kubernetes clusters.
 | service.port | int | `80` |  |
 | service.targetPort | int | `8081` |  |
 | service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
-| settings.app.backendUrl | string | `""` |  |
-| settings.app.features.account.showNotificationSubsection | bool | `true` |  |
-| settings.app.features.general.casesPartialSearch | bool | `true` |  |
-| settings.app.features.general.messageCountPollingInterval | int | `10000` |  |
-| settings.app.features.general.showInhabitantAmount | bool | `true` |  |
-| settings.app.features.general.themeClass | string | `nil` |  |
-| settings.app.features.overview.currentCasesPreviewLength | int | `1` |  |
-| settings.app.features.overview.showCurrentCasesPreview | bool | `true` |  |
-| settings.app.features.overview.showIntro | bool | `true` |  |
-| settings.app.features.overview.showMaintenanceAlert | bool | `true` |  |
-| settings.app.services.addressResearchMoreInfoUrl | string | `nil` |  |
-| settings.app.services.addressResearchUrl | string | `nil` |  |
-| settings.app.services.changeInUseOfSurnameUrl | string | `nil` |  |
-| settings.app.services.changeRegisteredGenderUrl | string | `nil` |  |
-| settings.app.services.openKlantVersion | string | `nil` |  |
-| settings.app.services.reportChangeOfAddressUrl | string | `nil` |  |
-| settings.app.services.requestConfidentialityOfDataUrl | string | `nil` |  |
-| settings.app.services.requestForChangeBrpInfoUrl | string | `nil` |  |
-| settings.oidc.clientID | string | `"gzac-portal"` |  |
-| settings.oidc.postLogoutRedirectUrl | string | `nil` |  |
-| settings.oidc.realm | string | `"nlportal"` |  |
-| settings.oidc.redirectUrl | string | `nil` |  |
-| settings.oidc.url | string | `nil` |  |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
+| serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
+| settings | object | `{"app":{"backendUrl":"","features":{"account":{"showNotificationSubsection":true},"general":{"casesPartialSearch":true,"messageCountPollingInterval":10000,"showInhabitantAmount":true,"themeClass":null},"overview":{"currentCasesPreviewLength":1,"showCurrentCasesPreview":true,"showIntro":true,"showMaintenanceAlert":true}},"services":{"addressResearchMoreInfoUrl":null,"addressResearchUrl":null,"changeInUseOfSurnameUrl":null,"changeRegisteredGenderUrl":null,"openKlantVersion":null,"reportChangeOfAddressUrl":null,"requestConfidentialityOfDataUrl":null,"requestForChangeBrpInfoUrl":null}},"oidc":{"clientID":"gzac-portal","postLogoutRedirectUrl":null,"realm":"nlportal","redirectUrl":null,"url":null}}` | Application Settings |
+| settings.app.backendUrl | string | `""` | Application's backend URL. Empty string means the same URL as the frontend, which is inferred from the Ingress configuration. |
+| settings.app.features.account.showNotificationSubsection | bool | `true` | TODO: add explanation, confirm that `true` is an OK default |
+| settings.app.features.general.casesPartialSearch | bool | `true` | TODO: add explanation |
+| settings.app.features.general.messageCountPollingInterval | int | `10000` | TODO: add explanation. What unit is this in? |
+| settings.app.features.general.showInhabitantAmount | bool | `true` | TODO: add explanation |
+| settings.app.features.general.themeClass | string | `nil` | TODO: add explanation, confirm `null` is an OK default |
+| settings.app.features.overview.currentCasesPreviewLength | int | `1` | TODO: add explanation, confirm that `1` is an OK default |
+| settings.app.features.overview.showCurrentCasesPreview | bool | `true` | TODO: add explanation, confirm that `true` is an OK default |
+| settings.app.features.overview.showIntro | bool | `true` | TODO: add explanation, confirm that `true` is an OK default |
+| settings.app.features.overview.showMaintenanceAlert | bool | `true` | TODO: add explanation, confirm that `true` is an OK default |
+| settings.app.services.addressResearchMoreInfoUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.addressResearchUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.changeInUseOfSurnameUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.changeRegisteredGenderUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.openKlantVersion | string | `nil` | TODO: add explanation |
+| settings.app.services.reportChangeOfAddressUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.requestConfidentialityOfDataUrl | string | `nil` | TODO: add explanation |
+| settings.app.services.requestForChangeBrpInfoUrl | string | `nil` | TODO: add explanation |
+| settings.oidc.clientID | string | `"gzac-portal"` | OIDC Client ID for the frontend |
+| settings.oidc.postLogoutRedirectUrl | string | `nil` | where ${frontend_url} is inferred from the Ingress configuration. |
+| settings.oidc.realm | string | `"nlportal"` | OIDC Realm that contains users for NL Portal |
+| settings.oidc.redirectUrl | string | `nil` | where ${frontend_url} is inferred from the Ingress configuration. |
+| settings.oidc.url | string | `nil` | Note: For Keycloak versions <17, you must append /auth to this URL. |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------

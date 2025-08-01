@@ -14,12 +14,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
   name: ""
 
 podAnnotations: {}
@@ -46,13 +46,8 @@ ingress:
   enabled: false
   className: ""
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   host: "chart-example.local"
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
 
 livenessProbe:
   httpGet:
@@ -101,67 +96,67 @@ affinity: {}
 
 existingSecret: null
 
-# Application Settings
+# -- Application Settings
 settings:
   oidc:
-    # Required: URL to OIDC provider, e.g. Keycloak.
-    # Note: For Keycloak versions <17, you must append /auth to this URL.
+    # -- Required: URL to OIDC provider, e.g. Keycloak.
+    # -- Note: For Keycloak versions <17, you must append /auth to this URL.
     url:
-    # OIDC Realm that contains users for NL Portal
+    # -- OIDC Realm that contains users for NL Portal
     realm: "nlportal"
-    # OIDC Client ID for the frontend
+    # -- OIDC Client ID for the frontend
     clientID: "gzac-portal"
-    # URL to redirect to after a successful login.
-    # If not specified, defaults to the Keycloak implementation, which is ${frontend_url}/keycloak/callback
-    # where ${frontend_url} is inferred from the Ingress configuration.
+    # -- URL to redirect to after a successful login.
+    # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}/keycloak/callback
+    # -- where ${frontend_url} is inferred from the Ingress configuration.
     redirectUrl:
-    # URL to redirect to after a successful logout
-    # If not specified, defaults to the Keycloak implementation, which is ${frontend_url}
-    # where ${frontend_url} is inferred from the Ingress configuration.
+    # -- URL to redirect to after a successful logout
+    # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}
+    # -- where ${frontend_url} is inferred from the Ingress configuration.
     postLogoutRedirectUrl:
 
   app:
-    # Application's backend URL. Empty string means the same URL as the frontend, which is inferred from the Ingress configuration.
+    # -- Application's backend URL. Empty string means the same URL as the frontend, which is inferred from the Ingress configuration.
     backendUrl: ""
 
     features:
       general:
-        # TODO: add explanation
+        # -- TODO: add explanation
         showInhabitantAmount: true
-        # TODO: add explanation
+        # -- TODO: add explanation
         casesPartialSearch: true
-        # TODO: add explanation, confirm `null` is an OK default
+        # -- TODO: add explanation, confirm `null` is an OK default
         themeClass: null
-        # TODO: add explanation. What unit is this in?
+        # -- TODO: add explanation. What unit is this in?
         messageCountPollingInterval: 10000
 
       account:
-        # TODO: add explanation, confirm that `true` is an OK default
+        # -- TODO: add explanation, confirm that `true` is an OK default
         showNotificationSubsection: true
       overview:
-        # TODO: add explanation, confirm that `true` is an OK default
+        # -- TODO: add explanation, confirm that `true` is an OK default
         showIntro: true
-        # TODO: add explanation, confirm that `true` is an OK default
+        # -- TODO: add explanation, confirm that `true` is an OK default
         showMaintenanceAlert: true
-        # TODO: add explanation, confirm that `true` is an OK default
+        # -- TODO: add explanation, confirm that `true` is an OK default
         showCurrentCasesPreview: true
-        # TODO: add explanation, confirm that `1` is an OK default
+        # -- TODO: add explanation, confirm that `1` is an OK default
         currentCasesPreviewLength: 1
         
     services:
-      # TODO: add explanation
+      # -- TODO: add explanation
       openKlantVersion: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       addressResearchUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       reportChangeOfAddressUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       changeInUseOfSurnameUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       changeRegisteredGenderUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       addressResearchMoreInfoUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       requestForChangeBrpInfoUrl: null
-      # TODO: add explanation
+      # -- TODO: add explanation
       requestConfidentialityOfDataUrl: null

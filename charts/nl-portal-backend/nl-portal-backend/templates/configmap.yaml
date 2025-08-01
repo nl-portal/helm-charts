@@ -1,3 +1,4 @@
+{{- required "You must set settings.keycloak.realm" .Values.settings.keycloak.realm -}}
 {{- $keycloak_version := required "You must set settings.keycloak.version" .Values.settings.keycloak.version -}}
 {{- $jwks_uri_prefix := "" -}}
 {{- if (semverCompare "<17.0.0" (default "0" $keycloak_version)) -}}
@@ -15,8 +16,8 @@ data:
   DATABASE_URL: {{ required "You must set settings.database.url" .Values.settings.database.url | quote }}
   DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
   JWKS_URI: {{ printf "%s%s/realms/%s/protocol/openid-connect/certs" .Values.settings.keycloak.url $jwks_uri_prefix .Values.settings.keycloak.realm | quote }}
-  KEYCLOAK_CLIENT_ID: {{ .Values.settings.keycloak.clientID | quote }}
-  KEYCLOAK_AUDIENCE: {{ .Values.settings.keycloak.audience | quote }}
+  KEYCLOAK_CLIENT_ID: {{ required "You must set settings.keycloak.clientID" .Values.settings.keycloak.clientID | quote }}
+  KEYCLOAK_AUDIENCE: {{ required "You must set settings.keycloak.audience" .Values.settings.keycloak.audience | quote }}
   
   NLPORTAL_SECURITY_CORS_0_PATH: {{ .Values.settings.app.security.cors.path | quote }}
   NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDHEADERS: {{ .Values.settings.app.security.cors.config.allowedHeaders | quote }}

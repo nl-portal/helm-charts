@@ -138,13 +138,13 @@ settings:
     # -- N.B. this is not necessarily the same as the Keycloak Helm chart version.
     version:
 
-    # -- Client ID for NL Portal backend
-    clientID: "gzac-portal-m2m"
+    # -- Required: Client ID for NL Portal backend
+    clientID:
 
-    # -- Keycloak Realm that holds the NL Portal users
-    realm: "nlportal"
+    # -- Required: Keycloak Realm that holds the NL Portal users
+    realm:
 
-    # -- TODO: explain
+    # -- Required: TODO: explain
     audience: "gzac-portal-token-exchange"
 
     # -- If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET

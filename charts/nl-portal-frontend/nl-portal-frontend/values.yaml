@@ -102,15 +102,15 @@ settings:
     # -- Required: URL to OIDC provider, e.g. Keycloak.
     # -- Note: For Keycloak versions <17, you must append /auth to this URL.
     url:
-    # -- OIDC Realm that contains users for NL Portal
-    realm: "nlportal"
-    # -- OIDC Client ID for the frontend
-    clientID: "gzac-portal"
-    # -- URL to redirect to after a successful login.
+    # -- Required: OIDC Realm that contains users for NL Portal
+    realm:
+    # -- Required :OIDC Client ID for the frontend
+    clientID:
+    # -- Required: URL to redirect to after a successful login.
     # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}/keycloak/callback
     # -- where ${frontend_url} is inferred from the Ingress configuration.
     redirectUrl:
-    # -- URL to redirect to after a successful logout
+    # -- Required: URL to redirect to after a successful logout
     # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}
     # -- where ${frontend_url} is inferred from the Ingress configuration.
     postLogoutRedirectUrl:

@@ -42,15 +42,16 @@ spec:
         paths:
           - path: "/graphql"
             pathType: "Prefix"
-            service:
-              name: {{ include "nl-portal-backend.fullname" . }}
-              port:
-                name: http
-            
+            backend:
+              service:
+                name: {{ include "nl-portal-backend.fullname" . }}
+                port:
+                  name: http
           - path: "/api"
             pathType: "Prefix"
-            service:
-              name: {{ include "nl-portal-backend.fullname" . }}
-              port:
-                name: http
+            backend:
+              service:
+                name: {{ include "nl-portal-backend.fullname" . }}
+                port:
+                  name: http
 {{- end }}

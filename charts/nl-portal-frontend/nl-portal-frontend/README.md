@@ -52,7 +52,7 @@ Nl Portal frontend Helm chart to be used in Kubernetes clusters.
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
-| settings | object | `{"app":{"backendUrl":"","features":{"account":{"showNotificationSubsection":true},"general":{"casesPartialSearch":true,"messageCountPollingInterval":10000,"showInhabitantAmount":true,"themeClass":null},"overview":{"currentCasesPreviewLength":1,"showCurrentCasesPreview":true,"showIntro":true,"showMaintenanceAlert":true}},"services":{"addressResearchMoreInfoUrl":null,"addressResearchUrl":null,"changeInUseOfSurnameUrl":null,"changeRegisteredGenderUrl":null,"openKlantVersion":null,"reportChangeOfAddressUrl":null,"requestConfidentialityOfDataUrl":null,"requestForChangeBrpInfoUrl":null}},"oidc":{"clientID":"gzac-portal","postLogoutRedirectUrl":null,"realm":"nlportal","redirectUrl":null,"url":null}}` | Application Settings |
+| settings | object | `{"app":{"backendUrl":"","features":{"account":{"showNotificationSubsection":true},"general":{"casesPartialSearch":true,"messageCountPollingInterval":10000,"showInhabitantAmount":true,"themeClass":null},"overview":{"currentCasesPreviewLength":1,"showCurrentCasesPreview":true,"showIntro":true,"showMaintenanceAlert":true}},"services":{"addressResearchMoreInfoUrl":null,"addressResearchUrl":null,"changeInUseOfSurnameUrl":null,"changeRegisteredGenderUrl":null,"openKlantVersion":null,"reportChangeOfAddressUrl":null,"requestConfidentialityOfDataUrl":null,"requestForChangeBrpInfoUrl":null}},"oidc":{"clientID":null,"postLogoutRedirectUrl":null,"realm":null,"redirectUrl":null,"url":null}}` | Application Settings |
 | settings.app.backendUrl | string | `""` | Application's backend URL. Empty string means the same URL as the frontend, which is inferred from the Ingress configuration. |
 | settings.app.features.account.showNotificationSubsection | bool | `true` | TODO: add explanation, confirm that `true` is an OK default |
 | settings.app.features.general.casesPartialSearch | bool | `true` | TODO: add explanation |
@@ -71,9 +71,9 @@ Nl Portal frontend Helm chart to be used in Kubernetes clusters.
 | settings.app.services.reportChangeOfAddressUrl | string | `nil` | TODO: add explanation |
 | settings.app.services.requestConfidentialityOfDataUrl | string | `nil` | TODO: add explanation |
 | settings.app.services.requestForChangeBrpInfoUrl | string | `nil` | TODO: add explanation |
-| settings.oidc.clientID | string | `"gzac-portal"` | OIDC Client ID for the frontend |
+| settings.oidc.clientID | string | `nil` | Required :OIDC Client ID for the frontend |
 | settings.oidc.postLogoutRedirectUrl | string | `nil` | where ${frontend_url} is inferred from the Ingress configuration. |
-| settings.oidc.realm | string | `"nlportal"` | OIDC Realm that contains users for NL Portal |
+| settings.oidc.realm | string | `nil` | Required: OIDC Realm that contains users for NL Portal |
 | settings.oidc.redirectUrl | string | `nil` | where ${frontend_url} is inferred from the Ingress configuration. |
 | settings.oidc.url | string | `nil` | Note: For Keycloak versions <17, you must append /auth to this URL. |
 | tolerations | list | `[]` |  |

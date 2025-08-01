@@ -5,9 +5,48 @@ metadata:
   labels:
     {{- include "nl-portal-frontend.labels" . | nindent 4 }}
 data:
-  KEYCLOAK_URL: {{ .Values.settings.keycloak.url | quote }}
-  KEYCLOAK_REALM: {{ .Values.settings.keycloak.realm | quote }}
-  KEYCLOAK_CLIENT_ID: {{ .Values.settings.keycloak.clientId | quote }}
-  KEYCLOAK_REDIRECT_URI: {{ .Values.settings.keycloak.redirectUri | quote }}
-  GRAPHQL_URI: {{ .Values.settings.graphqlUri | quote }}
-  REST_URI: {{ .Values.settings.restUri | quote }}
+  OIDC_URL: {{ required "You must set settings.oidc.url" .Values.settings.oidc.url | quote }}
+  OIDC_REALM: {{ required "You must set settings.oidc.realm" .Values.settings.oidc.realm | quote }}
+  OIDC_CLIENT_ID: {{ required "You must set settings.oidc.clientID" .Values.settings.oidc.clientID | quote }}
+  
+  {{- if .Values.settings.oidc.redirectUrl }}
+  OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
+  # if not explicitly specified, assume OIDC is Keycloak by default
+  {{- else if .Values.ingress.host }}
+  OIDC_REDIRECT_URI: {{ printf "https://%s/keycloak/callback" .Values.ingress.host | quote }}
+  {{- else }}
+  OIDC_REDIRECT_URI: {{ "/" | quote }}
+  {{- end }}
+
+  {{- if .Values.settings.oidc.postLogoutRedirectUri }}
+  OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUri | quote }}
+  # if not explicitly specified, assume OIDC is Keycloak by default
+  {{- else if .Values.ingress.host }}
+  OIDC_POST_LOGOUT_REDIRECT_URI: {{ printf "https://%s" .Values.ingress.host | quote }}
+  {{- else }}
+  OIDC_POST_LOGOUT_REDIRECT_URI: {{ "/" | quote }} 
+  {{- end }}  
+
+  GRAPHQL_URI: {{ print .Values.settings.app.backendUrl "/graphql" | quote }}
+  REST_URI: {{ print .Values.settings.app.backendUrl "/api" | quote }}
+
+  SHOW_INHABITANT_AMOUNT: {{ .Values.settings.app.features.general.showInhabitantAmount | quote }}
+  CASES_PARTIAL_SEARCH: {{ .Values.settings.app.features.general.casesPartialSearch | quote }}
+  THEME_CLASS: {{ .Values.settings.app.features.general.themeClass | quote }}
+  MESSAGE_COUNT_POLLING_INTERVAL: {{ .Values.settings.app.features.general.messageCountPollingInterval | quote }}
+
+  ACCOUNT_SHOW_NOTIFICATION_SUBSECTION: {{ .Values.settings.app.features.account.showNotificationSubsection | quote }}
+  
+  OVERVIEW_SHOW_INTRO: {{ .Values.settings.app.features.overview.showIntro | quote }}
+  OVERVIEW_SHOW_MAINTENANCE_ALERT: {{ .Values.settings.app.features.overview.showMaintenanceAlert | quote }}
+  OVERVIEW_SHOW_CURRENT_CASES_PREVIEW: {{ .Values.settings.app.features.overview.showCurrentCasesPreview | quote }} 
+  OVERVIEW_CURRENT_CASES_PREVIEW_LENGTH: {{ .Values.settings.app.features.overview.currentCasesPreviewLength | quote }}
+
+  OPEN_KLANT_VERSION: {{ .Values.settings.app.services.openKlantVersion | quote }}
+  ADDRESS_RESEARCH_URL: {{ .Values.settings.app.services.addressResearchUrl | quote }}
+  REPORT_CHANGE_OF_ADDRESS_URL: {{ .Values.settings.app.services.reportChangeOfAddressUrl | quote }}
+  CHANGE_IN_USE_OF_SURNAME_URL: {{ .Values.settings.app.services.changeInUseOfSurnameUrl | quote  }}
+  CHANGE_REGISTERED_GENDER_URL: {{ .Values.settings.app.services.changeRegisteredGenderUrl | quote }}
+  ADDRESS_RESEARCH_MORE_INFO_URL: {{ .Values.settings.app.services.addressResearchMoreInfoUrl | quote }}
+  REQUEST_FOR_CHANGE_BRP_INFO_URL: {{ .Values.settings.app.services.requestForChangeBrpInfoUrl | quote}}
+  REQUEST_CONFIDENTIALITY_OF_DATA_URL: {{ .Values.settings.app.services.requestConfidentialityOfDataUrl | quote}}

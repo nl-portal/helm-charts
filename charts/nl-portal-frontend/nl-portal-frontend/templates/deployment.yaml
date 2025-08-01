@@ -42,7 +42,7 @@ spec:
                 name: {{ include "nl-portal-frontend.fullname" . }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8081
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}

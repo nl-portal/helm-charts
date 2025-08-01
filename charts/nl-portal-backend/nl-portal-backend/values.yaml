@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: nginx
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: []
@@ -51,11 +51,8 @@ ingress:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  host: your-nl-portal.example.com
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -63,7 +60,7 @@ ingress:
 
 livenessProbe:
   enabled: true
-  initialDelaySeconds: 40
+  initialDelaySeconds: 120
   periodSeconds: 10
   timeoutSeconds: 1
   failureThreshold: 6
@@ -71,7 +68,7 @@ livenessProbe:
 
 readinessProbe:
   enabled: true
-  initialDelaySeconds: 20
+  initialDelaySeconds: 120
   periodSeconds: 10
   timeoutSeconds: 1
   failureThreshold: 6
@@ -103,16 +100,19 @@ tolerations: []
 
 affinity: {}
 
+# -- Name of an existing Secret holding secret configuration variables.
+# See `nl-portal-backend/templates/secret.yaml` as to what keys to set.
 existingSecret: null
 
 # -- Array with extra environment variables to add
-extraEnvVars: []
 # e.g:
 # extraEnvVars:
 #   - name: FOO
 #     value: "bar"
 
 # -- Optionally specify extra list of additional volumes
+extraEnvVars: []
+
 extraVolumes: []
 # e.g:
 # extraVolumes:
@@ -121,65 +121,245 @@ extraVolumes: []
 #       name: verify-certs
 
 # -- Optionally specify extra list of additional volumeMounts
-extraVolumeMounts: []
 # e.g:
 # extraVolumeMounts:
 #  - name: verify-certs
 #    mountPath: /etc/ssl/certs/extra-certs/
+extraVolumeMounts: []
 
 
-# Application Settings
+
+# -- Application Settings
 settings:
-  spring:
-    profiles:
-      active:
-    datasource:
-      driverClassName: org.postgresql.Driver
-      url:
-      name:
-      username:
-      password:
-    security:
-      oauth2:
-        issuerUri:
   keycloak:
-    resource:
-    audience:
-    credentials:
-      secret:
-  nlPortal:
-    zgw:
-      taak:
-        taakobject:
-          typeUrl:
-      catalogiapi:
-        url:
-        clientId:
-        secret:
-        rsin:
-        documentTypeUrl:
-      documentenapis:
-        defaultDocumentApi: # example
+    # -- Required: URL of Keycloak, without any route parameters (e.g. without /auth)
+    url:
+    # -- Required: Keycloak application version.
+    # -- N.B. this is not necessarily the same as the Keycloak Helm chart version.
+    version:
+
+    # -- Required: Client ID for NL Portal backend
+    clientID:
+
+    # -- Required: Keycloak Realm that holds the NL Portal users
+    realm:
+
+    # -- Required: TODO: explain
+    audience: 
+
+    # -- If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET
+    token_exchange_secret:
+
+  database:
+    # -- Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal
+    url:
+    username: "nlportal"
+    # -- If using existingSecret, set via key: DATABASE_PASSWORD
+    password: ""
+
+  app:
+    # -- TODO: what log levels are there?
+    logLevel: "INFO"
+    # -- TODO: Is this default OK?
+    # --CORS configuration
+    security:
+      cors:
+        path: ""
+        config:
+          allowedHeaders: ""
+          allowedOrigins: ""
+          allowedMethods: ""
+      endpoints:
+        unsecured: ""
+    features:
+      configurationPanel:
+        enabled: true
+        uri: ""
+        # -- If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN
+        token:
+
+
+  services:
+    authentication:
+      machtingsdienst:
+        resourceUrl: ""
+
+    besluitenapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_BESLUITENAPI_PROPERTIES_SECRET
+        secret: ""
+
+    catalogiapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_SECRET
+        secret: ""
+
+    documentenapis:
+      enabled: false
+      properties:
+        defaultDocumentApi: ""
         configurations:
-#          EXAMPLE CONFIG
-#          example:
-#            url:
-#            clientId:
-#            secret:
-#            rsin:
-#            documentTypeUrl:
-      zakenapi:
-        url:
-        clientId:
-        secret:
-    objectsapi:
-      url:
-      token:
-    haalcentraal:
-      url:
-      apiKey:
+          openzaak:
+            url: ""
+            clientId: ""
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_SECRET
+            secret: ""
+            rsin: ""
+            documentTypeUrl: ""
+          dummydoc:
+            url: ""
+            clientId: ""
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_SECRET
+            secret: ""
+
+    virusscan:
+      clamav:
+        enabled: false
+        properties:
+          hostname: ""
+
+    zakenapi:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET
+        secret: ""
+        zaakdocumentenConfig:
+          vertrouwelijkheidsaanduidingWhitelist: ""
+          statusWhitelist: ""
+
+    objectenapi:
+      enabled: false
+      properties:
+        url: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN
+        token: ""
+
     openklant:
-      url:
-      clientId:
-      secret:
-      rsin:
+      enabled: false
+      properties:
+        url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT_PROPERTIES_SECRET
+        secret: ""
+
+    openklant2:
+      enabled: false
+      properties:
+        klantinteractiesApiUrl: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN
+        token: ""
+
+    haalcentraal2:
+      enabled: false
+      properties:
+        brpApiUrl: ""
+        bewoningApiUrl: ""
+
+    haalcentraal_brp:
+      enabled: false
+      properties:
+        url: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_APIKEY
+        apiKey: ""
+        ssl:
+          enabled: false
+          key:
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEY
+            key: ""
+            certChain: ""
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEYPASSWORD
+            keyPassword: ""
+          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_TRUSTEDCERTIFICATE
+          trustedCertificate: ""
+
+    haalcentraal_hr:
+      enabled: false
+      properties:
+        url: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_APIKEY
+        apiKey: ""
+        ssl:
+          enabled: false
+          key:
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEY
+            key: ""
+            certChain: ""
+            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEYPASSWORD
+            keyPassword: ""
+          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_TRUSTEDCERTIFICATE
+          trustedCertificate: ""
+
+    taak:
+      enabled: false
+      properties:
+        typeUrl: ""
+        typeUrlV2: ""
+
+    berichten:
+      enabled: false
+      properties:
+        berichtObjectTypeUrl: ""
+
+    product:
+      enabled: false
+      properties:
+        productTypeUrl: ""
+        productInstantieTypeUrl: ""
+        productDetailsTypeUrl: ""
+        productVerbruiksObjectTypeUrl: ""
+
+    dmn:
+      enabled: false
+      properties:
+        url: ""
+
+    prefill:
+      enabled: false
+      properties:
+        typeUrl: ""
+
+    payment:
+      direct:
+        enabled: false
+        properties:
+          url: ""
+          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS
+          shaOutParameters: ""
+          configurations:
+            belastingzaken:
+              pspId: ""
+              language: ""
+              returnUrl: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY
+              apiKey: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APISECRET
+              apiSecret: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPIKEY
+              webhookApiKey: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPISECRET
+              webhookApiSecret: ""
+
+      ogone:
+        enabled: false
+        properties:
+          url: ""
+          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS
+          shaOutParameters: ""
+          configurations:
+            belastingzaken:
+              pspId: ""
+              title: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAINKEY
+              shaInKey: ""
+              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY
+              shaOutKey: ""
+              failureUrl: ""
+              successUrl: ""

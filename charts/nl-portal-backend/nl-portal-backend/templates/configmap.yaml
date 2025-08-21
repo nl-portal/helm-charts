@@ -1,4 +1,4 @@
-{{- required "You must set settings.keycloak.realm" .Values.settings.keycloak.realm -}}
+{{- $_ := required "You must set settings.keycloak.realm" .Values.settings.keycloak.realm -}}
 {{- $keycloak_version := required "You must set settings.keycloak.version" .Values.settings.keycloak.version -}}
 {{- $jwks_uri_prefix := "" -}}
 {{- if (semverCompare "<17.0.0" (default "0" $keycloak_version)) -}}

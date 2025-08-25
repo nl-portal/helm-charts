@@ -58,8 +58,17 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+startupProbe:
+  httpGet:
+    path: /graphql?query=%7B__typename%7D
+    port: http
+  failureThreshold: 90
+  periodSeconds: 10
 livenessProbe:
   enabled: true
+  httpGet:
+    path: /graphql?query=%7B__typename%7D
+    port: http
   initialDelaySeconds: 120
   periodSeconds: 10
   timeoutSeconds: 1
@@ -68,6 +77,9 @@ livenessProbe:
 
 readinessProbe:
   enabled: true
+  httpGet:
+    path: /graphql?query=%7B__typename%7D
+    port: http
   initialDelaySeconds: 120
   periodSeconds: 10
   timeoutSeconds: 1

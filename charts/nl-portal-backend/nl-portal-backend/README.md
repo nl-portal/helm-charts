@@ -1,6 +1,6 @@
 # nl-portal-backend
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.x.y](https://img.shields.io/badge/AppVersion-2.x.y-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.x.y](https://img.shields.io/badge/AppVersion-2.x.y-informational?style=flat-square)
 
 Nl Portal backend Helm chart to be used in Kubernetes clusters.
 
@@ -36,6 +36,8 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | ingress.tls | list | `[]` |  |
 | livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.failureThreshold | int | `6` |  |
+| livenessProbe.httpGet.path | string | `"/graphql?query=%7B__typename%7D"` |  |
+| livenessProbe.httpGet.port | string | `"http"` |  |
 | livenessProbe.initialDelaySeconds | int | `120` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.successThreshold | int | `1` |  |
@@ -47,6 +49,8 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | podSecurityContext | object | `{}` |  |
 | readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.failureThreshold | int | `6` |  |
+| readinessProbe.httpGet.path | string | `"/graphql?query=%7B__typename%7D"` |  |
+| readinessProbe.httpGet.port | string | `"http"` |  |
 | readinessProbe.initialDelaySeconds | int | `120` |  |
 | readinessProbe.periodSeconds | int | `10` |  |
 | readinessProbe.successThreshold | int | `1` |  |
@@ -96,6 +100,10 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | settings.services.payment.ogone.properties.configurations.belastingzaken.shaOutKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY |
 | settings.services.payment.ogone.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS |
 | settings.services.zakenapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET |
+| startupProbe.failureThreshold | int | `90` |  |
+| startupProbe.httpGet.path | string | `"/graphql?query=%7B__typename%7D"` |  |
+| startupProbe.httpGet.port | string | `"http"` |  |
+| startupProbe.periodSeconds | int | `10` |  |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------

@@ -84,10 +84,11 @@ data:
 
   # HaalCentraal BRP
   NLPORTAL_CONFIG_HAALCENTRAAL_BRP_ENABLED: {{ .Values.settings.services.haalcentraal_brp.enabled | quote }}
+  {{- if .Values.settings.services.haalcentraal_brp.enabled }} 
   NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_URL: {{ .Values.settings.services.haalcentraal_brp.properties.url | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_ENABLED: {{ .Values.settings.services.haalcentraal_brp.properties.ssl.enabled | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_CERTCHAIN: {{ .Values.settings.services.haalcentraal_brp.properties.ssl.key.certChain | quote }}
-
+  {{- end }}
   # HaalCentraal HR
   NLPORTAL_CONFIG_HAALCENTRAAL_HR_ENABLED: {{ .Values.settings.services.haalcentraal_hr.enabled | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_URL: {{ .Values.settings.services.haalcentraal_hr.properties.url | quote }}

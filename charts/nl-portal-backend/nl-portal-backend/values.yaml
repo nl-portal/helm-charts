@@ -162,6 +162,11 @@ settings:
     # -- If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET
     token_exchange_secret:
 
+    # -- Optional: Override Keycloak's HTTP relative path. Leave empty for default.
+    # -- If `settings.keycloak.version` is <17.0.0, this value is ignored since the HTTP relative path is always "/auth".
+    # -- Else, you should configure this value if your Keycloak instance has a non-default `KC_HTTP_RELATIVE_PATH`.
+    httpRelativePath:
+
   database:
     # -- Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal
     url:

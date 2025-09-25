@@ -1,8 +1,13 @@
-{{- $_ := required "You must set settings.keycloak.realm" .Values.settings.keycloak.realm -}}
 {{- $keycloak_version := required "You must set settings.keycloak.version" .Values.settings.keycloak.version -}}
-{{- $jwks_uri_prefix := "" -}}
+
+{{- /* Keycloaks <17.0.0 use the /auth prefix. */ -}}
+{{- /* Keycloaks >=17.0.0 use no prefix, but do make this configurable */ -}}
+{{- /* So we default to no prefix, but allow the user to overwrite this */ -}}
+{{- $keycloak_http_relative_path := "" -}}
 {{- if (semverCompare "<17.0.0" (default "0" $keycloak_version)) -}}
-{{- $jwks_uri_prefix = "/auth" -}}
+{{- $keycloak_http_relative_path = "/auth" -}}
+{{- else if .Values.settings.keycloak.httpRelativePath -}}
+{{- $keycloak_http_relative_path = .Values.settings.keycloak.httpRelativePath -}}
 {{- end -}}
 ---
 apiVersion: v1
@@ -15,7 +20,7 @@ data:
   LOGLEVEL: {{ .Values.settings.app.logLevel | quote }}
   DATABASE_URL: {{ required "You must set settings.database.url" .Values.settings.database.url | quote }}
   DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
-  JWKS_URI: {{ printf "%s%s/realms/%s/protocol/openid-connect/certs" .Values.settings.keycloak.url $jwks_uri_prefix .Values.settings.keycloak.realm | quote }}
+  JWKS_URI: {{ printf "%s%s/realms/%s/protocol/openid-connect/certs" .Values.settings.keycloak.url $keycloak_http_relative_path .Values.settings.keycloak.realm | quote }}
   KEYCLOAK_CLIENT_ID: {{ required "You must set settings.keycloak.clientID" .Values.settings.keycloak.clientID | quote }}
   KEYCLOAK_AUDIENCE: {{ required "You must set settings.keycloak.audience" .Values.settings.keycloak.audience | quote }}
   

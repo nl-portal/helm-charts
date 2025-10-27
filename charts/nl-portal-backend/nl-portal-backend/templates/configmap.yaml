@@ -60,7 +60,6 @@ data:
   NLPORTAL_CONFIG_ZAKENAPI_ENABLED: {{ .Values.settings.services.zakenapi.enabled | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_URL: {{ .Values.settings.services.zakenapi.properties.url | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_CLIENTID: {{ .Values.settings.services.zakenapi.properties.clientId | quote }}
-  NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET: {{ .Values.settings.services.zakenapi.properties.secret | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKDOCUMENTENCONFIG_VERTROUWELIJKHEIDSAANDUIDINGWHITELIST: {{ .Values.settings.services.zakenapi.properties.zaakdocumentenConfig.vertouwelijkheidsaanduidingWhitelist | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKDOCUMENTENCONFIG_STATUSWHITELIST: {{ .Values.settings.services.zakenapi.properties.zaakdocumentenConfig.statusWhitelist | quote }}
 

@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nl-portal-configpanel-frontend.fullname" . }}
+  labels:
+    {{- include "nl-portal-configpanel-frontend.labels" . | nindent 4 }}
+data:
+  OIDC_URL: {{ required "you must set settings.oidc.url" .Values.settings.oidc.url | quote }}
+  OIDC_CLIENT_ID: {{ .Values.settings.oidc.clientId | quote }}
+  OIDC_REDIRECT_URL: {{ .Values.settings.oidc.redirectUrl | quote }}
+  OIDC_POST_LOGOUT_REDIRECT_URL: {{ .Values.settings.oidc.postLogoutRedirectUrl | quote }}
+  CLIENT_APPLICATION_NAME: {{ .Values.settings.oidc.clientApplicationName | quote }}
+  CONFIG_PANEL_REST_API_URL: {{ .Values.settings.app.configPanelRestApiUrl | default (printf "%s/api" .Values.ingress.host) | quote }}

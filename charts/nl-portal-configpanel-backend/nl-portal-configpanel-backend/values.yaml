@@ -1,0 +1,181 @@
+# Default values for nl-portal-configpanel-backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+image:
+  repository: ghcr.io/nl-portal/configuration-panel-backend
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  host: nl-portal-config-panel.example.com
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# -- Startup probe for container initialization checking
+startupProbe: 
+  httpGet:
+    path: /management/health
+    port: http
+  failureThreshold: 90
+  periodSeconds: 10
+# -- Liveness probe for container health checking
+livenessProbe: 
+  enabled: true
+  httpGet:
+    path: /management/health
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 6
+  successThreshold: 1
+# -- Readiness probe for container health checking
+readinessProbe: 
+  enabled: true
+  httpGet:
+    path: /management/health
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 6
+  successThreshold: 1
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- Optionally specify environment variables sourced from various Secrets
+# Setting these implies that no Secret will be created by the chart
+# e.g:
+# secretEnvVars:
+#   - name: DATABASE_PASSWORD
+#     secretKeyRef:
+#       name: my-existing-secret
+#       key: password
+secretEnvVars: []
+
+# -- Array with extra environment variables to add
+# e.g:
+# extraEnvVars:
+#   - name: FOO
+#     value: "bar"
+extraEnvVars: []
+
+# -- Optionally specify extra list of additional volumes
+# e.g:
+# extraVolumes:
+#   - name: verify-certs
+#     configMap:
+#       name: verify-certs
+extraVolumes: []
+
+# -- Optionally specify extra list of additional volumeMounts
+# e.g:
+# extraVolumeMounts:
+#  - name: verify-certs
+#    mountPath: /etc/ssl/certs/extra-certs/
+extraVolumeMounts: []
+
+# -- Application Settings
+settings:
+  auth:
+    # -- Required: JSON Web Key Set (JWKS) URI for validating tokens
+    jwksURI: ""
+  
+  database:
+    # -- Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal
+    url: ""
+    # -- If using extraSecretEnvVars, set via name: DATABASE_USERNAME
+    username: ""
+    # -- If using extraSecretEnvVars, set via name: DATABASE_PASSWORD
+    password: ""
+
+  app:
+    # -- logLevel can be one of: TRACE, DEBUG, INFO, WARN, ERROR
+    logLevel: "INFO"
+    # -- Used to set the duration at which the configuration cache is evicted in milliseconds.
+    cacheTTL: 30000
+    # -- Used to customise the base path of the configuration server. Application base URL is used as the configuration server if not set.
+    serverPrefix: "/configuration"
+    # -- The token that should be used to authenticate configuration queries. Every NL Portal needs to have this value set for their Spring Cloud Configuration Client.
+    serverToken: ""
+    # --  Whether to notify NL Portal instances when configuration is changed.
+    notifyEnabled: false
+    # -- A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled. 
+    notifyList: ""
+
+    security:
+      cors:
+        allowedHeaders: "Authorization, Content-Type, Accept"
+        allowedOrigins: "*"
+        allowedMethods: "GET, POST, PUT, DELETE"

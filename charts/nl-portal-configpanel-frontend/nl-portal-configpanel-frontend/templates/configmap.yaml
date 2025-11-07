@@ -11,4 +11,4 @@ data:
   OIDC_REDIRECT_URL: {{ .Values.settings.oidc.redirectUrl | quote }}
   OIDC_POST_LOGOUT_REDIRECT_URL: {{ .Values.settings.oidc.postLogoutRedirectUrl | quote }}
   CLIENT_APPLICATION_NAME: {{ .Values.settings.oidc.clientApplicationName | quote }}
-  CONFIG_PANEL_REST_API_URL: {{ .Values.settings.app.configPanelRestApiUrl | quote }}
+  CONFIG_PANEL_REST_API_URL: {{ .Values.settings.app.configPanelRestApiUrl | default (printf "%s/api" .Values.ingress.host) | quote }}

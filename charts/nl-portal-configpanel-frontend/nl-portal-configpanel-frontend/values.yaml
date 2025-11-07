@@ -145,4 +145,4 @@ settings:
 
   app:
     # -- Set to the base URL of the backend REST API should the backend and frontend be running on different hosts without routing.
-    configPanelRestUrl: ""
+    configPanelRestApiUrl: ""

@@ -36,15 +36,16 @@ spec:
       secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
-  rules:
-    - host: {{ .Values.ingress.host | quote }}
-      http:
-        paths:
-          - path: "{{ .Values.settings.app.serverPrefix }}/api"
-            pathType: "Prefix"
-            backend:
-              service:
-                name: {{ include "nl-portal-configpanel-backend.fullname" . }}
-                port:
-                  name: http
+  {{- range .Values.ingress.hosts }}
+  - host: {{ . | quote }}
+    http:
+      paths:
+        - path: "{{ $.Values.settings.app.serverPrefix }}/api"
+          pathType: "Prefix"
+          backend:
+            service:
+              name: {{ include "nl-portal-configpanel-backend.fullname" $ }}
+              port:
+                name: http
+  {{- end }}
 {{- end }}

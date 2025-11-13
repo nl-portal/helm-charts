@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 1.0.0
+appVersion: 2.0.0
 description: NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 name: nl-portal-configpanel-frontend
 type: application

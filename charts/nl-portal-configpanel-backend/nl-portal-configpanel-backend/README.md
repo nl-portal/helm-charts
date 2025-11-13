@@ -1,6 +1,6 @@
 # nl-portal-configpanel-backend
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 
@@ -24,7 +24,7 @@ NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `"nl-portal-config-panel.example.com"` |  |
+| ingress.hosts[0] | string | `"nl-portal-config-panel.example.com"` |  |
 | ingress.tls | list | `[]` |  |
 | livenessProbe | object | `{"enabled":true,"failureThreshold":6,"httpGet":{"path":"/management/health","port":"http"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probe for container health checking |
 | nameOverride | string | `""` |  |

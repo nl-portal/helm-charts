@@ -60,14 +60,14 @@ ingress:
   #      - chart-example.local
 
 # -- Startup probe for container initialization checking
-startupProbe: 
+startupProbe:
   httpGet:
     path: /management/health
     port: http
   failureThreshold: 90
   periodSeconds: 10
 # -- Liveness probe for container health checking
-livenessProbe: 
+livenessProbe:
   enabled: true
   httpGet:
     path: /management/health
@@ -78,7 +78,7 @@ livenessProbe:
   failureThreshold: 6
   successThreshold: 1
 # -- Readiness probe for container health checking
-readinessProbe: 
+readinessProbe:
   enabled: true
   httpGet:
     path: /management/health
@@ -152,7 +152,7 @@ settings:
   auth:
     # -- Required: JSON Web Key Set (JWKS) URI for validating tokens
     jwksURI: ""
-  
+
   database:
     # -- Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal
     url: ""
@@ -166,13 +166,13 @@ settings:
     logLevel: "INFO"
     # -- Used to set the duration at which the configuration cache is evicted in milliseconds.
     cacheTTL: 30000
-    # -- Used to customise the base path of the configuration server. Application base URL is used as the configuration server if not set.
+    # -- Used to customise the base path of the spring configuration server. Application base URL is used as the configuration server if not set.
     serverPrefix: "/configuration"
     # -- The token that should be used to authenticate configuration queries. Every NL Portal needs to have this value set for their Spring Cloud Configuration Client.
     serverToken: ""
     # --  Whether to notify NL Portal instances when configuration is changed.
     notifyEnabled: false
-    # -- A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled. 
+    # -- A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled.
     notifyList: ""
 
     security:

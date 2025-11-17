@@ -1,6 +1,6 @@
 # nl-portal-configpanel-backend
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 
@@ -47,8 +47,8 @@ NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 | settings.app.cacheTTL | int | `30000` | Used to set the duration at which the configuration cache is evicted in milliseconds. |
 | settings.app.logLevel | string | `"INFO"` | logLevel can be one of: TRACE, DEBUG, INFO, WARN, ERROR |
 | settings.app.notifyEnabled | bool | `false` | Whether to notify NL Portal instances when configuration is changed. |
-| settings.app.notifyList | string | `""` | A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled.  |
-| settings.app.serverPrefix | string | `"/configuration"` | Used to customise the base path of the configuration server. Application base URL is used as the configuration server if not set. |
+| settings.app.notifyList | string | `""` | A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled. |
+| settings.app.serverPrefix | string | `"/configuration"` | Used to customise the base path of the spring configuration server. Application base URL is used as the configuration server if not set. |
 | settings.app.serverToken | string | `""` | The token that should be used to authenticate configuration queries. Every NL Portal needs to have this value set for their Spring Cloud Configuration Client. |
 | settings.auth.jwksURI | string | `""` | Required: JSON Web Key Set (JWKS) URI for validating tokens |
 | settings.database.password | string | `""` | If using extraSecretEnvVars, set via name: DATABASE_PASSWORD |

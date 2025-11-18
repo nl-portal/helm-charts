@@ -141,9 +141,9 @@ settings:
     redirectUrl:  ""
     # -- Required: The post logout target URL where the OIDC Authority should redirect the user.
     postLogoutRedirectUrl: ""
-    # -- Required: The name of the Spring Boot application whose configuration is being provided by this application. Example: nl-portal-app.
-    clientApplicationName: ""
 
   app:
-    # -- Set to the base URL of the backend REST API should the backend and frontend be running on different hosts without routing.
+    # -- Required: The name of the Spring Boot application whose configuration is being provided by this application. Example: nl-portal-app.
+    clientApplicationName: ""
+    # -- Required: Set to the base URL of the backend REST API should the backend and frontend be running on different hosts without routing.
     configPanelRestApiUrl: ""

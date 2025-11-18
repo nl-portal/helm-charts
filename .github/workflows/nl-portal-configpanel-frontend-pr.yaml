@@ -5,7 +5,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - "charts/nl-portal-frontend/**"
+      - "charts/nl-portal-configpanel-frontend/**"
+
 jobs:
   helm-lint:
     runs-on: ubuntu-latest
@@ -16,14 +17,13 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install helm
         uses: Azure/setup-helm@v3
         with:
           version: 3.9.0
       - name: Helm Lint
         run: |
-          cd charts/nl-portal-frontend/nl-portal-frontend
+          cd charts/nl-portal-configpanel-frontend/nl-portal-configpanel-frontend
           helm lint
 
   add-readme-if-missing:
@@ -39,14 +39,14 @@ jobs:
         env:
           HELM_DOCS_VERSION: v1.14.2
         run: |
-          cd charts/nl-portal-frontend/nl-portal-frontend
+          cd charts/nl-portal-configpanel-frontend/nl-portal-configpanel-frontend
           docker run --rm --volume "$(pwd):/helm-docs" -u $(id -u) "jnorwood/helm-docs:${HELM_DOCS_VERSION}"
 
       - name: Push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd charts/nl-portal-frontend/nl-portal-frontend
+          cd charts/nl-portal-configpanel-frontend/nl-portal-configpanel-frontend
           git add .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

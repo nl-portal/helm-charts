@@ -11,6 +11,27 @@ Find the helm configuration values here:
 
 The generated list of published helm releases can be found [here](https://nl-portal.github.io/helm-charts/index.yaml).
 
+## Add the repo and install a chart
+
+```sh
+# Add and update the repo
+helm repo add nl-portal https://nl-portal.github.io/helm-charts
+helm repo update
+
+# List available charts
+helm search repo nl-portal
+
+# Install or upgrade a chart (example: backend)
+helm upgrade --install nl-portal-backend nl-portal/nl-portal-backend \
+  --namespace nl-portal --create-namespace \
+  -f your-values.yaml
+
+# Swap the chart name above for other charts, e.g.
+# nl-portal/nl-portal-frontend
+# nl-portal/nl-portal-configpanel-backend
+# nl-portal/nl-portal-configpanel-frontend
+```
+
 ## Changelogs
 
 ### NL Portal

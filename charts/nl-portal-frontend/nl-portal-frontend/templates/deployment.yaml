@@ -40,6 +40,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "nl-portal-frontend.fullname" . }}
+          env:
+            {{- if .Values.extraEnvVars }}
+            {{- include "nl-portal-frontend.tplvalues.render" (dict "value" .Values.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 8081

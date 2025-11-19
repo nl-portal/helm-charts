@@ -96,6 +96,15 @@ affinity: {}
 
 existingSecret: null
 
+# -- Array with extra environment variables to add
+# e.g:
+# extraEnvVars:
+#   - name: FOO
+#     value: "bar"
+
+# -- Optionally specify extra list of additional volumes
+extraEnvVars: []
+
 # -- Application Settings
 settings:
   oidc:
@@ -142,7 +151,7 @@ settings:
         showCurrentCasesPreview: true
         # -- TODO: add explanation, confirm that `1` is an OK default
         currentCasesPreviewLength: 1
-        
+
     services:
       # -- TODO: add explanation
       openKlantVersion: null

@@ -46,8 +46,16 @@ ingress:
   enabled: false
   className: ""
   annotations: {}
-  host: "chart-example.local"
+  hosts:
+    - chart-example.local
   tls: []
+
+startupProbe:
+  httpGet:
+    path: /
+    port: 8081
+  failureThreshold: 30
+  periodSeconds: 10
 
 livenessProbe:
   httpGet:
@@ -105,67 +113,101 @@ existingSecret: null
 # -- Optionally specify extra list of additional volumes
 extraEnvVars: []
 
+# -- Optionally specify extra list of additional volumes
+extraVolumes: []
+
+# -- Optionally specify extra list of additional volumeMounts
+extraVolumeMounts: []
+
 # -- Application Settings
 settings:
+  # ---------------------------------------------------------------------------
+  # OIDC Authentication (required)
+  # ---------------------------------------------------------------------------
   oidc:
     # -- Required: URL to OIDC provider, e.g. Keycloak.
     # -- Note: For Keycloak versions <17, you must append /auth to this URL.
     url:
     # -- Required: OIDC Realm that contains users for NL Portal
     realm:
-    # -- Required :OIDC Client ID for the frontend
+    # -- Required: OIDC Client ID for the frontend
     clientID:
-    # -- Required: URL to redirect to after a successful login.
-    # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}/keycloak/callback
-    # -- where ${frontend_url} is inferred from the Ingress configuration.
+    # -- URL to redirect to after a successful login.
+    # -- If not specified, defaults to ${frontend_url}/keycloak/callback
     redirectUrl:
-    # -- Required: URL to redirect to after a successful logout
-    # -- If not specified, defaults to the Keycloak implementation, which is ${frontend_url}
-    # -- where ${frontend_url} is inferred from the Ingress configuration.
+    # -- URL to redirect to after a successful logout.
+    # -- If not specified, defaults to ${frontend_url}
     postLogoutRedirectUrl:
+    # -- Enable automatic logout after idle timeout
+    autoIdleSessionLogout: true
+    # -- Idle timeout in minutes before automatic logout
+    idleTimeoutMinutes: 15
 
-  app:
-    # -- Application's backend URL. Empty string means the same URL as the frontend, which is inferred from the Ingress configuration.
-    backendUrl: ""
+  # ---------------------------------------------------------------------------
+  # API Endpoints
+  # ---------------------------------------------------------------------------
+  # -- Backend URL. Empty string = same URL as frontend (inferred from Ingress)
+  backendUrl: ""
 
-    features:
-      general:
-        # -- TODO: add explanation
-        showInhabitantAmount: true
-        # -- TODO: add explanation
-        casesPartialSearch: true
-        # -- TODO: add explanation, confirm `null` is an OK default
-        themeClass: null
-        # -- TODO: add explanation. What unit is this in?
-        messageCountPollingInterval: 10000
+  # ---------------------------------------------------------------------------
+  # Feature Flags
+  # ---------------------------------------------------------------------------
+  features:
+    # -- Whether to fetch theme from backend API
+    useThemeApi: false
+    # -- OpenKlant API version: "v1" or "v2"
+    openKlantVersion: null
+    # -- Enable message count polling
+    messageCountEnable: true
+    # -- Polling interval for message count updates in milliseconds
+    messageCountPollingInterval: 10000
+    # -- Enable partial/fuzzy search for cases
+    casesPartialSearch: true
+    # -- Show inhabitant amount on overview page
+    showInhabitantAmount: true
 
-      account:
-        # -- TODO: add explanation, confirm that `true` is an OK default
-        showNotificationSubsection: true
-      overview:
-        # -- TODO: add explanation, confirm that `true` is an OK default
-        showIntro: true
-        # -- TODO: add explanation, confirm that `true` is an OK default
-        showMaintenanceAlert: true
-        # -- TODO: add explanation, confirm that `true` is an OK default
-        showCurrentCasesPreview: true
-        # -- TODO: add explanation, confirm that `1` is an OK default
-        currentCasesPreviewLength: 1
+  # ---------------------------------------------------------------------------
+  # Theme (optional)
+  # ---------------------------------------------------------------------------
+  # -- CSS theme class name for custom styling (e.g. "gemeente-x")
+  themeClass: null
 
-    services:
-      # -- TODO: add explanation
-      openKlantVersion: null
-      # -- TODO: add explanation
-      addressResearchUrl: null
-      # -- TODO: add explanation
-      reportChangeOfAddressUrl: null
-      # -- TODO: add explanation
-      changeInUseOfSurnameUrl: null
-      # -- TODO: add explanation
-      changeRegisteredGenderUrl: null
-      # -- TODO: add explanation
-      addressResearchMoreInfoUrl: null
-      # -- TODO: add explanation
-      requestForChangeBrpInfoUrl: null
-      # -- TODO: add explanation
-      requestConfidentialityOfDataUrl: null
+  # ---------------------------------------------------------------------------
+  # Overview Page Options
+  # ---------------------------------------------------------------------------
+  overview:
+    # -- Show intro section on overview page
+    showIntro: true
+    # -- Show maintenance alert banner on overview page
+    showMaintenanceAlert: true
+    # -- Show preview of current cases on overview page
+    showCurrentCasesPreview: true
+    # -- Number of cases to display in the current cases preview
+    currentCasesPreviewLength: 2
+
+  # ---------------------------------------------------------------------------
+  # Account Page Options
+  # ---------------------------------------------------------------------------
+  account:
+    # -- Show notification settings subsection on account page
+    showNotificationSubsection: true
+
+  # ---------------------------------------------------------------------------
+  # BRP/Address Action URLs (optional)
+  # External links shown on account page
+  # ---------------------------------------------------------------------------
+  brpUrls:
+    # -- External link for address research
+    addressResearchUrl: null
+    # -- External link for more info on address research
+    addressResearchMoreInfoUrl: null
+    # -- External link for reporting address change
+    reportChangeOfAddressUrl: null
+    # -- External link for changing use of surname
+    changeInUseOfSurnameUrl: null
+    # -- External link for changing registered gender
+    changeRegisteredGenderUrl: null
+    # -- External link for requesting BRP info change
+    requestForChangeBrpInfoUrl: null
+    # -- External link for requesting data confidentiality
+    requestConfidentialityOfDataUrl: null

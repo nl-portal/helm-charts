@@ -13,7 +13,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "nl-portal-backend.fullname" . }}
+  name: {{ include "nl-portal-backend.fullname" . }}
   labels:
     {{- include "nl-portal-backend.labels" . | nindent 4 }}
 data:
@@ -32,6 +32,7 @@ data:
 
   CONFIGURATION_PANEL_ENABLED: {{ .Values.settings.app.features.configurationPanel.enabled | quote }}
   CONFIGURATION_PANEL_URI: {{ .Values.settings.app.features.configurationPanel.uri | quote }}
+  CONFIGURATION_PANEL_APPLICATION_NAME: {{ .Values.settings.app.features.configurationPanel.applicationName | quote }}
 
   # Authentication
   NLPORTAL_AUTHENTICATION_MACHTINGSDIENST_RESOURCEURL: {{ .Values.settings.services.authentication.machtingsdienst.resourceUrl | quote }}
@@ -45,6 +46,8 @@ data:
   NLPORTAL_CONFIG_CATALOGIAPI_ENABLED: {{ .Values.settings.services.catalogiapi.enabled | quote }}
   NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_URL: {{ .Values.settings.services.catalogiapi.properties.url | quote }}
   NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_CLIENTID: {{ .Values.settings.services.catalogiapi.properties.clientId | quote }}
+  NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_DOCUMENTTYPEURL: {{ .Values.settings.services.catalogiapi.properties.documentTypeUrl | quote }}
+  NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_RSIN: {{ .Values.settings.services.catalogiapi.properties.rsin | quote }}
 
   # DocumentenAPIs
   NLPORTAL_CONFIG_DOCUMENTENAPIS_ENABLED: {{ .Values.settings.services.documentenapis.enabled | quote }}
@@ -79,6 +82,14 @@ data:
   # OpenKlant2
   NLPORTAL_CONFIG_OPENKLANT2_ENABLED: {{ .Values.settings.services.openklant2.enabled | quote }}
   NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_KLANTINTERACTIESAPIURL: {{ .Values.settings.services.openklant2.properties.klantinteractiesApiUrl | quote }}
+  NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_CONTACTGEGEVENSAPIURL: {{ .Values.settings.services.openklant2.properties.contactgegevensApiUrl | quote }}
+
+  # OpenProduct
+  NLPORTAL_CONFIG_OPENPRODUCT_ENABLED: {{ .Values.settings.services.openproduct.enabled | quote }}
+  NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_PRODUCTAPIURL: {{ .Values.settings.services.openproduct.properties.productApiUrl | quote }}
+  NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_PRODUCTTYPEAPIURL: {{ .Values.settings.services.openproduct.properties.productTypeApiUrl | quote }}
+  NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_CLIENTID: {{ .Values.settings.services.openproduct.properties.dmn.clientId | quote }}
+  NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_USERNAME: {{ .Values.settings.services.openproduct.properties.dmn.username | quote }}
 
   # HaalCentraal2
   NLPORTAL_CONFIG_HAALCENTRAAL2_ENABLED: {{ .Values.settings.services.haalcentraal2.enabled | quote }}
@@ -121,6 +132,10 @@ data:
   # Prefill
   NLPORTAL_CONFIG_PREFILL_ENABLED: {{ .Values.settings.services.prefill.enabled | quote }}
   NLPORTAL_CONFIG_PREFILL_PROPERTIES_TYPEURL: {{ .Values.settings.services.prefill.properties.typeUrl | quote }}
+
+  # Theme
+  NLPORTAL_CONFIG_THEME_LOGO: {{ .Values.settings.theme.logo | quote }}
+  NLPORTAL_CONFIG_THEME_STYLE: {{ .Values.settings.theme.style | quote }}
 
   # Payment Direct
   NLPORTAL_CONFIG_PAYMENT_DIRECT_ENABLED: {{ .Values.settings.services.payment.direct.enabled | quote }}

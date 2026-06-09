@@ -1,9 +1,10 @@
 apiVersion: v2
-appVersion: 2.x.y
+appVersion: 3.0.x
 description: Nl Portal backend Helm chart to be used in Kubernetes clusters.
+kubeVersion: ">=1.23.0"
 name: nl-portal-backend
 type: application
-version: 2.1.0
+version: 3.0.0
 
 dependencies:
   - name: postgresql

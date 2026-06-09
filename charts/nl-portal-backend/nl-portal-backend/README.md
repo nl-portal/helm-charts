@@ -1,10 +1,12 @@
 # nl-portal-backend
 
-![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.x.y](https://img.shields.io/badge/AppVersion-2.x.y-informational?style=flat-square)
+![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.x](https://img.shields.io/badge/AppVersion-3.0.x-informational?style=flat-square)
 
 Nl Portal backend Helm chart to be used in Kubernetes clusters.
 
 ## Requirements
+
+Kubernetes: `>=1.23.0`
 
 | Repository | Name | Version |
 |------------|------|---------|
@@ -32,13 +34,12 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `"your-nl-portal.example.com"` |  |
+| ingress.hosts[0] | string | `"your-nl-portal.example.com"` |  |
 | ingress.tls | list | `[]` |  |
-| livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.failureThreshold | int | `6` |  |
 | livenessProbe.httpGet.path | string | `"/actuator/health/liveness"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
-| livenessProbe.initialDelaySeconds | int | `120` |  |
+| livenessProbe.initialDelaySeconds | int | `10` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
@@ -47,11 +48,10 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.failureThreshold | int | `6` |  |
 | readinessProbe.httpGet.path | string | `"/actuator/health/readiness"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
-| readinessProbe.initialDelaySeconds | int | `120` |  |
+| readinessProbe.initialDelaySeconds | int | `10` |  |
 | readinessProbe.periodSeconds | int | `10` |  |
 | readinessProbe.successThreshold | int | `1` |  |
 | readinessProbe.timeoutSeconds | int | `1` |  |
@@ -64,7 +64,7 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
-| settings | object | `{"app":{"features":{"configurationPanel":{"enabled":true,"token":null,"uri":""}},"logLevel":"INFO","security":{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}},"database":{"password":"","url":null,"username":"nlportal"},"keycloak":{"audience":null,"clientID":null,"httpRelativePath":null,"realm":null,"token_exchange_secret":null,"url":null,"version":null},"services":{"authentication":{"machtingsdienst":{"resourceUrl":""}},"berichten":{"enabled":false,"properties":{"berichtObjectTypeUrl":""}},"besluitenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"catalogiapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"dmn":{"enabled":false,"properties":{"url":""}},"documentenapis":{"enabled":false,"properties":{"configurations":{"dummydoc":{"clientId":"","secret":"","url":""},"openzaak":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","url":""}},"defaultDocumentApi":""}},"haalcentraal2":{"enabled":false,"properties":{"bewoningApiUrl":"","brpApiUrl":""}},"haalcentraal_brp":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"haalcentraal_hr":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"objectenapi":{"enabled":false,"properties":{"token":"","url":""}},"openklant":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"openklant2":{"enabled":false,"properties":{"klantinteractiesApiUrl":"","token":""}},"payment":{"direct":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"apiKey":"","apiSecret":"","language":"","pspId":"","returnUrl":"","webhookApiKey":"","webhookApiSecret":""}},"shaOutParameters":"","url":""}},"ogone":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"failureUrl":"","pspId":"","shaInKey":"","shaOutKey":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}},"prefill":{"enabled":false,"properties":{"typeUrl":""}},"product":{"enabled":false,"properties":{"productDetailsTypeUrl":"","productInstantieTypeUrl":"","productTypeUrl":"","productVerbruiksObjectTypeUrl":""}},"taak":{"enabled":false,"properties":{"typeUrl":"","typeUrlV2":""}},"virusscan":{"clamav":{"enabled":false,"properties":{"hostname":""}}},"zakenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":"","zaakdocumentenConfig":{"statusWhitelist":"","vertouwelijkheidsaanduidingWhitelist":"","vertrouwelijkheidsaanduidingWhitelist":""}}}}}` | Application Settings |
+| settings | object | `{"app":{"features":{"configurationPanel":{"applicationName":"","enabled":false,"token":null,"uri":""}},"logLevel":"INFO","security":{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}},"database":{"password":"","url":null,"username":"nlportal"},"keycloak":{"audience":null,"clientID":null,"httpRelativePath":null,"realm":null,"token_exchange_secret":null,"url":null,"version":null},"services":{"authentication":{"machtingsdienst":{"resourceUrl":""}},"berichten":{"enabled":false,"properties":{"berichtObjectTypeUrl":""}},"besluitenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"catalogiapi":{"enabled":false,"properties":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","url":""}},"dmn":{"enabled":false,"properties":{"url":""}},"documentenapis":{"enabled":false,"properties":{"configurations":{"dummydoc":{"clientId":"","secret":"","url":""},"openzaak":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","url":""}},"defaultDocumentApi":""}},"haalcentraal2":{"enabled":false,"properties":{"bewoningApiUrl":"","brpApiUrl":""}},"haalcentraal_brp":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"haalcentraal_hr":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"objectenapi":{"enabled":false,"properties":{"token":"","url":""}},"openklant":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"openklant2":{"enabled":false,"properties":{"contactgegevensApiUrl":"","klantinteractiesApiUrl":"","token":""}},"openproduct":{"enabled":false,"properties":{"dmn":{"clientId":"","password":"","secret":"","username":""},"productApiUrl":"","productTypeApiUrl":"","token":""}},"payment":{"direct":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"apiKey":"","apiSecret":"","language":"","pspId":"","returnUrl":"","webhookApiKey":"","webhookApiSecret":""}},"shaOutParameters":"","url":""}},"ogone":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"failureUrl":"","pspId":"","shaInKey":"","shaOutKey":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}},"prefill":{"enabled":false,"properties":{"typeUrl":""}},"product":{"enabled":false,"properties":{"productDetailsTypeUrl":"","productInstantieTypeUrl":"","productTypeUrl":"","productVerbruiksObjectTypeUrl":""}},"taak":{"enabled":false,"properties":{"typeUrl":"","typeUrlV2":""}},"virusscan":{"clamav":{"enabled":false,"properties":{"hostname":""}}},"zakenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":"","zaakdocumentenConfig":{"statusWhitelist":"","vertouwelijkheidsaanduidingWhitelist":"","vertrouwelijkheidsaanduidingWhitelist":""}}}},"theme":{"logo":"","style":""}}` | Application Settings |
 | settings.app.features.configurationPanel.token | string | `nil` | If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN |
 | settings.app.logLevel | string | `"INFO"` | TODO: what log levels are there? |
 | settings.app.security | object | `{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}` | CORS configuration |
@@ -92,6 +92,9 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | settings.services.objectenapi.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN |
 | settings.services.openklant.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT_PROPERTIES_SECRET |
 | settings.services.openklant2.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN |
+| settings.services.openproduct.properties.dmn.password | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_PASSWORD |
+| settings.services.openproduct.properties.dmn.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_SECRET |
+| settings.services.openproduct.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_TOKEN |
 | settings.services.payment.direct.properties.configurations.belastingzaken.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY |
 | settings.services.payment.direct.properties.configurations.belastingzaken.apiSecret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APISECRET |
 | settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPIKEY |

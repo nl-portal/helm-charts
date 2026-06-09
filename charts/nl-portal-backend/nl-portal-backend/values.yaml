@@ -250,8 +250,6 @@ settings:
         secret: ""
         zaakdocumentenConfig:
           vertrouwelijkheidsaanduidingWhitelist: ""
-          # -- DEPRECATED: misspelled alias of `vertrouwelijkheidsaanduidingWhitelist`, kept for backwards compatibility. Will be removed in a future major version.
-          vertouwelijkheidsaanduidingWhitelist: ""
           statusWhitelist: ""
 
     objectenapi:

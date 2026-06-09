@@ -49,6 +49,7 @@ helm upgrade --install nl-portal-backend nl-portal/nl-portal-backend \
 - `image.tag` default on configpanel charts changed from `"latest"` to `""` (uses appVersion)
 - HPA API updated from `autoscaling/v2beta1` to `autoscaling/v2`
 - Minimum Kubernetes version: 1.23 (`kubeVersion: ">=1.23.0"`)
+- nl-portal-backend: removed misspelled `vertouwelijkheidsaanduidingWhitelist` key — use `vertrouwelijkheidsaanduidingWhitelist`
 
 **New features:**
 
@@ -77,7 +78,7 @@ Frontend new env vars:
 Other improvements:
 - Frontend: `startupProbe`, `extraVolumes`/`extraVolumeMounts` support
 - HPA now supports memory metric via `autoscaling.targetMemoryUtilizationPercentage`
-- Backend probes now use proper `/actuator/health/*` endpoints instead of GraphQL
+- nl-portal-backend and nl-portal-configpanel-backend probes use `/actuator/health/*` endpoints
 
 **Migration:**
 

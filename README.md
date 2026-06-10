@@ -50,13 +50,17 @@ helm upgrade --install nl-portal-backend nl-portal/nl-portal-backend \
 - HPA API updated from `autoscaling/v2beta1` to `autoscaling/v2`
 - Minimum Kubernetes version: 1.23 (`kubeVersion: ">=1.23.0"`)
 - nl-portal-backend: removed misspelled `vertouwelijkheidsaanduidingWhitelist` key — use `vertrouwelijkheidsaanduidingWhitelist`
+- nl-portal-backend: `settings.keycloak.token_exchange_secret` renamed to `settings.keycloak.clientSecret`; rendered Secret key is now `KEYCLOAK_CLIENT_SECRET` (was `KEYCLOAK_TOKEN_EXCHANGE_SECRET`) — update `existingSecret` contents accordingly
+- nl-portal-backend: ConfigMap env var `KEYCLOAK_AUDIENCE` renamed to `KEYCLOAK_TOKEN_EXCHANGE_AUDIENCE` (matches what nl-portal-app actually reads; old name was never used by the app)
+- nl-portal-backend: `settings.services.openklant` block removed (OpenKlant v1 module no longer exists in 3.x) — use `settings.services.openklant2`
+- nl-portal-backend: `settings.services.haalcentraal_brp` block removed (HaalCentraal BRP v1 module no longer exists in 3.x) — use `settings.services.haalcentraal2`
+- nl-portal-backend: `settings.services.haalcentraal_hr` renamed to `settings.services.haalcentraalHr` (env var names `NLPORTAL_CONFIG_HAALCENTRAAL_HR_*` unchanged)
+- nl-portal-backend: `settings.services.zakenapi.properties.zaakdocumentenConfig` renamed to `zaakDocumentenConfig` (matches backend property casing; env var names unchanged)
 
 **New features:**
 
 Backend new env vars:
 - `CONFIGURATION_PANEL_APPLICATION_NAME` — application name for config panel integration
-- `NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_DOCUMENTTYPEURL` — Catalogi API document type URL
-- `NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_RSIN` — Catalogi API RSIN
 - `NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_CONTACTGEGEVENSAPIURL` — OpenKlant2 contact details API URL
 - `NLPORTAL_CONFIG_OPENPRODUCT_ENABLED` — enable OpenProduct module
 - `NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_PRODUCTAPIURL` — OpenProduct product API URL
@@ -68,12 +72,26 @@ Backend new env vars:
 - `NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_PASSWORD` — OpenProduct DMN password (secret)
 - `NLPORTAL_CONFIG_THEME_LOGO` — theme logo URL
 - `NLPORTAL_CONFIG_THEME_STYLE` — theme style configuration
+- `OIDC_REALM` — realm name (derived from `settings.keycloak.realm`)
+- `NLPORTAL_AUTHENTICATION_MACHTINGSDIENST_ALLMACHTIGINGUUID`
+- `NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKTYPESIDSEXCLUDED`, `..._USENNPKVKQUERYIDENTIFICATORS`
+- `NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_ALLOWEDMIMETYPES`, `..._CONFIGURATIONS_OPENZAAK_SSL_ENABLED`
+- `NLPORTAL_CONFIG_VIRUSSCAN_CLAMAV_PROPERTIES_PORT`
+- `NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_DIGITALADRESSENREFERENTIE`
+- `NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_APIKEY` (secret), `..._SSL_ENABLED`, `..._BRPFIELDS`
+- `NLPORTAL_CONFIG_PREFILL_PROPERTIES_PREFILLSHAVERSION`
+- `NLPORTAL_CONFIG_DMN_PROPERTIES_CLIENTID`, `..._USERNAME`, `..._SSL_ENABLED`, `..._SECRET` (secret), `..._PASSWORD` (secret)
+- `NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_LANGUAGE`, `..._CURRENCY`, `..._SHAVERSION`
+- `NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SSL_ENABLED`, `..._WEBHOOKHEADERS`, `..._WEBHOOKURL`, `..._CUSTOMTEMPLATEURL`, `..._SHOWRESULTPAGE`, `..._CONFIGURATIONS_BELASTINGZAKEN_CURRENCY`
 
 Frontend new env vars:
 - `USE_THEME_API` — whether to fetch theme from backend API
 - `OIDC_AUTO_IDLE_SESSION_LOGOUT` — enable automatic logout after idle timeout
 - `OIDC_IDLE_TIMEOUT_MINUTES` — idle timeout in minutes before automatic logout
 - `MESSAGE_COUNT_ENABLE` — enable message count polling
+- `OPEN_PRODUCTEN` — enable OpenProducten integration
+- `SHOW_CASE_RESULT_EXPLANATION` — show explanation of case result
+- `USE_LEGACY_OGONE_PAYMENT` — use legacy Ogone payment flow
 
 Other improvements:
 - Frontend: `startupProbe`, `extraVolumes`/`extraVolumeMounts` support

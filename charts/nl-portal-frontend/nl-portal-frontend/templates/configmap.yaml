@@ -11,16 +11,16 @@ data:
 
   {{- if .Values.settings.oidc.redirectUrl }}
   OIDC_REDIRECT_URI: {{ .Values.settings.oidc.redirectUrl | quote }}
-  {{- else if .Values.ingress.host }}
-  OIDC_REDIRECT_URI: {{ printf "https://%s/keycloak/callback" .Values.ingress.host | quote }}
+  {{- else if and .Values.ingress.enabled .Values.ingress.hosts }}
+  OIDC_REDIRECT_URI: {{ printf "https://%s/keycloak/callback" (index .Values.ingress.hosts 0) | quote }}
   {{- else }}
   OIDC_REDIRECT_URI: {{ "/" | quote }}
   {{- end }}
 
   {{- if .Values.settings.oidc.postLogoutRedirectUrl }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ .Values.settings.oidc.postLogoutRedirectUrl | quote }}
-  {{- else if .Values.ingress.host }}
-  OIDC_POST_LOGOUT_REDIRECT_URI: {{ printf "https://%s" .Values.ingress.host | quote }}
+  {{- else if and .Values.ingress.enabled .Values.ingress.hosts }}
+  OIDC_POST_LOGOUT_REDIRECT_URI: {{ printf "https://%s" (index .Values.ingress.hosts 0) | quote }}
   {{- else }}
   OIDC_POST_LOGOUT_REDIRECT_URI: {{ "/" | quote }}
   {{- end }}
@@ -37,6 +37,9 @@ data:
   MESSAGE_COUNT_POLLING_INTERVAL: {{ .Values.settings.features.messageCountPollingInterval | quote }}
   CASES_PARTIAL_SEARCH: {{ .Values.settings.features.casesPartialSearch | quote }}
   SHOW_INHABITANT_AMOUNT: {{ .Values.settings.features.showInhabitantAmount | quote }}
+  OPEN_PRODUCTEN: {{ .Values.settings.features.openProducten | quote }}
+  SHOW_CASE_RESULT_EXPLANATION: {{ .Values.settings.features.showCaseResultExplanation | quote }}
+  USE_LEGACY_OGONE_PAYMENT: {{ .Values.settings.features.useLegacyOgonePayment | quote }}
 
   THEME_CLASS: {{ .Values.settings.themeClass | quote }}
 

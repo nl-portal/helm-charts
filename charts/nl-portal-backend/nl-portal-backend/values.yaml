@@ -153,11 +153,12 @@ settings:
     # -- Required: Keycloak Realm that holds the NL Portal users
     realm:
 
-    # -- Required: TODO: explain
-    audience: 
+    # -- Required: Audience used for Keycloak token exchange
+    audience:
 
-    # -- If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET
-    token_exchange_secret:
+    # -- Client secret of the backend M2M client (used for token exchange).
+    # -- If using existingSecret, set via key: KEYCLOAK_CLIENT_SECRET
+    clientSecret:
 
     # -- Optional: Override Keycloak's HTTP relative path. Leave empty for default.
     # -- If `settings.keycloak.version` is <17.0.0, this value is ignored since the HTTP relative path is always "/auth".
@@ -198,6 +199,7 @@ settings:
     authentication:
       machtingsdienst:
         resourceUrl: ""
+        allMachtigingUuid: ""
 
     besluitenapi:
       enabled: false
@@ -214,13 +216,13 @@ settings:
         clientId: ""
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_SECRET
         secret: ""
-        documentTypeUrl: ""
-        rsin: ""
 
     documentenapis:
       enabled: false
       properties:
         defaultDocumentApi: ""
+        # -- Comma-separated list of allowed MIME types for document upload
+        allowedMimeTypes: ""
         configurations:
           openzaak:
             url: ""
@@ -229,6 +231,8 @@ settings:
             secret: ""
             rsin: ""
             documentTypeUrl: ""
+            ssl:
+              enabled: false
           dummydoc:
             url: ""
             clientId: ""
@@ -240,6 +244,7 @@ settings:
         enabled: false
         properties:
           hostname: ""
+          port: 3310
 
     zakenapi:
       enabled: false
@@ -248,7 +253,10 @@ settings:
         clientId: ""
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET
         secret: ""
-        zaakdocumentenConfig:
+        # -- Comma-separated list of zaaktype UUIDs to exclude
+        zaakTypesIdsExcluded: ""
+        useNnpKvkQueryIdentificators: false
+        zaakDocumentenConfig:
           vertrouwelijkheidsaanduidingWhitelist: ""
           statusWhitelist: ""
 
@@ -259,14 +267,6 @@ settings:
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN
         token: ""
 
-    openklant:
-      enabled: false
-      properties:
-        url: ""
-        clientId: ""
-        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT_PROPERTIES_SECRET
-        secret: ""
-
     openklant2:
       enabled: false
       properties:
@@ -274,6 +274,7 @@ settings:
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN
         token: ""
         contactgegevensApiUrl: ""
+        digitalAdressenReferentie: ""
 
     openproduct:
       enabled: false
@@ -295,25 +296,14 @@ settings:
       properties:
         brpApiUrl: ""
         bewoningApiUrl: ""
-
-    haalcentraal_brp:
-      enabled: false
-      properties:
-        url: ""
-        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_APIKEY
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_APIKEY
         apiKey: ""
         ssl:
           enabled: false
-          key:
-            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEY
-            key: ""
-            certChain: ""
-            # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEYPASSWORD
-            keyPassword: ""
-          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_TRUSTEDCERTIFICATE
-          trustedCertificate: ""
+        # -- Comma-separated list of BRP fields to request (defaults to standard fields if not set)
+        brpFields: ""
 
-    haalcentraal_hr:
+    haalcentraalHr:
       enabled: false
       properties:
         url: ""
@@ -353,11 +343,20 @@ settings:
       enabled: false
       properties:
         url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DMN_PROPERTIES_SECRET
+        secret: ""
+        username: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DMN_PROPERTIES_PASSWORD
+        password: ""
+        ssl:
+          enabled: false
 
     prefill:
       enabled: false
       properties:
         typeUrl: ""
+        prefillShaVersion: ""
 
     payment:
       direct:
@@ -366,10 +365,17 @@ settings:
           url: ""
           # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS
           shaOutParameters: ""
+          ssl:
+            enabled: false
+          webhookHeaders: ""
+          webhookUrl: ""
+          customTemplateUrl: ""
+          showResultPage: false
           configurations:
             belastingzaken:
               pspId: ""
               language: ""
+              currency: ""
               returnUrl: ""
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY
               apiKey: ""
@@ -390,6 +396,9 @@ settings:
             belastingzaken:
               pspId: ""
               title: ""
+              language: ""
+              currency: ""
+              shaVersion: ""
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAINKEY
               shaInKey: ""
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY

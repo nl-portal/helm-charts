@@ -53,6 +53,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "README is up-to-date. No changes to commit."
           else
+            git pull
             git commit -m "Update README.md automatically via GitHub Actions"
             git push origin HEAD:${{ github.event.pull_request.head.ref }}
           fi

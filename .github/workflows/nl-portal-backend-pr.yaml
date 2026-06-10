@@ -7,6 +7,10 @@ on:
     paths:
       - "charts/nl-portal-backend/**"
 
+concurrency:
+  group: pr-readme-push-${{ github.event.pull_request.head.ref }}
+  cancel-in-progress: false
+
 jobs:
   helm-lint:
     runs-on: ubuntu-latest

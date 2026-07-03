@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+concurrency:
+   # Chart release cannot be done in parallel with other chart releases, so force sequential release
+  group: release-chart
+  cancel-in-progress: false
+
 jobs:
   build_nl-portal_backend:
     runs-on: ubuntu-latest

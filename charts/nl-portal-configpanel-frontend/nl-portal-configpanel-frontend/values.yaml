@@ -7,7 +7,7 @@ image:
   repository: ghcr.io/nl-portal/configuration-panel-frontend
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -59,12 +59,20 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# -- Startup probe for container initialization checking
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  failureThreshold: 30
+  periodSeconds: 10
+
 # -- Liveness probe for container health checking
 livenessProbe:
   httpGet:
     path: /
-    port: 8080
-  initialDelaySeconds: 40
+    port: http
+  initialDelaySeconds: 5
   periodSeconds: 10
   timeoutSeconds: 1
   failureThreshold: 6
@@ -74,8 +82,8 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /
-    port: 8080
-  initialDelaySeconds: 20
+    port: http
+  initialDelaySeconds: 5
   periodSeconds: 10
   timeoutSeconds: 1
   failureThreshold: 6

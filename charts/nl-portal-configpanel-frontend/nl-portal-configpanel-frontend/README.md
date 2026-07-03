@@ -1,8 +1,12 @@
 # nl-portal-configpanel-frontend
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
 
 NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
+
+## Requirements
+
+Kubernetes: `>=1.23.0`
 
 ## Values
 
@@ -19,20 +23,20 @@ NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ghcr.io/nl-portal/configuration-panel-frontend"` |  |
-| image.tag | string | `"latest"` | Overrides the image tag whose default is the chart appVersion. |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `"nl-portal-config-panel.example.com"` |  |
+| ingress.hosts[0] | string | `"nl-portal-config-panel.example.com"` |  |
 | ingress.tls | list | `[]` |  |
-| livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/","port":8080},"initialDelaySeconds":40,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probe for container health checking |
+| livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probe for container health checking |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| readinessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/","port":8080},"initialDelaySeconds":20,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Readiness probe for container health checking |
+| readinessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Readiness probe for container health checking |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` | Resource requests and limits |
 | securityContext | object | `{}` |  |
@@ -42,13 +46,14 @@ NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
-| settings | object | `{"app":{"configPanelRestUrl":""},"oidc":{"clientApplicationName":"","clientId":"","postLogoutRedirectUrl":"","redirectUrl":"","url":""}}` | Application Settings |
-| settings.app.configPanelRestUrl | string | `""` | Set to the base URL of the backend REST API should the backend and frontend be running on different hosts without routing. |
-| settings.oidc.clientApplicationName | string | `""` | Required: The name of the Spring Boot application whose configuration is being provided by this application. Example: nl-portal-app. |
+| settings | object | `{"app":{"clientApplicationName":"","configPanelRestApiUrl":""},"oidc":{"clientId":"","postLogoutRedirectUrl":"","redirectUrl":"","url":""}}` | Application Settings |
+| settings.app.clientApplicationName | string | `""` | Required: The name of the Spring Boot application whose configuration is being provided by this application. Example: nl-portal-app. |
+| settings.app.configPanelRestApiUrl | string | `""` | Required: Set to the base URL of the backend REST API should the backend and frontend be running on different hosts without routing. |
 | settings.oidc.clientId | string | `""` | Required: The Client ID of the client that will be used for the authentication flow at the OIDC Authority. |
 | settings.oidc.postLogoutRedirectUrl | string | `""` | Required: The post logout target URL where the OIDC Authority should redirect the user. |
 | settings.oidc.redirectUrl | string | `""` | Required: The post authentication target URL where the OIDC Authority should redirect the user. Should be set to the base URL of this application. |
 | settings.oidc.url | string | `""` | Required: OIDC Authority/Oauth2 Provider URL. |
+| startupProbe | object | `{"failureThreshold":30,"httpGet":{"path":"/","port":"http"},"periodSeconds":10}` | Startup probe for container initialization checking |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------

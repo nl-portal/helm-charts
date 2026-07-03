@@ -1,10 +1,12 @@
 # nl-portal-backend
 
-![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.x.y](https://img.shields.io/badge/AppVersion-2.x.y-informational?style=flat-square)
+![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.x](https://img.shields.io/badge/AppVersion-3.0.x-informational?style=flat-square)
 
 Nl Portal backend Helm chart to be used in Kubernetes clusters.
 
 ## Requirements
+
+Kubernetes: `>=1.23.0`
 
 | Repository | Name | Version |
 |------------|------|---------|
@@ -32,13 +34,12 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `"your-nl-portal.example.com"` |  |
+| ingress.hosts[0] | string | `"your-nl-portal.example.com"` |  |
 | ingress.tls | list | `[]` |  |
-| livenessProbe.enabled | bool | `true` |  |
 | livenessProbe.failureThreshold | int | `6` |  |
 | livenessProbe.httpGet.path | string | `"/actuator/health/liveness"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
-| livenessProbe.initialDelaySeconds | int | `120` |  |
+| livenessProbe.initialDelaySeconds | int | `10` |  |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
@@ -47,11 +48,10 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.failureThreshold | int | `6` |  |
 | readinessProbe.httpGet.path | string | `"/actuator/health/readiness"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
-| readinessProbe.initialDelaySeconds | int | `120` |  |
+| readinessProbe.initialDelaySeconds | int | `10` |  |
 | readinessProbe.periodSeconds | int | `10` |  |
 | readinessProbe.successThreshold | int | `1` |  |
 | readinessProbe.timeoutSeconds | int | `1` |  |
@@ -64,34 +64,37 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
-| settings | object | `{"app":{"features":{"configurationPanel":{"enabled":true,"token":null,"uri":""}},"logLevel":"INFO","security":{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}},"database":{"password":"","url":null,"username":"nlportal"},"keycloak":{"audience":null,"clientID":null,"httpRelativePath":null,"realm":null,"token_exchange_secret":null,"url":null,"version":null},"services":{"authentication":{"machtingsdienst":{"resourceUrl":""}},"berichten":{"enabled":false,"properties":{"berichtObjectTypeUrl":""}},"besluitenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"catalogiapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"dmn":{"enabled":false,"properties":{"url":""}},"documentenapis":{"enabled":false,"properties":{"configurations":{"dummydoc":{"clientId":"","secret":"","url":""},"openzaak":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","url":""}},"defaultDocumentApi":""}},"haalcentraal2":{"enabled":false,"properties":{"bewoningApiUrl":"","brpApiUrl":""}},"haalcentraal_brp":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"haalcentraal_hr":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"objectenapi":{"enabled":false,"properties":{"token":"","url":""}},"openklant":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"openklant2":{"enabled":false,"properties":{"klantinteractiesApiUrl":"","token":""}},"payment":{"direct":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"apiKey":"","apiSecret":"","language":"","pspId":"","returnUrl":"","webhookApiKey":"","webhookApiSecret":""}},"shaOutParameters":"","url":""}},"ogone":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"failureUrl":"","pspId":"","shaInKey":"","shaOutKey":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}},"prefill":{"enabled":false,"properties":{"typeUrl":""}},"product":{"enabled":false,"properties":{"productDetailsTypeUrl":"","productInstantieTypeUrl":"","productTypeUrl":"","productVerbruiksObjectTypeUrl":""}},"taak":{"enabled":false,"properties":{"typeUrl":"","typeUrlV2":""}},"virusscan":{"clamav":{"enabled":false,"properties":{"hostname":""}}},"zakenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":"","zaakdocumentenConfig":{"statusWhitelist":"","vertouwelijkheidsaanduidingWhitelist":"","vertrouwelijkheidsaanduidingWhitelist":""}}}}}` | Application Settings |
+| settings | object | `{"app":{"features":{"configurationPanel":{"applicationName":"","enabled":false,"token":null,"uri":""}},"logLevel":"INFO","security":{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}},"database":{"password":"","url":null,"username":"nlportal"},"keycloak":{"audience":null,"clientID":null,"clientSecret":null,"httpRelativePath":null,"realm":null,"url":null,"version":null},"services":{"authentication":{"machtingsdienst":{"allMachtigingUuid":"","resourceUrl":""}},"berichten":{"enabled":false,"properties":{"berichtObjectTypeUrl":""}},"besluitenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"catalogiapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":""}},"dmn":{"enabled":false,"properties":{"clientId":"","password":"","secret":"","ssl":{"enabled":false},"url":"","username":""}},"documentenapis":{"enabled":false,"properties":{"allowedMimeTypes":"","configurations":{"dummydoc":{"clientId":"","secret":"","url":""},"openzaak":{"clientId":"","documentTypeUrl":"","rsin":"","secret":"","ssl":{"enabled":false},"url":""}},"defaultDocumentApi":""}},"haalcentraal2":{"enabled":false,"properties":{"apiKey":"","bewoningApiUrl":"","brpApiUrl":"","brpFields":"","ssl":{"enabled":false}}},"haalcentraalHr":{"enabled":false,"properties":{"apiKey":"","ssl":{"enabled":false,"key":{"certChain":"","key":"","keyPassword":""},"trustedCertificate":""},"url":""}},"objectenapi":{"enabled":false,"properties":{"token":"","url":""}},"openklant2":{"enabled":false,"properties":{"contactgegevensApiUrl":"","digitalAdressenReferentie":"","klantinteractiesApiUrl":"","token":""}},"openproduct":{"enabled":false,"properties":{"dmn":{"clientId":"","password":"","secret":"","username":""},"productApiUrl":"","productTypeApiUrl":"","token":""}},"payment":{"direct":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"apiKey":"","apiSecret":"","currency":"","language":"","pspId":"","returnUrl":"","webhookApiKey":"","webhookApiSecret":""}},"customTemplateUrl":"","shaOutParameters":"","showResultPage":false,"ssl":{"enabled":false},"url":"","webhookHeaders":"","webhookUrl":""}},"ogone":{"enabled":false,"properties":{"configurations":{"belastingzaken":{"currency":"","failureUrl":"","language":"","pspId":"","shaInKey":"","shaOutKey":"","shaVersion":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}},"prefill":{"enabled":false,"properties":{"prefillShaVersion":"","typeUrl":""}},"product":{"enabled":false,"properties":{"productDetailsTypeUrl":"","productInstantieTypeUrl":"","productTypeUrl":"","productVerbruiksObjectTypeUrl":""}},"taak":{"enabled":false,"properties":{"typeUrl":"","typeUrlV2":""}},"virusscan":{"clamav":{"enabled":false,"properties":{"hostname":"","port":3310}}},"zakenapi":{"enabled":false,"properties":{"clientId":"","secret":"","url":"","useNnpKvkQueryIdentificators":false,"zaakDocumentenConfig":{"statusWhitelist":"","vertrouwelijkheidsaanduidingWhitelist":""},"zaakTypesIdsExcluded":""}}},"theme":{"logo":"","style":""}}` | Application Settings |
 | settings.app.features.configurationPanel.token | string | `nil` | If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN |
 | settings.app.logLevel | string | `"INFO"` | TODO: what log levels are there? |
 | settings.app.security | object | `{"cors":{"config":{"allowedHeaders":"","allowedMethods":"","allowedOrigins":""},"path":""},"endpoints":{"unsecured":""}}` | CORS configuration |
 | settings.database.password | string | `""` | If using existingSecret, set via key: DATABASE_PASSWORD |
 | settings.database.url | string | `nil` | Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal |
-| settings.keycloak.audience | string | `nil` | Required: TODO: explain |
+| settings.keycloak.audience | string | `nil` | Required: Audience used for Keycloak token exchange |
 | settings.keycloak.clientID | string | `nil` | Required: Client ID for NL Portal backend |
+| settings.keycloak.clientSecret | string | `nil` | If using existingSecret, set via key: KEYCLOAK_CLIENT_SECRET |
 | settings.keycloak.httpRelativePath | string | `nil` | Else, you should configure this value if your Keycloak instance has a non-default `KC_HTTP_RELATIVE_PATH`. |
 | settings.keycloak.realm | string | `nil` | Required: Keycloak Realm that holds the NL Portal users |
-| settings.keycloak.token_exchange_secret | string | `nil` | If using existingSecret, set via key: KEYCLOAK_TOKEN_EXCHANGE_SECRET |
 | settings.keycloak.url | string | `nil` | Required: URL of Keycloak, without any route parameters (e.g. without /auth) |
 | settings.keycloak.version | string | `nil` | N.B. this is not necessarily the same as the Keycloak Helm chart version. |
 | settings.services.besluitenapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_BESLUITENAPI_PROPERTIES_SECRET |
 | settings.services.catalogiapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_CATALOGIAPI_PROPERTIES_SECRET |
+| settings.services.dmn.properties.password | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DMN_PROPERTIES_PASSWORD |
+| settings.services.dmn.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DMN_PROPERTIES_SECRET |
+| settings.services.documentenapis.properties.allowedMimeTypes | string | `""` | Comma-separated list of allowed MIME types for document upload |
 | settings.services.documentenapis.properties.configurations.dummydoc.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_SECRET |
 | settings.services.documentenapis.properties.configurations.openzaak.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_SECRET |
-| settings.services.haalcentraal_brp.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_APIKEY |
-| settings.services.haalcentraal_brp.properties.ssl.key.key | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEY |
-| settings.services.haalcentraal_brp.properties.ssl.key.keyPassword | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_KEY_KEYPASSWORD |
-| settings.services.haalcentraal_brp.properties.ssl.trustedCertificate | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_BRP_PROPERTIES_SSL_TRUSTEDCERTIFICATE |
-| settings.services.haalcentraal_hr.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_APIKEY |
-| settings.services.haalcentraal_hr.properties.ssl.key.key | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEY |
-| settings.services.haalcentraal_hr.properties.ssl.key.keyPassword | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEYPASSWORD |
-| settings.services.haalcentraal_hr.properties.ssl.trustedCertificate | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_TRUSTEDCERTIFICATE |
+| settings.services.haalcentraal2.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_APIKEY |
+| settings.services.haalcentraal2.properties.brpFields | string | `""` | Comma-separated list of BRP fields to request (defaults to standard fields if not set) |
+| settings.services.haalcentraalHr.properties.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_APIKEY |
+| settings.services.haalcentraalHr.properties.ssl.key.key | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEY |
+| settings.services.haalcentraalHr.properties.ssl.key.keyPassword | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEYPASSWORD |
+| settings.services.haalcentraalHr.properties.ssl.trustedCertificate | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_TRUSTEDCERTIFICATE |
 | settings.services.objectenapi.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OBJECTENAPI_PROPERTIES_TOKEN |
-| settings.services.openklant.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT_PROPERTIES_SECRET |
 | settings.services.openklant2.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN |
+| settings.services.openproduct.properties.dmn.password | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_PASSWORD |
+| settings.services.openproduct.properties.dmn.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_DMN_SECRET |
+| settings.services.openproduct.properties.token | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_OPENPRODUCT_PROPERTIES_TOKEN |
 | settings.services.payment.direct.properties.configurations.belastingzaken.apiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY |
 | settings.services.payment.direct.properties.configurations.belastingzaken.apiSecret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APISECRET |
 | settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPIKEY |
@@ -101,7 +104,7 @@ Nl Portal backend Helm chart to be used in Kubernetes clusters.
 | settings.services.payment.ogone.properties.configurations.belastingzaken.shaOutKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY |
 | settings.services.payment.ogone.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS |
 | settings.services.zakenapi.properties.secret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_SECRET |
-| settings.services.zakenapi.properties.zaakdocumentenConfig.vertouwelijkheidsaanduidingWhitelist | string | `""` | DEPRECATED: misspelled alias of `vertrouwelijkheidsaanduidingWhitelist`, kept for backwards compatibility. Will be removed in a future major version. |
+| settings.services.zakenapi.properties.zaakTypesIdsExcluded | string | `""` | Comma-separated list of zaaktype UUIDs to exclude |
 | startupProbe.failureThreshold | int | `90` |  |
 | startupProbe.httpGet.path | string | `"/actuator/health"` |  |
 | startupProbe.httpGet.port | string | `"http"` |  |

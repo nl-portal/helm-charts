@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{/*
 Renders a value that contains template.
 Usage:
-{{ include "nl-portal-backend.tplvalues.render" ( dict "value" .Values.path.to.the.Value "context" $) }}
+{{ include "nl-portal-frontend.tplvalues.render" ( dict "value" .Values.path.to.the.Value "context" $) }}
 */}}
 {{- define "nl-portal-frontend.tplvalues.render" -}}
     {{- if typeIs "string" .value }}

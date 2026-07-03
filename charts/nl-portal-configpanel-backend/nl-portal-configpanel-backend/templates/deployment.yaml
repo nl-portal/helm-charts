@@ -39,14 +39,17 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
-            {{- if not .Values.secretEnvVars }}
+            {{- if .Values.existingSecret }}
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+            {{- else if not .Values.secretEnvVars }}
             - secretRef:
                 name: {{ include "nl-portal-configpanel-backend.fullname" . }}
             {{- end }}
             - configMapRef:
                 name: {{ include "nl-portal-configpanel-backend.fullname" . }}
           env:
-            {{- if .Values.secretEnvVars }}
+            {{- if and (not .Values.existingSecret) .Values.secretEnvVars }}
             {{- include "nl-portal-configpanel-backend.tplvalues.render" (dict "value" .Values.secretEnvVars "context" $) | nindent 12 }}
             {{- end }}
             {{- if .Values.extraEnvVars }}

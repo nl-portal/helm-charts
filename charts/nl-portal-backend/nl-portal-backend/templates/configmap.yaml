@@ -9,6 +9,26 @@
 {{- else if .Values.settings.keycloak.httpRelativePath -}}
 {{- $keycloak_http_relative_path = .Values.settings.keycloak.httpRelativePath -}}
 {{- end -}}
+
+{{- $token_exchange_version := .Values.settings.keycloak.tokenExchangeVersion | default "v1" -}}
+{{- if not (has $token_exchange_version (list "v1" "v2")) -}}
+{{- fail (printf "settings.keycloak.tokenExchangeVersion must be either \"v1\" or \"v2\", got %q" $token_exchange_version) -}}
+{{- end -}}
+
+{{- /* Standard token exchange needs NL Portal 3.1.0 or newer. */ -}}
+{{- /* A user supplied tag such as a digest or "latest" cannot be checked and is left alone. */ -}}
+{{- /* An unparseable chart appVersion is a chart defect, so that does not pass silently. */ -}}
+{{- if eq $token_exchange_version "v2" -}}
+{{- $app_version := .Values.image.tag | default .Chart.AppVersion | toString -}}
+{{- $app_version_core := regexFind `^[0-9]+\.[0-9]+\.[0-9]+` $app_version -}}
+{{- if $app_version_core -}}
+{{- if not (semverCompare ">=3.1.0" $app_version_core) -}}
+{{- fail (printf "settings.keycloak.tokenExchangeVersion \"v2\" requires NL Portal 3.1.0 or newer, but the deployed version is %s" $app_version) -}}
+{{- end -}}
+{{- else if not .Values.image.tag -}}
+{{- fail (printf "Chart appVersion %q is not a semantic version, so the NL Portal version cannot be checked against the 3.1.0 minimum that settings.keycloak.tokenExchangeVersion \"v2\" requires. Set image.tag to the version you deploy." $app_version) -}}
+{{- end -}}
+{{- end -}}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -22,7 +42,15 @@ data:
   DATABASE_USERNAME: {{ .Values.settings.database.username | quote }}
   JWKS_URI: {{ printf "%s%s/realms/%s/protocol/openid-connect/certs" .Values.settings.keycloak.url $keycloak_http_relative_path .Values.settings.keycloak.realm | quote }}
   KEYCLOAK_CLIENT_ID: {{ required "You must set settings.keycloak.clientID" .Values.settings.keycloak.clientID | quote }}
-  KEYCLOAK_TOKEN_EXCHANGE_AUDIENCE: {{ required "You must set settings.keycloak.audience" .Values.settings.keycloak.audience | quote }}
+  KEYCLOAK_TOKEN_EXCHANGE_VERSION: {{ $token_exchange_version | quote }}
+{{- if eq $token_exchange_version "v1" }}
+  KEYCLOAK_TOKEN_EXCHANGE_AUDIENCE: {{ required "You must set settings.keycloak.audience when settings.keycloak.tokenExchangeVersion is \"v1\"" .Values.settings.keycloak.audience | quote }}
+{{- else if .Values.settings.keycloak.audience }}
+  KEYCLOAK_TOKEN_EXCHANGE_AUDIENCE: {{ .Values.settings.keycloak.audience | quote }}
+{{- end }}
+{{- if .Values.settings.keycloak.acceptedAudiences }}
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES: {{ .Values.settings.keycloak.acceptedAudiences | quote }}
+{{- end }}
   OIDC_REALM: {{ .Values.settings.keycloak.realm | quote }}
   
   NLPORTAL_SECURITY_CORS_0_PATH: {{ .Values.settings.app.security.cors.path | quote }}

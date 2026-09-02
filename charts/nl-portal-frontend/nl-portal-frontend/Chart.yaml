@@ -1,7 +1,7 @@
 apiVersion: v2
-appVersion: 3.0.x
+appVersion: 3.1.0
 description: Nl Portal frontend Helm chart to be used in Kubernetes clusters.
 kubeVersion: ">=1.23.0"
 name: nl-portal-frontend
 type: application
-version: 3.0.0
+version: 3.1.0

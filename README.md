@@ -32,6 +32,25 @@ helm upgrade --install nl-portal-backend nl-portal/nl-portal-backend \
 # nl-portal/nl-portal-configpanel-frontend
 ```
 
+## Versioning
+
+Chart versions and NL Portal versions are tracked separately.
+
+`appVersion` names the NL Portal version a chart ships with by default, and is what `image.tag` falls
+back to when you do not set it. A single chart version is expected to work with every patch release on
+that minor line: `image.tag: 3.1.2` against a chart whose `appVersion` is `3.1.0` is a supported
+combination and needs no new chart. So `appVersion` trailing behind the newest patch is normal.
+
+The chart gets a new `version` when the chart itself changes, so templates, values or defaults, and
+when a new NL Portal release is not compatible with the current chart, for example because the app
+starts requiring a configuration key the chart does not render. A new app minor normally falls in that
+second category. The bump then carries the matching `appVersion`.
+
+Pin the chart `version` in your deployment and pick the app patch with `image.tag`.
+
+The config panel charts follow the same rule against their own application version, which is not the
+NL Portal version.
+
 ## Changelogs
 
 ### NL Portal

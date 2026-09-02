@@ -333,6 +333,10 @@ settings:
 
     product:
       enabled: false
+      # -- Deprecated: re-enables the `updateProductVerbruiksObject` GraphQL mutation, which is disabled by default as of NL Portal 3.0.5.
+      # This is an unsafe fallback for existing implementations, not a recommended configuration, and it is removed in 4.0.0.
+      # It only takes effect together with `enabled: true`. Migrate to the `openproduct` module and the `updateProduct` mutation instead.
+      verbruiksObjectModificationEnabled: false
       properties:
         productTypeUrl: ""
         productInstantieTypeUrl: ""

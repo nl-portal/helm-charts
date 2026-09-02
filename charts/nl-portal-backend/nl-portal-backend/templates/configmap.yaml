@@ -116,6 +116,7 @@ data:
 
   # Product
   NLPORTAL_CONFIG_PRODUCT_ENABLED: {{ .Values.settings.services.product.enabled | quote }}
+  NLPORTAL_CONFIG_PRODUCT_VERBRUIKSOBJECTMODIFICATIONENABLED: {{ .Values.settings.services.product.verbruiksObjectModificationEnabled | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTTYPEURL: {{ .Values.settings.services.product.properties.productTypeUrl | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTINSTANTIETYPEURL: {{ .Values.settings.services.product.properties.productInstantieTypeUrl | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTDETAILSTYPEURL: {{ .Values.settings.services.product.properties.productDetailsTypeUrl | quote }}

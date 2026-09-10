@@ -2,6 +2,28 @@ apiVersion: v1
 entries:
   nl-portal-backend:
   - apiVersion: v2
+    appVersion: 3.1.0
+    created: "2026-09-10T08:01:29.778439423Z"
+    dependencies:
+    - name: postgresql
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - postgresql
+      version: ~12.5.6
+    - name: keycloak
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - keycloak
+      version: ~15.1.2
+    description: Nl Portal backend Helm chart to be used in Kubernetes clusters.
+    digest: 142085e85e4f7fe962bd8d2f8728a0b8aa70c651d7d7ef2471028ed42f2f3ea6
+    kubeVersion: '>=1.23.0'
+    name: nl-portal-backend
+    type: application
+    urls:
+    - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-backend-3.2.0/nl-portal-backend-3.2.0.tgz
+    version: 3.2.0
+  - apiVersion: v2
     appVersion: 3.0.x
     created: "2026-09-04T11:05:16.393504361Z"
     dependencies:
@@ -570,4 +592,4 @@ entries:
     urls:
     - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-frontend-0.1.1/nl-portal-frontend-0.1.1.tgz
     version: 0.1.1
-generated: "2026-09-04T11:05:16.393634764Z"
+generated: "2026-09-10T08:01:29.778608056Z"

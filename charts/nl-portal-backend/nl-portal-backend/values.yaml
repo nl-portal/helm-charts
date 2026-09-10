@@ -153,8 +153,21 @@ settings:
     # -- Required: Keycloak Realm that holds the NL Portal users
     realm:
 
-    # -- Required: Audience used for Keycloak token exchange
+    # -- Token exchange variant used by the backend: `v1` or `v2`.
+    # `v1` is the Keycloak legacy token exchange and is the default.
+    # `v2` is the Keycloak Standard Token Exchange, and requires Keycloak 26.2 or newer and NL Portal 3.1.0 or newer.
+    tokenExchangeVersion: v1
+
+    # -- Audience used for Keycloak token exchange, naming the target client.
+    # Required when `tokenExchangeVersion` is `v1`, and templating fails without it.
+    # Optional for `v2`, where the m2m client supplies the claims itself; the value is only passed on when set, and it must then be an audience the m2m client can already produce.
+    # A leftover v1 value is rejected by Keycloak with `Requested audience not available`, so clear it when switching to `v2`.
     audience:
+
+    # -- Optional: comma separated list of audiences the backend accepts on incoming tokens.
+    # Leaving this empty means the backend accepts any token signed by the realm, whichever client it was issued for.
+    # Only set it when both the frontend client and the m2m client carry an audience mapper naming the m2m client, otherwise every request fails with a 401.
+    acceptedAudiences:
 
     # -- Client secret of the backend M2M client (used for token exchange).
     # -- If using existingSecret, set via key: KEYCLOAK_CLIENT_SECRET

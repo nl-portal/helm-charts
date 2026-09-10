@@ -61,6 +61,49 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{/*
+Fails when an enabled module misses a module it depends on.
+NL Portal keeps such a module inactive without an error, so the deployment would come up healthy with the feature missing.
+*/}}
+{{- define "nl-portal-backend.validateModuleDependencies" -}}
+{{- $services := .Values.settings.services | default dict -}}
+{{- $enabled := dict
+    "objectenapi" (dig "objectenapi" "enabled" false $services)
+    "catalogiapi" (dig "catalogiapi" "enabled" false $services)
+    "documentenapis" (dig "documentenapis" "enabled" false $services)
+    "besluitenapi" (dig "besluitenapi" "enabled" false $services)
+    "zakenapi" (dig "zakenapi" "enabled" false $services)
+    "taak" (dig "taak" "enabled" false $services)
+    "berichten" (dig "berichten" "enabled" false $services)
+    "openproduct" (dig "openproduct" "enabled" false $services)
+    "product" (dig "product" "enabled" false $services)
+    "payment.ogone" (dig "payment" "ogone" "enabled" false $services)
+    "payment.direct" (dig "payment" "direct" "enabled" false $services)
+-}}
+{{- $requirements := dict
+    "taak" (list "objectenapi")
+    "berichten" (list "objectenapi" "documentenapis")
+    "zakenapi" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi")
+    "openproduct" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
+    "product" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
+    "payment.ogone" (list "objectenapi")
+    "payment.direct" (list "objectenapi")
+-}}
+{{- range $module, $required := $requirements -}}
+{{- if get $enabled $module -}}
+{{- $missing := list -}}
+{{- range $dependency := $required -}}
+{{- if not (get $enabled $dependency) -}}
+{{- $missing = append $missing (printf "settings.services.%s.enabled" $dependency) -}}
+{{- end -}}
+{{- end -}}
+{{- if $missing -}}
+{{- fail (printf "settings.services.%s.enabled is true, but the %s module also requires %s. Enable the missing modules, or disable %s." $module $module (join ", " $missing) $module) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Renders a value that contains template.

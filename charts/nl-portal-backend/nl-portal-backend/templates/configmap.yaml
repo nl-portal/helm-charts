@@ -29,6 +29,8 @@
 {{- fail (printf "Chart appVersion %q is not a semantic version, so the NL Portal version cannot be checked against the 3.1.0 minimum that settings.keycloak.tokenExchangeVersion \"v2\" requires. Set image.tag to the version you deploy." $app_version) -}}
 {{- end -}}
 {{- end -}}
+
+{{- include "nl-portal-backend.validateModuleDependencies" . -}}
 ---
 apiVersion: v1
 kind: ConfigMap

@@ -1,19 +1,7 @@
 apiVersion: v2
-appVersion: 3.1.0
+appVersion: 4.0.0
 description: Nl Portal backend Helm chart to be used in Kubernetes clusters.
 kubeVersion: ">=1.23.0"
 name: nl-portal-backend
 type: application
-version: 3.2.0
-
-dependencies:
-  - name: postgresql
-    version: ~12.5.6
-    repository: oci://registry-1.docker.io/bitnamicharts
-    tags:
-      - postgresql
-  - name: keycloak
-    version: ~15.1.2
-    repository: oci://registry-1.docker.io/bitnamicharts
-    tags:
-      - keycloak
+version: 4.0.0

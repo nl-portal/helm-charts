@@ -4,7 +4,7 @@
 
 replicaCount: 1
 image:
-  repository: nginx
+  repository: ghcr.io/nl-portal/nl-portal-backend
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -188,16 +188,20 @@ settings:
   app:
     # -- TODO: what log levels are there?
     logLevel: "INFO"
-    # -- TODO: Is this default OK?
     # --CORS configuration
     security:
       cors:
+        # -- Optional: leave empty for NL Portal's default (path /**, headers, origins and methods *).
+        # Setting it replaces that default, so set allowedHeaders, allowedOrigins and allowedMethods too.
         path: ""
         config:
           allowedHeaders: ""
           allowedOrigins: ""
           allowedMethods: ""
       endpoints:
+        # -- Optional: comma separated list of paths that need no authentication.
+        # Leave empty to keep NL Portal's default `/api/public/**`, which the frontend needs for `/api/public/frontend`.
+        # Setting it replaces the default, so include `/api/public/**` yourself.
         unsecured: ""
     features:
       configurationPanel:
@@ -206,6 +210,10 @@ settings:
         # -- If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN
         token:
         applicationName: ""
+    support:
+      pingEndpoint:
+        # -- Enables `GET /api/public/ping`, a plain-text endpoint for monitoring tools.
+        enabled: false
 
 
   services:
@@ -236,7 +244,13 @@ settings:
         defaultDocumentApi: ""
         # -- Comma-separated list of allowed MIME types for document upload
         allowedMimeTypes: ""
+        # -- Optional: comma separated vertrouwelijkheidsaanduidingen of documents to show.
+        # Leave empty for NL Portal's default: OPENBAAR, BEPERKT_OPENBAAR, INTERN, ZAAKVERTROUWELIJK.
+        vertrouwelijkheidsaanduidingWhitelist: ""
+        # -- Optional: comma separated document statuses to show. Leave empty for NL Portal's default: DEFINITIEF, GEARCHIVEERD.
+        statusWhitelist: ""
         configurations:
+          # -- Optional: only rendered when url is set
           openzaak:
             url: ""
             clientId: ""
@@ -244,8 +258,7 @@ settings:
             secret: ""
             rsin: ""
             documentTypeUrl: ""
-            ssl:
-              enabled: false
+          # -- Optional: only rendered when url is set
           dummydoc:
             url: ""
             clientId: ""
@@ -269,9 +282,6 @@ settings:
         # -- Comma-separated list of zaaktype UUIDs to exclude
         zaakTypesIdsExcluded: ""
         useNnpKvkQueryIdentificators: false
-        zaakDocumentenConfig:
-          vertrouwelijkheidsaanduidingWhitelist: ""
-          statusWhitelist: ""
 
     objectenapi:
       enabled: false
@@ -287,7 +297,13 @@ settings:
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_TOKEN
         token: ""
         contactgegevensApiUrl: ""
+        # -- Optional: only show digitale adressen with this referentie
         digitalAdressenReferentie: ""
+        klantContactCodeRegister:
+          # -- Optional: only show klantcontacten linked to objects in this register for zaken (e.g. "openzaak")
+          zaak: ""
+          # -- Optional: only show klantcontacten linked to objects in this register for producten (e.g. "openproduct")
+          product: ""
 
     openproduct:
       enabled: false
@@ -311,10 +327,10 @@ settings:
         bewoningApiUrl: ""
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_APIKEY
         apiKey: ""
-        ssl:
-          enabled: false
-        # -- Comma-separated list of BRP fields to request (defaults to standard fields if not set)
+        # -- Optional: comma separated BRP fields to request. Leave empty for NL Portal's default field set.
         brpFields: ""
+        # -- Optional: comma separated list of cities for which bewoning is shown
+        allowedCitiesForBewoning: ""
 
     haalcentraalHr:
       enabled: false
@@ -322,8 +338,8 @@ settings:
         url: ""
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_APIKEY
         apiKey: ""
+        # -- Optional: client certificate for HR. Set key.certChain and key.key together.
         ssl:
-          enabled: false
           key:
             # -- If using existingSecret, set via key: NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_KEY
             key: ""
@@ -336,20 +352,31 @@ settings:
     taak:
       enabled: false
       properties:
-        typeUrl: ""
-        typeUrlV2: ""
+        # -- URL of the objecttype that holds the taken in the Objecten API
+        objectTypeUrl: ""
 
     berichten:
       enabled: false
       properties:
         berichtObjectTypeUrl: ""
 
+    verificatie:
+      enabled: false
+      properties:
+        # -- Required when enabled: URL of the verification service
+        url: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_SECRET
+        secret: ""
+        # -- If using existingSecret, set via key: NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_APIKEY
+        apiKey: ""
+        templateIdPhoneNumber: ""
+        templateIdEmail: ""
+        # -- Optional: comma separated list of TELEFOONNUMMER, EMAIL, OVERIG
+        typesNeedVerification: ""
+
     product:
       enabled: false
-      # -- Deprecated: re-enables the `updateProductVerbruiksObject` GraphQL mutation, which is disabled by default as of NL Portal 3.0.5.
-      # This is an unsafe fallback for existing implementations, not a recommended configuration, and it is removed in 4.0.0.
-      # It only takes effect together with `enabled: true`. Migrate to the `openproduct` module and the `updateProduct` mutation instead.
-      verbruiksObjectModificationEnabled: false
       properties:
         productTypeUrl: ""
         productInstantieTypeUrl: ""
@@ -366,8 +393,6 @@ settings:
         username: ""
         # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DMN_PROPERTIES_PASSWORD
         password: ""
-        ssl:
-          enabled: false
 
     prefill:
       enabled: false
@@ -382,18 +407,24 @@ settings:
           url: ""
           # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS
           shaOutParameters: ""
-          ssl:
-            enabled: false
           webhookHeaders: ""
+          # -- Optional
           webhookUrl: ""
+          # -- Optional
           customTemplateUrl: ""
           showResultPage: false
           configurations:
             belastingzaken:
               pspId: ""
+              # -- Optional: NL Portal default nl_NL
               language: ""
+              # -- Optional: NL Portal default EUR
               currency: ""
               returnUrl: ""
+              # -- Optional: allow creditcard payments. NL Portal default: false
+              creditcardEnabled:
+              # -- Optional: number of payments allowed per payment request. NL Portal default: 1
+              allowedNumberOfPayments:
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APIKEY
               apiKey: ""
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_APISECRET
@@ -403,26 +434,45 @@ settings:
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPISECRET
               webhookApiSecret: ""
 
-      ogone:
-        enabled: false
-        properties:
-          url: ""
-          # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS
-          shaOutParameters: ""
-          configurations:
-            belastingzaken:
-              pspId: ""
-              title: ""
-              language: ""
-              currency: ""
-              shaVersion: ""
-              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAINKEY
-              shaInKey: ""
-              # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY
-              shaOutKey: ""
-              failureUrl: ""
-              successUrl: ""
-
-  theme:
-    logo: ""
-    style: ""
+  # -- Frontend features, served to the frontend by `GET /api/public/frontend`. NL Portal 4.0.0 moved these from the frontend chart to the backend.
+  # Unset (null) values are not rendered and count as off in NL Portal.
+  frontend:
+    toggles:
+      messageCountEnabled:
+      casesPartialSearchEnabled:
+      openProductEnabled:
+      casesResultExplanationEnabled:
+      myInhabitantCountEnabled:
+      casesContactMomentsEnabled:
+      overviewIntroEnabled:
+      overviewMaintenanceAlertEnabled:
+      # -- JSON string with custom toggles for implementation-specific components
+      custom:
+    properties:
+      myAddressResearchUrl:
+      myAddressResearchMoreInfoUrl:
+      myAddressChangeUrl:
+      myNameChangeUrl:
+      myGenderChangeUrl:
+      myBrpChangeUrl:
+      myBrpConfidentiallyChangeUrl:
+      # -- CSS theme class name set on the html element (e.g. "gemeente-x")
+      themeClass:
+      # -- Polling interval for the message count in milliseconds
+      messageCountPollingInterval:
+      overviewMaintenanceAlertTitleNl:
+      overviewMaintenanceAlertTitleEn:
+      overviewMaintenanceAlertTextNl:
+      overviewMaintenanceAlertTextEn:
+      overviewCurrentCasesPreviewLength:
+      overviewCurrentTasksPreviewLength:
+      # -- JSON string with custom properties for implementation-specific components
+      custom:
+    theme:
+      # -- Logo URL or data URI
+      logo: ""
+      # -- CSS with design tokens
+      style: ""
+    # -- Optional: comma separated list of modules whose enabled state is exposed to the frontend.
+    # Leave empty for NL Portal's default: zakenapi, product, haalcentraalhr, haalcentraal2, taak, openproduct.
+    modulesWhitelist: ""

@@ -30,6 +30,7 @@
 {{- end -}}
 {{- end -}}
 
+{{- include "nl-portal-backend.validateRemovedValues" . -}}
 {{- include "nl-portal-backend.validateModuleDependencies" . -}}
 ---
 apiVersion: v1
@@ -54,16 +55,31 @@ data:
   SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES: {{ .Values.settings.keycloak.acceptedAudiences | quote }}
 {{- end }}
   OIDC_REALM: {{ .Values.settings.keycloak.realm | quote }}
-  
-  NLPORTAL_SECURITY_CORS_0_PATH: {{ .Values.settings.app.security.cors.path | quote }}
-  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDHEADERS: {{ .Values.settings.app.security.cors.config.allowedHeaders | quote }}
-  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDORIGINS: {{ .Values.settings.app.security.cors.config.allowedOrigins | quote }}
-  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDMETHODS: {{ .Values.settings.app.security.cors.config.allowedMethods | quote }}
-  NLPORTAL_SECURITY_ENDPOINTS_UNSECURED: {{ .Values.settings.app.security.endpoints.unsecured | quote }}
+
+{{- /* Any cors[0] key replaces NL Portal's whole default CORS list, so render nothing unless a path is set. */ -}}
+{{- with .Values.settings.app.security.cors }}
+{{- if .path }}
+  NLPORTAL_SECURITY_CORS_0_PATH: {{ .path | quote }}
+{{- with .config.allowedHeaders }}
+  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDHEADERS: {{ . | quote }}
+{{- end }}
+{{- with .config.allowedOrigins }}
+  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDORIGINS: {{ . | quote }}
+{{- end }}
+{{- with .config.allowedMethods }}
+  NLPORTAL_SECURITY_CORS_0_CONFIG_ALLOWEDMETHODS: {{ . | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- with .Values.settings.app.security.endpoints.unsecured }}
+  NLPORTAL_SECURITY_ENDPOINTS_UNSECURED: {{ . | quote }}
+{{- end }}
 
   CONFIGURATION_PANEL_ENABLED: {{ .Values.settings.app.features.configurationPanel.enabled | quote }}
   CONFIGURATION_PANEL_URI: {{ .Values.settings.app.features.configurationPanel.uri | quote }}
   CONFIGURATION_PANEL_APPLICATION_NAME: {{ .Values.settings.app.features.configurationPanel.applicationName | quote }}
+
+  NLPORTAL_SUPPORT_PINGENDPOINT_ENABLED: {{ .Values.settings.app.support.pingEndpoint.enabled | quote }}
 
   # Authentication
   NLPORTAL_AUTHENTICATION_MACHTINGSDIENST_RESOURCEURL: {{ .Values.settings.services.authentication.machtingsdienst.resourceUrl | quote }}
@@ -83,13 +99,35 @@ data:
   NLPORTAL_CONFIG_DOCUMENTENAPIS_ENABLED: {{ .Values.settings.services.documentenapis.enabled | quote }}
   NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_DEFAULTDOCUMENTAPI: {{ .Values.settings.services.documentenapis.properties.defaultDocumentApi | quote }}
   NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_ALLOWEDMIMETYPES: {{ .Values.settings.services.documentenapis.properties.allowedMimeTypes | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_URL: {{ .Values.settings.services.documentenapis.properties.configurations.openzaak.url | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_CLIENTID: {{ .Values.settings.services.documentenapis.properties.configurations.openzaak.clientId | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_RSIN: {{ .Values.settings.services.documentenapis.properties.configurations.openzaak.rsin | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ .Values.settings.services.documentenapis.properties.configurations.openzaak.documentTypeUrl | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_SSL_ENABLED: {{ .Values.settings.services.documentenapis.properties.configurations.openzaak.ssl.enabled | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_URL: {{ .Values.settings.services.documentenapis.properties.configurations.dummydoc.url | quote }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_CLIENTID: {{ .Values.settings.services.documentenapis.properties.configurations.dummydoc.clientId | quote }}
+{{- with .Values.settings.services.documentenapis.properties.vertrouwelijkheidsaanduidingWhitelist }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_VERTROUWELIJKHEIDSAANDUIDINGWHITELIST: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.documentenapis.properties.statusWhitelist }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_STATUSWHITELIST: {{ . | quote }}
+{{- end }}
+{{- /* A configuration with an empty url matches every document URL, so each one renders only when its url is set. */ -}}
+{{- with .Values.settings.services.documentenapis.properties.configurations.openzaak }}
+{{- if .url }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_URL: {{ .url | quote }}
+{{- with .clientId }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_CLIENTID: {{ . | quote }}
+{{- end }}
+{{- with .rsin }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_RSIN: {{ . | quote }}
+{{- end }}
+{{- with .documentTypeUrl }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ . | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- with .Values.settings.services.documentenapis.properties.configurations.dummydoc }}
+{{- if .url }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_URL: {{ .url | quote }}
+{{- with .clientId }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_CLIENTID: {{ . | quote }}
+{{- end }}
+{{- end }}
+{{- end }}
 
   # VirusScan ClamAV
   NLPORTAL_CONFIG_VIRUSSCAN_CLAMAV_ENABLED: {{ .Values.settings.services.virusscan.clamav.enabled | quote }}
@@ -102,8 +140,6 @@ data:
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_CLIENTID: {{ .Values.settings.services.zakenapi.properties.clientId | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKTYPESIDSEXCLUDED: {{ .Values.settings.services.zakenapi.properties.zaakTypesIdsExcluded | quote }}
   NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_USENNPKVKQUERYIDENTIFICATORS: {{ .Values.settings.services.zakenapi.properties.useNnpKvkQueryIdentificators | quote }}
-  NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKDOCUMENTENCONFIG_VERTROUWELIJKHEIDSAANDUIDINGWHITELIST: {{ .Values.settings.services.zakenapi.properties.zaakDocumentenConfig.vertrouwelijkheidsaanduidingWhitelist | quote }}
-  NLPORTAL_CONFIG_ZAKENAPI_PROPERTIES_ZAAKDOCUMENTENCONFIG_STATUSWHITELIST: {{ .Values.settings.services.zakenapi.properties.zaakDocumentenConfig.statusWhitelist | quote }}
 
   # ObjectenAPI
   NLPORTAL_CONFIG_OBJECTENAPI_ENABLED: {{ .Values.settings.services.objectenapi.enabled | quote }}
@@ -113,7 +149,15 @@ data:
   NLPORTAL_CONFIG_OPENKLANT2_ENABLED: {{ .Values.settings.services.openklant2.enabled | quote }}
   NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_KLANTINTERACTIESAPIURL: {{ .Values.settings.services.openklant2.properties.klantinteractiesApiUrl | quote }}
   NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_CONTACTGEGEVENSAPIURL: {{ .Values.settings.services.openklant2.properties.contactgegevensApiUrl | quote }}
-  NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_DIGITALADRESSENREFERENTIE: {{ .Values.settings.services.openklant2.properties.digitalAdressenReferentie | quote }}
+{{- with .Values.settings.services.openklant2.properties.digitalAdressenReferentie }}
+  NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_DIGITALADRESSENREFERENTIE: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.openklant2.properties.klantContactCodeRegister.zaak }}
+  NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_KLANTCONTACTCODEREGISTER_ZAAK: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.openklant2.properties.klantContactCodeRegister.product }}
+  NLPORTAL_CONFIG_OPENKLANT2_PROPERTIES_KLANTCONTACTCODEREGISTER_PRODUCT: {{ . | quote }}
+{{- end }}
 
   # OpenProduct
   NLPORTAL_CONFIG_OPENPRODUCT_ENABLED: {{ .Values.settings.services.openproduct.enabled | quote }}
@@ -126,27 +170,50 @@ data:
   NLPORTAL_CONFIG_HAALCENTRAAL2_ENABLED: {{ .Values.settings.services.haalcentraal2.enabled | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_BRPAPIURL: {{ .Values.settings.services.haalcentraal2.properties.brpApiUrl | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_BEWONINGAPIURL: {{ .Values.settings.services.haalcentraal2.properties.bewoningApiUrl | quote }}
-  NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_SSL_ENABLED: {{ .Values.settings.services.haalcentraal2.properties.ssl.enabled | quote }}
-  NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_BRPFIELDS: {{ .Values.settings.services.haalcentraal2.properties.brpFields | quote }}
+{{- with .Values.settings.services.haalcentraal2.properties.brpFields }}
+  NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_BRPFIELDS: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.haalcentraal2.properties.allowedCitiesForBewoning }}
+  NLPORTAL_CONFIG_HAALCENTRAAL2_PROPERTIES_ALLOWEDCITIESFORBEWONING: {{ . | quote }}
+{{- end }}
 
   # HaalCentraal HR
   NLPORTAL_CONFIG_HAALCENTRAAL_HR_ENABLED: {{ .Values.settings.services.haalcentraalHr.enabled | quote }}
+  # NL Portal 4.0.0 reads this key for the gemachtigde query and the frontend module list.
+  NLPORTAL_CONFIG_HAALCENTRAALHR_ENABLED: {{ .Values.settings.services.haalcentraalHr.enabled | quote }}
   NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_URL: {{ .Values.settings.services.haalcentraalHr.properties.url | quote }}
-  NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_ENABLED: {{ .Values.settings.services.haalcentraalHr.properties.ssl.enabled | quote }}
-  NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_CERTCHAIN: {{ .Values.settings.services.haalcentraalHr.properties.ssl.key.certChain | quote }}
+{{- with .Values.settings.services.haalcentraalHr.properties.ssl.key.certChain }}
+  NLPORTAL_CONFIG_HAALCENTRAAL_HR_PROPERTIES_SSL_KEY_CERTCHAIN: {{ . | quote }}
+{{- end }}
 
   # Taak
   NLPORTAL_CONFIG_TAAK_ENABLED: {{ .Values.settings.services.taak.enabled | quote }}
-  NLPORTAL_CONFIG_TAAK_PROPERTIES_TYPEURL: {{ .Values.settings.services.taak.properties.typeUrl | quote }}
-  NLPORTAL_CONFIG_TAAK_PROPERTIES_TYPEURLV2: {{ .Values.settings.services.taak.properties.typeUrlV2 | quote }}
+  NLPORTAL_CONFIG_TAAK_PROPERTIES_OBJECTTYPEURL: {{ .Values.settings.services.taak.properties.objectTypeUrl | quote }}
 
   # Berichten
   NLPORTAL_CONFIG_BERICHTEN_ENABLED: {{ .Values.settings.services.berichten.enabled | quote }}
   NLPORTAL_CONFIG_BERICHTEN_PROPERTIES_BERICHTOBJECTTYPEURL: {{ .Values.settings.services.berichten.properties.berichtObjectTypeUrl | quote }}
 
+  # Verificatie
+  NLPORTAL_CONFIG_VERIFICATIE_ENABLED: {{ .Values.settings.services.verificatie.enabled | quote }}
+{{- if .Values.settings.services.verificatie.enabled }}
+  NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_URL: {{ required "You must set settings.services.verificatie.properties.url when settings.services.verificatie.enabled is true" .Values.settings.services.verificatie.properties.url | quote }}
+{{- end }}
+{{- with .Values.settings.services.verificatie.properties.clientId }}
+  NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_CLIENTID: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.verificatie.properties.templateIdPhoneNumber }}
+  NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_TEMPLATEIDPHONENUMBER: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.verificatie.properties.templateIdEmail }}
+  NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_TEMPLATEIDEMAIL: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.verificatie.properties.typesNeedVerification }}
+  NLPORTAL_CONFIG_VERIFICATIE_PROPERTIES_TYPESNEEDVERIFICATION: {{ . | quote }}
+{{- end }}
+
   # Product
   NLPORTAL_CONFIG_PRODUCT_ENABLED: {{ .Values.settings.services.product.enabled | quote }}
-  NLPORTAL_CONFIG_PRODUCT_VERBRUIKSOBJECTMODIFICATIONENABLED: {{ .Values.settings.services.product.verbruiksObjectModificationEnabled | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTTYPEURL: {{ .Values.settings.services.product.properties.productTypeUrl | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTINSTANTIETYPEURL: {{ .Values.settings.services.product.properties.productInstantieTypeUrl | quote }}
   NLPORTAL_CONFIG_PRODUCT_PROPERTIES_PRODUCTDETAILSTYPEURL: {{ .Values.settings.services.product.properties.productDetailsTypeUrl | quote }}
@@ -157,37 +224,60 @@ data:
   NLPORTAL_CONFIG_DMN_PROPERTIES_URL: {{ .Values.settings.services.dmn.properties.url | quote }}
   NLPORTAL_CONFIG_DMN_PROPERTIES_CLIENTID: {{ .Values.settings.services.dmn.properties.clientId | quote }}
   NLPORTAL_CONFIG_DMN_PROPERTIES_USERNAME: {{ .Values.settings.services.dmn.properties.username | quote }}
-  NLPORTAL_CONFIG_DMN_PROPERTIES_SSL_ENABLED: {{ .Values.settings.services.dmn.properties.ssl.enabled | quote }}
 
   # Prefill
   NLPORTAL_CONFIG_PREFILL_ENABLED: {{ .Values.settings.services.prefill.enabled | quote }}
   NLPORTAL_CONFIG_PREFILL_PROPERTIES_TYPEURL: {{ .Values.settings.services.prefill.properties.typeUrl | quote }}
   NLPORTAL_CONFIG_PREFILL_PROPERTIES_PREFILLSHAVERSION: {{ .Values.settings.services.prefill.properties.prefillShaVersion | quote }}
 
-  # Theme
-  NLPORTAL_CONFIG_THEME_LOGO: {{ .Values.settings.theme.logo | quote }}
-  NLPORTAL_CONFIG_THEME_STYLE: {{ .Values.settings.theme.style | quote }}
+  # Frontend (served by GET /api/public/frontend)
+{{- range $name, $value := .Values.settings.frontend.toggles }}
+{{- if not (kindIs "invalid" $value) }}
+  NLPORTAL_FRONTEND_TOGGLES_{{ upper $name }}: {{ $value | toString | quote }}
+{{- end }}
+{{- end }}
+{{- range $name, $value := .Values.settings.frontend.properties }}
+{{- if not (kindIs "invalid" $value) }}
+{{- /* YAML numbers arrive as float64, which large values would render as 1e+07. */ -}}
+{{- if and (kindIs "float64" $value) (eq $value (floor $value)) }}
+{{- $value = int64 $value }}
+{{- end }}
+  NLPORTAL_FRONTEND_PROPERTIES_{{ upper $name }}: {{ $value | toString | quote }}
+{{- end }}
+{{- end }}
+{{- with .Values.settings.frontend.theme.logo }}
+  NLPORTAL_FRONTEND_THEME_LOGO: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.frontend.theme.style }}
+  NLPORTAL_FRONTEND_THEME_STYLE: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.frontend.modulesWhitelist }}
+  NLPORTAL_FRONTEND_MODULESWHITELIST: {{ . | quote }}
+{{- end }}
 
   # Payment Direct
   NLPORTAL_CONFIG_PAYMENT_DIRECT_ENABLED: {{ .Values.settings.services.payment.direct.enabled | quote }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_URL: {{ .Values.settings.services.payment.direct.properties.url | quote }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS: {{ .Values.settings.services.payment.direct.properties.shaOutParameters | quote }}
-  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SSL_ENABLED: {{ .Values.settings.services.payment.direct.properties.ssl.enabled | quote }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_WEBHOOKHEADERS: {{ .Values.settings.services.payment.direct.properties.webhookHeaders | quote }}
-  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_WEBHOOKURL: {{ .Values.settings.services.payment.direct.properties.webhookUrl | quote }}
-  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CUSTOMTEMPLATEURL: {{ .Values.settings.services.payment.direct.properties.customTemplateUrl | quote }}
+{{- with .Values.settings.services.payment.direct.properties.webhookUrl }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_WEBHOOKURL: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.payment.direct.properties.customTemplateUrl }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CUSTOMTEMPLATEURL: {{ . | quote }}
+{{- end }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHOWRESULTPAGE: {{ .Values.settings.services.payment.direct.properties.showResultPage | quote }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_PSPID: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.pspId | quote }}
-  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_LANGUAGE: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.language | quote }}
-  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_CURRENCY: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.currency | quote }}
+{{- with .Values.settings.services.payment.direct.properties.configurations.belastingzaken.language }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_LANGUAGE: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.services.payment.direct.properties.configurations.belastingzaken.currency }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_CURRENCY: {{ . | quote }}
+{{- end }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_RETURNURL: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.returnUrl | quote }}
-  # Payment Ogone
-  NLPORTAL_CONFIG_PAYMENT_OGONE_ENABLED: {{ .Values.settings.services.payment.ogone.enabled | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_URL: {{ .Values.settings.services.payment.ogone.properties.url | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_PSPID: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.pspId | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_TITLE: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.title | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_LANGUAGE: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.language | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_CURRENCY: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.currency | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAVERSION: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.shaVersion | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_FAILUREURL: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.failureUrl | quote }}
-  NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SUCCESSURL: {{ .Values.settings.services.payment.ogone.properties.configurations.belastingzaken.successUrl | quote }}
+{{- if not (kindIs "invalid" .Values.settings.services.payment.direct.properties.configurations.belastingzaken.creditcardEnabled) }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_CREDITCARDENABLED: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.creditcardEnabled | quote }}
+{{- end }}
+{{- if not (kindIs "invalid" .Values.settings.services.payment.direct.properties.configurations.belastingzaken.allowedNumberOfPayments) }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_ALLOWEDNUMBEROFPAYMENTS: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.allowedNumberOfPayments | quote }}
+{{- end }}

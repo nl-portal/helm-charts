@@ -22,6 +22,7 @@ nl-portal-backend and nl-portal-frontend carry `appVersion: 4.0.0`. The configpa
   - Adds: `besluitenapi` requires `documentenapis` and `zakenapi`.
   - Drops: `payment.direct` requires `objectenapi`. In 4.0.0 only the webhook needs it.
   - Drops: the `payment.ogone` rule.
+- nl-portal-backend: `rsin` and `documentTypeUrl` are now required for every `documentenapis` configuration whose `url` is set; templating fails without them. `dummydoc` gets both keys.
 
 ## Fixes
 

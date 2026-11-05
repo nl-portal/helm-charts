@@ -256,7 +256,9 @@ settings:
             clientId: ""
             # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_SECRET
             secret: ""
+            # -- Required when url is set.
             rsin: ""
+            # -- Required when url is set.
             documentTypeUrl: ""
           # -- Optional: only rendered when url is set
           dummydoc:
@@ -264,6 +266,10 @@ settings:
             clientId: ""
             # -- If using existingSecret, set via key: NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_SECRET
             secret: ""
+            # -- Required when url is set.
+            rsin: ""
+            # -- Required when url is set.
+            documentTypeUrl: ""
 
     virusscan:
       clamav:

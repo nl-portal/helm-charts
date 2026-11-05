@@ -153,3 +153,26 @@ settings:
       properties:
         objectTypeUrl: https://objecttypen.example.com/api/v2/objecttypes/<uuid>
 ```
+
+```yaml
+# Documenten API configurations (nl-portal-backend)
+# Before
+settings:
+  services:
+    documentenapis:
+      properties:
+        configurations:
+          openzaak:
+            url: https://openzaak.example.com/documenten/api/v1/
+
+# After. Set both for dummydoc too if you use it.
+settings:
+  services:
+    documentenapis:
+      properties:
+        configurations:
+          openzaak:
+            url: https://openzaak.example.com/documenten/api/v1/
+            rsin: "002564440"
+            documentTypeUrl: https://openzaak.example.com/catalogi/api/v1/informatieobjecttypen/<uuid>
+```

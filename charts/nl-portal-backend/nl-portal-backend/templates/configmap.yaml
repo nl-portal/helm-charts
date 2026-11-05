@@ -112,12 +112,8 @@ data:
 {{- with .clientId }}
   NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_CLIENTID: {{ . | quote }}
 {{- end }}
-{{- with .rsin }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_RSIN: {{ . | quote }}
-{{- end }}
-{{- with .documentTypeUrl }}
-  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ . | quote }}
-{{- end }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_RSIN: {{ required "You must set settings.services.documentenapis.properties.configurations.openzaak.rsin when its url is set" .rsin | quote }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_OPENZAAK_DOCUMENTTYPEURL: {{ required "You must set settings.services.documentenapis.properties.configurations.openzaak.documentTypeUrl when its url is set" .documentTypeUrl | quote }}
 {{- end }}
 {{- end }}
 {{- with .Values.settings.services.documentenapis.properties.configurations.dummydoc }}
@@ -126,6 +122,8 @@ data:
 {{- with .clientId }}
   NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_CLIENTID: {{ . | quote }}
 {{- end }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_RSIN: {{ required "You must set settings.services.documentenapis.properties.configurations.dummydoc.rsin when its url is set" .rsin | quote }}
+  NLPORTAL_CONFIG_DOCUMENTENAPIS_PROPERTIES_CONFIGURATIONS_DUMMYDOC_DOCUMENTTYPEURL: {{ required "You must set settings.services.documentenapis.properties.configurations.dummydoc.documentTypeUrl when its url is set" .documentTypeUrl | quote }}
 {{- end }}
 {{- end }}
 

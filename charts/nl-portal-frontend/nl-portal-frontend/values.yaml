@@ -4,7 +4,7 @@
 
 replicaCount: 1
 image:
-  repository: nginx
+  repository: ghcr.io/nl-portal/nl-portal-frontend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -146,74 +146,6 @@ settings:
   # ---------------------------------------------------------------------------
   # API Endpoints
   # ---------------------------------------------------------------------------
+  # Feature toggles, theme and BRP URLs moved to the nl-portal-backend chart (settings.frontend) in NL Portal 4.0.0.
   # -- Backend URL. Empty string = same URL as frontend (inferred from Ingress)
   backendUrl: ""
-
-  # ---------------------------------------------------------------------------
-  # Feature Flags
-  # ---------------------------------------------------------------------------
-  features:
-    # -- Whether to fetch theme from backend API
-    useThemeApi: false
-    # -- OpenKlant API version: "v1" or "v2"
-    openKlantVersion: null
-    # -- Enable message count polling
-    messageCountEnable: true
-    # -- Polling interval for message count updates in milliseconds
-    messageCountPollingInterval: 10000
-    # -- Enable partial/fuzzy search for cases
-    casesPartialSearch: true
-    # -- Show inhabitant amount on overview page
-    showInhabitantAmount: true
-    # -- Enable OpenProducten integration
-    openProducten: false
-    # -- Show explanation of case result
-    showCaseResultExplanation: false
-    # -- Use legacy Ogone payment flow
-    useLegacyOgonePayment: false
-
-  # ---------------------------------------------------------------------------
-  # Theme (optional)
-  # ---------------------------------------------------------------------------
-  # -- CSS theme class name for custom styling (e.g. "gemeente-x")
-  themeClass: null
-
-  # ---------------------------------------------------------------------------
-  # Overview Page Options
-  # ---------------------------------------------------------------------------
-  overview:
-    # -- Show intro section on overview page
-    showIntro: true
-    # -- Show maintenance alert banner on overview page
-    showMaintenanceAlert: true
-    # -- Show preview of current cases on overview page
-    showCurrentCasesPreview: true
-    # -- Number of cases to display in the current cases preview
-    currentCasesPreviewLength: 2
-
-  # ---------------------------------------------------------------------------
-  # Account Page Options
-  # ---------------------------------------------------------------------------
-  account:
-    # -- Show notification settings subsection on account page
-    showNotificationSubsection: true
-
-  # ---------------------------------------------------------------------------
-  # BRP/Address Action URLs (optional)
-  # External links shown on account page
-  # ---------------------------------------------------------------------------
-  brpUrls:
-    # -- External link for address research
-    addressResearchUrl: null
-    # -- External link for more info on address research
-    addressResearchMoreInfoUrl: null
-    # -- External link for reporting address change
-    reportChangeOfAddressUrl: null
-    # -- External link for changing use of surname
-    changeInUseOfSurnameUrl: null
-    # -- External link for changing registered gender
-    changeRegisteredGenderUrl: null
-    # -- External link for requesting BRP info change
-    requestForChangeBrpInfoUrl: null
-    # -- External link for requesting data confidentiality
-    requestConfidentialityOfDataUrl: null

@@ -4,6 +4,10 @@
 
 Nl Portal backend Helm chart to be used in Kubernetes clusters.
 
+## Release notes
+
+See [release notes](../release-notes/) for changes and migration steps per chart version.
+
 ## Requirements
 
 Kubernetes: `>=1.23.0`

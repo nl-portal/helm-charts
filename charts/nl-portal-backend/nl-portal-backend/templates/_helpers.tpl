@@ -86,8 +86,8 @@ NL Portal keeps such a module inactive without an error, so the deployment would
     "zakenapi" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi")
     "openproduct" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
     "product" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
-    "payment.ogone" (list "objectenapi")
-    "payment.direct" (list "objectenapi")
+    "payment.ogone" (list "objectenapi" "taak")
+    "payment.direct" (list "objectenapi" "taak")
 -}}
 {{- range $module, $required := $requirements -}}
 {{- if get $enabled $module -}}

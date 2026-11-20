@@ -403,6 +403,7 @@ settings:
               # -- If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPISECRET
               webhookApiSecret: ""
 
+      # -- Deprecated: Ogone e-Commerce is no longer supported by NL Portal and is removed in 4.0.0. Use `payment.direct` instead.
       ogone:
         enabled: false
         properties:

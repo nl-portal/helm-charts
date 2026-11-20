@@ -1,8 +1,12 @@
 # nl-portal-backend
 
-![Version: 3.2.1](https://img.shields.io/badge/Version-3.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.1.2](https://img.shields.io/badge/AppVersion-3.1.2-informational?style=flat-square)
+![Version: 3.2.2](https://img.shields.io/badge/Version-3.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.1.3](https://img.shields.io/badge/AppVersion-3.1.3-informational?style=flat-square)
 
 Nl Portal backend Helm chart to be used in Kubernetes clusters.
+
+## Release notes
+
+See [release notes](../release-notes/) for changes and migration steps per chart version.
 
 ## Requirements
 
@@ -102,6 +106,7 @@ Kubernetes: `>=1.23.0`
 | settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPIKEY |
 | settings.services.payment.direct.properties.configurations.belastingzaken.webhookApiSecret | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_WEBHOOKAPISECRET |
 | settings.services.payment.direct.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHAOUTPARAMETERS |
+| settings.services.payment.ogone | object | `{"enabled":false,"properties":{"configurations":{"belastingzaken":{"currency":"","failureUrl":"","language":"","pspId":"","shaInKey":"","shaOutKey":"","shaVersion":"","successUrl":"","title":""}},"shaOutParameters":"","url":""}}` | Deprecated: Ogone e-Commerce is no longer supported by NL Portal and is removed in 4.0.0. Use `payment.direct` instead. |
 | settings.services.payment.ogone.properties.configurations.belastingzaken.shaInKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAINKEY |
 | settings.services.payment.ogone.properties.configurations.belastingzaken.shaOutKey | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_SHAOUTKEY |
 | settings.services.payment.ogone.properties.shaOutParameters | string | `""` | If using existingSecret, set via key: NLPORTAL_CONFIG_PAYMENT_OGONE_PROPERTIES_SHAOUTPARAMETERS |

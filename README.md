@@ -2,12 +2,14 @@
 
 This repository contains the helm charts for the NL Portal application.
 
-Find the helm configuration values here:
+## Charts
 
-- [NL Portal Backend](https://github.com/nl-portal/helm-charts/tree/main/charts/nl-portal-backend/nl-portal-backend)
-- [NL Portal Frontend](https://github.com/nl-portal/helm-charts/tree/main/charts/nl-portal-frontend/nl-portal-frontend)
-- [NL Portal Config Panel Backend](https://github.com/nl-portal/helm-charts/tree/main/charts/nl-portal-configpanel-backend/nl-portal-configpanel-backend)
-- [NL Portal Config Panel Frontend](https://github.com/nl-portal/helm-charts/tree/main/charts/nl-portal-configpanel-frontend/nl-portal-configpanel-frontend)
+| Chart | Values and docs | Release notes |
+| --- | --- | --- |
+| nl-portal-backend | [README](charts/nl-portal-backend/nl-portal-backend/README.md) | [release notes](charts/nl-portal-backend/release-notes/) |
+| nl-portal-frontend | [README](charts/nl-portal-frontend/nl-portal-frontend/README.md) | [release notes](charts/nl-portal-frontend/release-notes/) |
+| nl-portal-configpanel-backend | [README](charts/nl-portal-configpanel-backend/nl-portal-configpanel-backend/README.md) | [release notes](charts/nl-portal-configpanel-backend/release-notes/) |
+| nl-portal-configpanel-frontend | [README](charts/nl-portal-configpanel-frontend/nl-portal-configpanel-frontend/README.md) | [release notes](charts/nl-portal-configpanel-frontend/release-notes/) |
 
 The generated list of published helm releases can be found [here](https://nl-portal.github.io/helm-charts/index.yaml).
 
@@ -51,15 +53,6 @@ Pin the chart `version` in your deployment and pick the app patch with `image.ta
 The config panel charts follow the same rule against their own application version, which is not the
 NL Portal version.
 
-## Release notes
-
-Release notes and migration instructions per NL Portal version live in [`release-notes/`](release-notes).
-Versions are NL Portal versions, not chart versions. See [Versioning](#versioning).
-
-| NL Portal | Release notes | Migration |
-| --- | --- | --- |
-| 4.0.0 | [release notes](release-notes/4.0.0/release-notes.md) | [migration](release-notes/4.0.0/migration.md) |
-| 3.1.0 | [release notes](release-notes/3.1.0/release-notes.md) | [migration](release-notes/3.1.0/migration.md) |
-| 3.0.5 | [release notes](release-notes/3.0.5/release-notes.md) | — |
-| 3.0.0 | [release notes](release-notes/3.0.0/release-notes.md) | [migration](release-notes/3.0.0/migration.md) |
-| 2.1.0 | [release notes](release-notes/2.1.0/release-notes.md) | — |
+nl-portal-backend and nl-portal-frontend share chart versions, and so do nl-portal-configpanel-backend
+and nl-portal-configpanel-frontend. The two charts of a pair are released together, also when one of
+them only gets an `appVersion` bump. Release notes are kept per chart, in `charts/<chart>/release-notes/`.

@@ -1,3 +1,5 @@
+{{- include "nl-portal-frontend.validateRemovedValues" . -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -30,30 +32,3 @@ data:
 
   GRAPHQL_URI: {{ print .Values.settings.backendUrl "/graphql" | quote }}
   REST_URI: {{ print .Values.settings.backendUrl "/api" | quote }}
-
-  USE_THEME_API: {{ .Values.settings.features.useThemeApi | quote }}
-  OPEN_KLANT_VERSION: {{ .Values.settings.features.openKlantVersion | quote }}
-  MESSAGE_COUNT_ENABLE: {{ .Values.settings.features.messageCountEnable | quote }}
-  MESSAGE_COUNT_POLLING_INTERVAL: {{ .Values.settings.features.messageCountPollingInterval | quote }}
-  CASES_PARTIAL_SEARCH: {{ .Values.settings.features.casesPartialSearch | quote }}
-  SHOW_INHABITANT_AMOUNT: {{ .Values.settings.features.showInhabitantAmount | quote }}
-  OPEN_PRODUCTEN: {{ .Values.settings.features.openProducten | quote }}
-  SHOW_CASE_RESULT_EXPLANATION: {{ .Values.settings.features.showCaseResultExplanation | quote }}
-  USE_LEGACY_OGONE_PAYMENT: {{ .Values.settings.features.useLegacyOgonePayment | quote }}
-
-  THEME_CLASS: {{ .Values.settings.themeClass | quote }}
-
-  OVERVIEW_SHOW_INTRO: {{ .Values.settings.overview.showIntro | quote }}
-  OVERVIEW_SHOW_MAINTENANCE_ALERT: {{ .Values.settings.overview.showMaintenanceAlert | quote }}
-  OVERVIEW_SHOW_CURRENT_CASES_PREVIEW: {{ .Values.settings.overview.showCurrentCasesPreview | quote }}
-  OVERVIEW_CURRENT_CASES_PREVIEW_LENGTH: {{ .Values.settings.overview.currentCasesPreviewLength | quote }}
-
-  ACCOUNT_SHOW_NOTIFICATION_SUBSECTION: {{ .Values.settings.account.showNotificationSubsection | quote }}
-
-  ADDRESS_RESEARCH_URL: {{ .Values.settings.brpUrls.addressResearchUrl | quote }}
-  ADDRESS_RESEARCH_MORE_INFO_URL: {{ .Values.settings.brpUrls.addressResearchMoreInfoUrl | quote }}
-  REPORT_CHANGE_OF_ADDRESS_URL: {{ .Values.settings.brpUrls.reportChangeOfAddressUrl | quote }}
-  CHANGE_IN_USE_OF_SURNAME_URL: {{ .Values.settings.brpUrls.changeInUseOfSurnameUrl | quote }}
-  CHANGE_REGISTERED_GENDER_URL: {{ .Values.settings.brpUrls.changeRegisteredGenderUrl | quote }}
-  REQUEST_FOR_CHANGE_BRP_INFO_URL: {{ .Values.settings.brpUrls.requestForChangeBrpInfoUrl | quote }}
-  REQUEST_CONFIDENTIALITY_OF_DATA_URL: {{ .Values.settings.brpUrls.requestConfidentialityOfDataUrl | quote }}

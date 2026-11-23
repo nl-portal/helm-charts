@@ -158,6 +158,10 @@ settings:
   auth:
     # -- Required: JSON Web Key Set (JWKS) URI for validating tokens
     jwksURI: ""
+    # -- Optional: comma-separated authorities allowed to use the panel. Empty: application default ROLE_CONFIG_PANEL_ADMIN.
+    authorities: ""
+    # -- Optional: SpEL claim expression for the user's roles. Empty: application default ['realm_access']['roles'].
+    authoritiesClaimExpression: ""
 
   database:
     # -- Required: JDBC-style URL to a Postgres database, e.g. jdbc:postgresql://localhost:5432/nl-portal
@@ -180,8 +184,32 @@ settings:
     notifyEnabled: false
     # -- A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled.
     notifyList: ""
+    notify:
+      # -- Optional: connect timeout for the token request and the NL Portal calls. Empty: application default 5s.
+      connectTimeout: ""
+      # -- Optional: read timeout for the token request and the NL Portal calls. Empty: application default 10s.
+      readTimeout: ""
+      # -- OAuth2 client-credentials client the panel uses to get a token for NL Portal's actuator. Required when notifyEnabled.
+      client:
+        # -- Token endpoint of the identity provider, e.g. https://keycloak.example.com/realms/gzac/protocol/openid-connect/token
+        tokenUri: ""
+        clientId: ""
+        # -- If using existingSecret, set via key: CONFIG_NOTIFY_CLIENT_SECRET
+        clientSecret: ""
+        # -- Optional: comma-separated scopes to request. Empty: no scope parameter.
+        scope: ""
+
+    encryption:
+      # -- Encrypt configuration values in the database and when served to NL Portal.
+      enabled: true
+      # -- Required when encryption is enabled: Base64-encoded 32-byte key (`openssl rand -base64 32`). NL Portal needs the same key.
+      # If using existingSecret, set via key: CONFIG_ENCRYPTION_KEY
+      key: ""
 
     security:
+      # -- Optional: comma-separated property key prefixes the panel reads, writes, deletes and serves.
+      # null: application default nl-portal.config.,nl-portal.frontend. An empty value is refused.
+      allowedKeyPrefixes: null
       cors:
         allowedHeaders: "Authorization, Content-Type, Accept"
         allowedOrigins: "*"

@@ -203,6 +203,17 @@ settings:
         # Leave empty to keep NL Portal's default `/api/public/**`, which the frontend needs for `/api/public/frontend`.
         # Setting it replaces the default, so include `/api/public/**` yourself.
         unsecured: ""
+      actuator:
+        # -- JWKS URI of the realm the Configuration Panel's notify client gets its token from (e.g. the GZAC realm).
+        # Unset: actuator endpoints except health are denied.
+        jwksURI: ""
+        # -- Optional: issuer of that realm, exactly as in the token's `iss` claim. Set: only tokens from this issuer are accepted.
+        # Use it when several issuers share signing keys (e.g. Entra ID tenants).
+        issuerURI: ""
+        # -- SpEL claim expression for roles. Empty: application default ['realm_access']['roles'].
+        authoritiesClaimExpression: ""
+        # -- Comma-separated authorities allowed to call actuator refresh/restart. Empty: application default ROLE_ACTUATOR.
+        authorities: ""
     features:
       configurationPanel:
         enabled: false
@@ -210,6 +221,12 @@ settings:
         # -- If using existingSecret, set via key: CONFIGURATION_PANEL_TOKEN
         token:
         applicationName: ""
+        encryption:
+          # -- Decrypt `{cipher}` values from the Configuration Panel. Only active when the Configuration Panel is enabled.
+          enabled: true
+          # -- Required when the Configuration Panel and encryption are enabled: the panel's encryption key (`openssl rand -base64 32`).
+          # If using existingSecret, set via key: CONFIGURATION_PANEL_ENCRYPTION_KEY
+          key: ""
     support:
       pingEndpoint:
         # -- Enables `GET /api/public/ping`, a plain-text endpoint for monitoring tools.
@@ -419,6 +436,9 @@ settings:
           # -- Optional
           customTemplateUrl: ""
           showResultPage: false
+          # -- Optional: also accept payments started on NL Portal 3.x and finished after the upgrade (3.x amount rounding).
+          # Turn it off again once those are finished; removed in NL Portal 5.0. NL Portal default: false
+          acceptLegacyAmountRounding:
           configurations:
             belastingzaken:
               pspId: ""

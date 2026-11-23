@@ -74,10 +74,25 @@ data:
 {{- with .Values.settings.app.security.endpoints.unsecured }}
   NLPORTAL_SECURITY_ENDPOINTS_UNSECURED: {{ . | quote }}
 {{- end }}
+{{- with .Values.settings.app.security.actuator }}
+{{- with .jwksURI }}
+  NLPORTAL_SECURITY_ACTUATOR_JWKSETURI: {{ . | quote }}
+{{- end }}
+{{- with .issuerURI }}
+  NLPORTAL_SECURITY_ACTUATOR_ISSUERURI: {{ . | quote }}
+{{- end }}
+{{- with .authoritiesClaimExpression }}
+  NLPORTAL_SECURITY_ACTUATOR_AUTHORITIESCLAIMEXPRESSION: {{ . | quote }}
+{{- end }}
+{{- with .authorities }}
+  NLPORTAL_SECURITY_ACTUATOR_AUTHORITIES: {{ . | quote }}
+{{- end }}
+{{- end }}
 
   CONFIGURATION_PANEL_ENABLED: {{ .Values.settings.app.features.configurationPanel.enabled | quote }}
   CONFIGURATION_PANEL_URI: {{ .Values.settings.app.features.configurationPanel.uri | quote }}
   CONFIGURATION_PANEL_APPLICATION_NAME: {{ .Values.settings.app.features.configurationPanel.applicationName | quote }}
+  CONFIGURATION_PANEL_ENCRYPTION_ENABLED: {{ .Values.settings.app.features.configurationPanel.encryption.enabled | quote }}
 
   NLPORTAL_SUPPORT_PINGENDPOINT_ENABLED: {{ .Values.settings.app.support.pingEndpoint.enabled | quote }}
 
@@ -265,6 +280,9 @@ data:
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CUSTOMTEMPLATEURL: {{ . | quote }}
 {{- end }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_SHOWRESULTPAGE: {{ .Values.settings.services.payment.direct.properties.showResultPage | quote }}
+{{- if not (kindIs "invalid" .Values.settings.services.payment.direct.properties.acceptLegacyAmountRounding) }}
+  NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_ACCEPTLEGACYAMOUNTROUNDING: {{ .Values.settings.services.payment.direct.properties.acceptLegacyAmountRounding | quote }}
+{{- end }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_PSPID: {{ .Values.settings.services.payment.direct.properties.configurations.belastingzaken.pspId | quote }}
 {{- with .Values.settings.services.payment.direct.properties.configurations.belastingzaken.language }}
   NLPORTAL_CONFIG_PAYMENT_DIRECT_PROPERTIES_CONFIGURATIONS_BELASTINGZAKEN_LANGUAGE: {{ . | quote }}

@@ -87,7 +87,7 @@ Fails when values are set that this chart no longer supports, naming what replac
 {{- $hits = append $hits $entry -}}
 {{- end -}}
 {{- end -}}
-{{- $guide := "See the 4.0.0 migration guide at https://github.com/nl-portal/helm-charts/blob/main/release-notes/4.0.0/migration.md" -}}
+{{- $guide := "See the 4.0.0 migration notes at https://github.com/nl-portal/helm-charts/blob/main/charts/nl-portal-frontend/release-notes/4.0.0-migration.md" -}}
 {{- if eq (len $hits) 1 -}}
 {{- $hit := first $hits -}}
 {{- fail (printf "%s is no longer supported as of chart 4.0.0 (NL Portal 4.0.0): %s. %s" (index $hit 1) (index $hit 2) $guide) -}}
@@ -108,7 +108,7 @@ Warning text for NOTES.txt when image.repository still names the archived NL Por
 {{- if regexMatch `(^|/)nl-portal-app-frontend$` $repository -}}
 WARNING: image.repository is {{ $repository }}.
 The nl-portal-app-frontend image has been archived. NL Portal 4.0.0 and newer are published as ghcr.io/nl-portal/nl-portal-frontend.
-See the 4.0.0 migration guide at https://github.com/nl-portal/helm-charts/blob/main/release-notes/4.0.0/migration.md
+See the 4.0.0 migration notes at https://github.com/nl-portal/helm-charts/blob/main/charts/nl-portal-frontend/release-notes/4.0.0-migration.md
 {{- end -}}
 {{- end -}}
 

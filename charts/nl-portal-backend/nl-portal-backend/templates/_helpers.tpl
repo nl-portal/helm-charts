@@ -77,6 +77,7 @@ Depending on the module, NL Portal then either keeps it inactive without an erro
     "berichten" (dig "berichten" "enabled" false $services)
     "openproduct" (dig "openproduct" "enabled" false $services)
     "product" (dig "product" "enabled" false $services)
+    "payment.direct" (dig "payment" "direct" "enabled" false $services)
 -}}
 {{- $requirements := dict
     "taak" (list "objectenapi")
@@ -85,6 +86,7 @@ Depending on the module, NL Portal then either keeps it inactive without an erro
     "zakenapi" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi")
     "openproduct" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
     "product" (list "objectenapi" "catalogiapi" "documentenapis" "besluitenapi" "zakenapi" "taak")
+    "payment.direct" (list "objectenapi" "taak")
 -}}
 {{- range $module, $required := $requirements -}}
 {{- if get $enabled $module -}}
@@ -133,7 +135,7 @@ Fails when values are set that this chart no longer supports, naming what replac
 {{- $hits = append $hits $entry -}}
 {{- end -}}
 {{- end -}}
-{{- $guide := "See the 4.0.0 migration guide at https://github.com/nl-portal/helm-charts/blob/main/release-notes/4.0.0/migration.md" -}}
+{{- $guide := "See the 4.0.0 migration notes at https://github.com/nl-portal/helm-charts/blob/main/charts/nl-portal-backend/release-notes/4.0.0-migration.md" -}}
 {{- if eq (len $hits) 1 -}}
 {{- $hit := first $hits -}}
 {{- fail (printf "%s is no longer supported as of chart 4.0.0 (NL Portal 4.0.0): %s. %s" (index $hit 1) (index $hit 2) $guide) -}}
@@ -154,7 +156,7 @@ Warning text for NOTES.txt when image.repository still names the archived NL Por
 {{- if regexMatch `(^|/)nl-portal-app-backend$` $repository -}}
 WARNING: image.repository is {{ $repository }}.
 The nl-portal-app-backend image has been archived. NL Portal 4.0.0 and newer are published as ghcr.io/nl-portal/nl-portal-backend.
-See the 4.0.0 migration guide at https://github.com/nl-portal/helm-charts/blob/main/release-notes/4.0.0/migration.md
+See the 4.0.0 migration notes at https://github.com/nl-portal/helm-charts/blob/main/charts/nl-portal-backend/release-notes/4.0.0-migration.md
 {{- end -}}
 {{- end -}}
 

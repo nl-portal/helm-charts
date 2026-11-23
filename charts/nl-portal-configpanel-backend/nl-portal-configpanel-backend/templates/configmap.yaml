@@ -8,10 +8,40 @@ data:
   LOGLEVEL: {{ .Values.settings.app.logLevel | quote }}
   DATABASE_URL: {{ required "You must set settings.database.url" .Values.settings.database.url | quote }}
   JWKS_URI: {{ .Values.settings.auth.jwksURI | quote }}
+{{- with .Values.settings.auth.authorities }}
+  CONFIG_SECURITY_API_AUTHORITIES: {{ . | quote }}
+{{- end }}
+{{- with .Values.settings.auth.authoritiesClaimExpression }}
+  CONFIG_SECURITY_JWT_AUTHORITIES_CLAIM_NAME: {{ . | quote }}
+{{- end }}
+{{- $allowedKeyPrefixes := .Values.settings.app.security.allowedKeyPrefixes }}
+{{- if not (kindIs "invalid" $allowedKeyPrefixes) }}
+{{- /* An empty value reaches the panel as "no prefixes", which allows every key */ -}}
+{{- if eq (trim (replace "," "" (toString $allowedKeyPrefixes))) "" }}
+{{- fail "settings.app.security.allowedKeyPrefixes must not be empty; set it to null for the default nl-portal.config.,nl-portal.frontend." }}
+{{- end }}
+  CONFIG_SECURITY_ALLOWED_KEY_PREFIXES: {{ $allowedKeyPrefixes | quote }}
+{{- end }}
   CONFIG_SERVER_PREFIX: {{ .Values.settings.app.serverPrefix | quote }}
   CONFIG_CACHE_TTL: {{ .Values.settings.app.cacheTTL | quote }}
   CONFIG_NOTIFY_ENABLED: {{ .Values.settings.app.notifyEnabled | quote }}
   CONFIG_NOTIFY_LIST: {{ .Values.settings.app.notifyList | quote }}
+{{- with .Values.settings.app.notify }}
+{{- if eq (toString $.Values.settings.app.notifyEnabled) "true" }}
+  CONFIG_NOTIFY_CLIENT_TOKEN_URI: {{ required "settings.app.notify.client.tokenUri is required when notifyEnabled" .client.tokenUri | quote }}
+  CONFIG_NOTIFY_CLIENT_ID: {{ required "settings.app.notify.client.clientId is required when notifyEnabled" .client.clientId | quote }}
+{{- with .client.scope }}
+  CONFIG_NOTIFY_CLIENT_SCOPE: {{ . | quote }}
+{{- end }}
+{{- end }}
+{{- with .connectTimeout }}
+  CONFIG_NOTIFY_CONNECT_TIMEOUT: {{ . | quote }}
+{{- end }}
+{{- with .readTimeout }}
+  CONFIG_NOTIFY_READ_TIMEOUT: {{ . | quote }}
+{{- end }}
+{{- end }}
+  CONFIG_ENCRYPTION_ENABLED: {{ .Values.settings.app.encryption.enabled | quote }}
   CORS_ALLOWED_ORIGINS: {{ .Values.settings.app.security.cors.allowedOrigins | quote }}
   CORS_ALLOWED_HEADERS: {{ .Values.settings.app.security.cors.allowedHeaders | quote }}
   CORS_ALLOWED_METHODS: {{ .Values.settings.app.security.cors.allowedMethods | quote }}

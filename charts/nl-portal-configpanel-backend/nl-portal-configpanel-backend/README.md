@@ -1,6 +1,6 @@
 # nl-portal-configpanel-backend
 
-![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.0.0](https://img.shields.io/badge/AppVersion-2.0.0-informational?style=flat-square)
+![Version: 3.1.0](https://img.shields.io/badge/Version-3.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 NL-Portal Configuration Panel Helm chart to be used in Kubernetes clusters.
 
@@ -52,11 +52,14 @@ Kubernetes: `>=1.23.0`
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
-| settings | object | `{"app":{"cacheTTL":30000,"logLevel":"INFO","notifyEnabled":false,"notifyList":"","security":{"cors":{"allowedHeaders":"Authorization, Content-Type, Accept","allowedMethods":"GET, POST, PUT, DELETE","allowedOrigins":"*"}},"serverPrefix":"/configuration","serverToken":""},"auth":{"jwksURI":""},"database":{"password":"","url":"","username":""}}` | Application Settings |
+| settings | object | `{"app":{"cacheTTL":30000,"logLevel":"INFO","notifyEnabled":false,"notifyList":"","security":{"api":{"authorities":"ROLE_ADMIN","authoritiesEnabled":false,"jwtAuthoritiesClaimName":"['realm_access']['roles']"},"cors":{"allowedHeaders":"Authorization, Content-Type, Accept","allowedMethods":"GET, POST, PUT, DELETE","allowedOrigins":"*"}},"serverPrefix":"/configuration","serverToken":""},"auth":{"jwksURI":""},"database":{"password":"","url":"","username":""}}` | Application Settings |
 | settings.app.cacheTTL | int | `30000` | Used to set the duration at which the configuration cache is evicted in milliseconds. |
 | settings.app.logLevel | string | `"INFO"` | logLevel can be one of: TRACE, DEBUG, INFO, WARN, ERROR |
 | settings.app.notifyEnabled | bool | `false` | Whether to notify NL Portal instances when configuration is changed. |
 | settings.app.notifyList | string | `""` | A comma separated list of NL Portal base URLs that should receive a Spring Actuator Restart request if Notify is enabled. |
+| settings.app.security.api.authorities | string | `"ROLE_ADMIN"` | Comma separated roles that give access to the REST API when `authoritiesEnabled` is true. Exact match, no prefix. Empty uses the app default `ROLE_ADMIN`. |
+| settings.app.security.api.authoritiesEnabled | bool | `false` | Require one of `authorities` on the REST API. Needs Configuration Panel 2.1.0 or newer. When false, any valid token has access. |
+| settings.app.security.api.jwtAuthoritiesClaimName | string | `"['realm_access']['roles']"` | SpEL expression for the token claim holding the roles, every key quoted. Client roles: `['resource_access']['<client-id>']['roles']`. Several expressions comma separated. Empty uses the app default. |
 | settings.app.serverPrefix | string | `"/configuration"` | Used to customise the base path of the spring configuration server. Application base URL is used as the configuration server if not set. |
 | settings.app.serverToken | string | `""` | The token that should be used to authenticate configuration queries. Every NL Portal needs to have this value set for their Spring Cloud Configuration Client. |
 | settings.auth.jwksURI | string | `""` | Required: JSON Web Key Set (JWKS) URI for validating tokens |

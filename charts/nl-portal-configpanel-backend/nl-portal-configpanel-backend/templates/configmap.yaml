@@ -1,3 +1,15 @@
+{{- if .Values.settings.app.security.api.authoritiesEnabled -}}
+{{- $app_version := .Values.image.tag | default .Chart.AppVersion | toString -}}
+{{- $app_version_core := regexFind `^[0-9]+\.[0-9]+\.[0-9]+` $app_version -}}
+{{- if $app_version_core -}}
+{{- if not (semverCompare ">=2.1.0" $app_version_core) -}}
+{{- fail (printf "settings.app.security.api.authoritiesEnabled requires Configuration Panel 2.1.0 or newer, but the deployed version is %s" $app_version) -}}
+{{- end -}}
+{{- else if not .Values.image.tag -}}
+{{- fail (printf "Chart appVersion %q is not a semantic version, so the Configuration Panel version cannot be checked against the 2.1.0 minimum that settings.app.security.api.authoritiesEnabled requires. Set image.tag to the version you deploy." $app_version) -}}
+{{- end -}}
+{{- end -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -15,3 +27,10 @@ data:
   CORS_ALLOWED_ORIGINS: {{ .Values.settings.app.security.cors.allowedOrigins | quote }}
   CORS_ALLOWED_HEADERS: {{ .Values.settings.app.security.cors.allowedHeaders | quote }}
   CORS_ALLOWED_METHODS: {{ .Values.settings.app.security.cors.allowedMethods | quote }}
+  CONFIG_SECURITY_API_AUTHORITIES_ENABLED: {{ .Values.settings.app.security.api.authoritiesEnabled | quote }}
+  {{- with .Values.settings.app.security.api.authorities }}
+  CONFIG_SECURITY_API_AUTHORITIES: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.settings.app.security.api.jwtAuthoritiesClaimName }}
+  CONFIG_SECURITY_JWT_AUTHORITIES_CLAIM_NAME: {{ . | quote }}
+  {{- end }}

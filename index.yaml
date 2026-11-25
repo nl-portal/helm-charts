@@ -513,6 +513,18 @@ entries:
     version: 1.0.0
   nl-portal-configpanel-frontend:
   - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-11-25T07:57:35.067010602Z"
+    description: NL-Portal Configuration Panel Helm chart to be used in Kubernetes
+      clusters.
+    digest: f8e8457c914cb038013e438db296018a1b1a3d578b8b1645ed2c5e044c6fdcc5
+    kubeVersion: '>=1.23.0'
+    name: nl-portal-configpanel-frontend
+    type: application
+    urls:
+    - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-configpanel-frontend-3.1.0/nl-portal-configpanel-frontend-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2025-11-17T15:20:36.419540302Z"
     description: NL-Portal Configuration Panel Helm chart to be used in Kubernetes
@@ -658,4 +670,4 @@ entries:
     urls:
     - https://github.com/nl-portal/helm-charts/releases/download/nl-portal-frontend-0.1.1/nl-portal-frontend-0.1.1.tgz
     version: 0.1.1
-generated: "2026-11-20T09:31:02.507358742Z"
+generated: "2026-11-25T07:57:35.067082989Z"

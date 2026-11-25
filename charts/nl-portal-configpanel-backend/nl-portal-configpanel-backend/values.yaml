@@ -186,3 +186,10 @@ settings:
         allowedHeaders: "Authorization, Content-Type, Accept"
         allowedOrigins: "*"
         allowedMethods: "GET, POST, PUT, DELETE"
+      api:
+        # -- Require one of `authorities` on the REST API. Needs Configuration Panel 2.1.0 or newer. When false, any valid token has access.
+        authoritiesEnabled: false
+        # -- Comma separated roles that give access to the REST API when `authoritiesEnabled` is true. Exact match, no prefix. Empty uses the app default `ROLE_ADMIN`.
+        authorities: "ROLE_ADMIN"
+        # -- SpEL expression for the token claim holding the roles, every key quoted. Client roles: `['resource_access']['<client-id>']['roles']`. Several expressions comma separated. Empty uses the app default.
+        jwtAuthoritiesClaimName: "['realm_access']['roles']"
